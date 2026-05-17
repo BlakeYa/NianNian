@@ -423,6 +423,13 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
         </select>
       </div>
       <div class="mobile-field">
+        <label data-i18n="mobile_label_calendar">历法</label>
+        <select id="bsCalendar">
+          <option value="lunar" data-i18n="calendar_lunar">农历</option>
+          <option value="solar" data-i18n="calendar_solar">公历</option>
+        </select>
+      </div>
+      <div class="mobile-field">
         <label data-i18n="mobile_label_group">分组</label>
         <select id="bsGroup">
           <option value="family" data-i18n="grp_family">家人</option>
@@ -1510,6 +1517,10 @@ const i18n = {
       mobile_label_remind: '提前提醒',
       mobile_label_mode: '提醒方式',
       mobile_label_group: '分组',
+    mobile_label_calendar: '历法',
+    calendar_lunar: '农历',
+    calendar_solar: '公历',
+    th_calendar: '历法',
       mobile_days_suffix: '天',
       mobile_badge_format: '({count} 位家人 · {years} 年)',
       mobile_reminder_format: '提前{days}天',
@@ -1605,6 +1616,10 @@ const i18n = {
       mobile_label_remind: 'Remind Before',
       mobile_label_mode: 'Reminder Mode',
       mobile_label_group: 'Group',
+    mobile_label_calendar: 'Calendar',
+    calendar_lunar: 'Lunar',
+    calendar_solar: 'Solar',
+    th_calendar: 'Cal',
       mobile_days_suffix: 'day(s)',
       mobile_badge_format: '({count} people · {years} yrs)',
       mobile_reminder_format: '{days} day(s) before',
@@ -1714,10 +1729,11 @@ function sanitizeName(s) {
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
 // Chinese numeral to Arabic number (e.g. "八月" → 8, "廿三" → 23)
+function intVal(v, fallback) { var n = parseInt(v); return isNaN(n) ? fallback : n; }
+
 function chineseToNumber(s) {
   if (!s) return NaN;
   s = String(s).trim();
-  // Already a number
   if (/^\d+$/.test(s)) return parseInt(s);
   const map = { '正':1,'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10,'十一':11,'十二':12,'廿':20,'三十':30,'廿一':21,'廿二':22,'廿三':23,'廿四':24,'廿五':25,'廿六':26,'廿七':27,'廿八':28,'廿九':29,'三十':30,'腊':12 };
   // Strip "月" and "日" suffixes
@@ -1760,7 +1776,7 @@ function loadState() {
 // ---- Reminder triggers ----
 function generateTriggers(daysBefore, mode) {
   const triggers = [];
-  const days = Math.max(0, parseInt(daysBefore) || 1);
+  const days = Math.max(0, intVal(daysBefore, 1));
   switch (mode) {
     case 'daily':
       for (let i = days; i >= 0; i--) triggers.push('-P' + i + 'D');
@@ -1796,12 +1812,16 @@ function generateICS() {
     if (isNaN(month) || isNaN(day)) continue;
 
     for (let y = currentYear; y < endYear; y++) {
-      const solar = sl.lunar2solar ? sl.lunar2solar(y, month, day) : null;
-      if (!solar || solar === -1) continue;
-
-      const {cYear, cMonth, cDay} = solar;
-      // Skip past events in first year
-      if (y === currentYear && new Date(cYear, cMonth - 1, cDay) < today) continue;
+      var cYear, cMonth, cDay;
+      if (p.calendar === 'solar') {
+        cYear = y; cMonth = month; cDay = day;
+        if (y === currentYear && new Date(cYear, cMonth - 1, cDay) < today) continue;
+      } else {
+        const solar = sl.lunar2solar ? sl.lunar2solar(y, month, day) : null;
+        if (!solar || solar === -1) continue;
+        cYear = solar.cYear; cMonth = solar.cMonth; cDay = solar.cDay;
+        if (y === currentYear && new Date(cYear, cMonth - 1, cDay) < today) continue;
+      }
 
       const dateStr = cYear + pad2(cMonth) + pad2(cDay);
       const nextDay = new Date(cYear, cMonth - 1, cDay + 1);
@@ -1885,11 +1905,15 @@ function renderTable() {
       '<td><input type="number" min="1" max="12" value="' + (p.lunarMonth || '') + '" data-idx="' + i + '" data-field="lunarMonth" class="cell-edit" placeholder="月" data-i18n-placeholder="ph_month"></td>' +
       '<td><input type="number" min="1" max="30" value="' + (p.lunarDay || '') + '" data-idx="' + i + '" data-field="lunarDay" class="cell-edit" placeholder="日" data-i18n-placeholder="ph_day"></td>' +
       '<td class="col-note"><input type="text" value="' + escHtml(p.note || '') + '" data-idx="' + i + '" data-field="note" class="cell-edit" placeholder="可选" data-i18n-placeholder="ph_note"></td>' +
-      '<td><input type="number" min="0" max="30" value="' + (p.daysBefore || 1) + '" data-idx="' + i + '" data-field="daysBefore" class="cell-edit" placeholder="天"></td>' +
+      '<td><input type="number" min="0" max="30" value="' + (p.daysBefore ?? 1) + '" data-idx="' + i + '" data-field="daysBefore" class="cell-edit" placeholder="天"></td>' +
       '<td class="col-mode"><select data-idx="' + i + '" data-field="mode" class="cell-edit">' +
-        '<option value="once"' + (p.mode === 'once' ? ' selected' : '') + '>一次</option>' +
-        '<option value="daily"' + (p.mode === 'daily' ? ' selected' : '') + '>每天</option>' +
-        '<option value="everyOtherDay"' + (p.mode === 'everyOtherDay' ? ' selected' : '') + '>隔天</option>' +
+        '<option value="once"' + (p.mode === 'once' ? ' selected' : '') + '>' + __('opt_once') + '</option>' +
+        '<option value="daily"' + (p.mode === 'daily' ? ' selected' : '') + '>' + __('opt_daily') + '</option>' +
+        '<option value="everyOtherDay"' + (p.mode === 'everyOtherDay' ? ' selected' : '') + '>' + __('opt_everyOther') + '</option>' +
+      '</select></td>' +
+      '<td><select data-idx="' + i + '" data-field="calendar" class="cell-edit">' +
+        '<option value="lunar"' + (p.calendar === 'lunar' ? ' selected' : '') + '>' + __('calendar_lunar') + '</option>' +
+        '<option value="solar"' + (p.calendar === 'solar' ? ' selected' : '') + '>' + __('calendar_solar') + '</option>' +
       '</select></td>' +
       '<td><select data-idx="' + i + '" data-field="group" class="cell-edit">' +
         '<option value="family"' + (p.group === 'family' ? ' selected' : '') + '>' + __('grp_family') + '</option>' +
@@ -1924,7 +1948,7 @@ tableBody.addEventListener('input', function(e) {
   let val = target.value;
       if (field === 'lunarMonth') { val = Math.max(1, Math.min(12, chineseToNumber(val) || parseInt(val) || '')); }
       if (field === 'lunarDay') { val = Math.max(1, Math.min(30, chineseToNumber(val) || parseInt(val) || '')); }
-  if (field === 'daysBefore') { val = Math.max(0, Math.min(30, parseInt(val) || 0)); }
+  if (field === 'daysBefore') { val = Math.max(0, Math.min(30, intVal(val, 0))); }
 
   people[idx][field] = val;
   saveState();
@@ -1961,6 +1985,7 @@ function parseCSV(text) {
   const daysIdx = headers.indexOf('daysbefore');
   const modeIdx = headers.indexOf('mode');
   const groupIdx = headers.indexOf('group');
+  const calIdx = headers.indexOf('calendar');
 
   if (nameIdx === -1 || monthIdx === -1 || dayIdx === -1) {
     toast( __('toast_csv_format') + '（第 1 行）');
@@ -1983,9 +2008,10 @@ function parseCSV(text) {
       lunarMonth: month,
       lunarDay: day,
       note: noteIdx >= 0 ? cols[noteIdx] || '' : '',
-      daysBefore: daysIdx >= 0 ? parseInt(cols[daysIdx]) || 1 : 1,
+      daysBefore: daysIdx >= 0 ? intVal(cols[daysIdx], 1) : 1,
       mode: modeIdx >= 0 ? (cols[modeIdx] || 'once') : 'once',
       group: groupIdx >= 0 ? (cols[groupIdx] || 'family') : 'family',
+      calendar: calIdx >= 0 ? (cols[calIdx] || 'lunar') : 'lunar',
     });
   }
 
@@ -2176,7 +2202,7 @@ function syncFromTable() {
       let val = inp.value;
       if (field === 'lunarMonth') val = parseInt(val) || '';
       if (field === 'lunarDay') val = parseInt(val) || '';
-      if (field === 'daysBefore') val = parseInt(val) || 1;
+      if (field === 'daysBefore') val = intVal(val, 1);
       people[idx][field] = val;
     });
   });
@@ -2216,7 +2242,7 @@ function getLunarDateDisplay(p) {
 }
 
 function getReminderText(p) {
-  var days = parseInt(p.daysBefore) || 0;
+  var days = intVal(p.daysBefore, 0);
   var prefix;
   if (days === 0) {
     prefix = __('mobile_reminder_format_0');
@@ -2322,6 +2348,7 @@ function openBottomSheet(personId) {
     document.getElementById('bsDaysBefore').value = p.daysBefore != null ? p.daysBefore : 3;
     document.getElementById('bsMode').value = p.mode || 'once';
     document.getElementById('bsGroup').value = p.group || 'family';
+    document.getElementById('bsCalendar').value = p.calendar || 'lunar';
     title.textContent = __('mobile_edit_title');
     if (deleteWrap) deleteWrap.classList.remove('hidden');
   } else {
@@ -2356,9 +2383,10 @@ function saveBottomSheet() {
   var month = parseInt(document.getElementById('bsMonth').value);
   var day = parseInt(document.getElementById('bsDay').value);
   var note = document.getElementById('bsNote').value.trim();
-  var daysBefore = parseInt(document.getElementById('bsDaysBefore').value) || 0;
+  var daysBefore = intVal(document.getElementById('bsDaysBefore').value, 0);
   var mode = document.getElementById('bsMode').value;
   var group = document.getElementById('bsGroup').value;
+  var calendar = document.getElementById('bsCalendar').value;
 
   if (!name) {
     toast('\u8bf7\u8f93\u5165\u59d3\u540d');
@@ -2524,15 +2552,17 @@ function init() {
       note: p.note || '',
       daysBefore: p.daysBefore !== undefined ? p.daysBefore : 3,
       mode: p.mode || 'once',
-      group: p.group || 'family'
+      group: p.group || 'family',
+      calendar: p.calendar || 'lunar'
     }));
     renderTable();
   } else {
     // Pre-fill sample data for first-time users
     people = [
-      { id: genId(), name: '妈妈', lunarMonth: 8, lunarDay: 15, note: '农历八月十五', daysBefore: 3, mode: 'once', group: 'family' },
-      { id: genId(), name: '爸爸', lunarMonth: 5, lunarDay: 5, note: '农历五月初五', daysBefore: 7, mode: 'daily', group: 'family' },
-      { id: genId(), name: '奶奶', lunarMonth: 12, lunarDay: 23, note: '农历腊月廿三', daysBefore: 7, mode: 'daily', group: 'family' },
+      { id: genId(), name: '妈妈', lunarMonth: 8, lunarDay: 15, note: '农历八月十五', daysBefore: 3, mode: 'once', group: 'family', calendar: 'lunar' },
+      { id: genId(), name: '爸爸', lunarMonth: 5, lunarDay: 5, note: '农历五月初五', daysBefore: 7, mode: 'daily', group: 'family', calendar: 'lunar' },
+      { id: genId(), name: '奶奶', lunarMonth: 12, lunarDay: 23, note: '农历腊月廿三', daysBefore: 7, mode: 'daily', group: 'family', calendar: 'lunar' },
+      { id: genId(), name: '自己', lunarMonth: 6, lunarDay: 15, note: '公历六月十五', daysBefore: 3, mode: 'once', group: 'family', calendar: 'solar' },
     ];
     renderTable();
     saveState();
@@ -2559,13 +2589,7 @@ document.addEventListener('DOMContentLoaded', init);
 </script>
 
 
-<script>
-/* Service Worker - registered via sw.js */
-if ('serviceWorker' in navigator) {
-  // We register a service worker at the root scope
-  // The sw.js file is a small separate file for caching
-}
-</script>
+
 
 </body>
 </html>

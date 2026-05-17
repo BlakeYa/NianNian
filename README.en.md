@@ -89,8 +89,8 @@ From then on, every lunar birthday appears automatically in your calendar with t
 |---|---|---|
 | ✅ Done | **PWA Immersive** | Safe-area, status-bar, splash screen, add to home screen |
 | ✅ Done | **Sample Data** | Pre-filled demo data on first visit |
-| 🔄 WIP | **Bilingual** | Chinese/English toggle |
-| 🔄 WIP | **Responsive Redesign** | Mobile-optimized table, touch targets, fluid typography |
+| ✅ Done | **Bilingual** | Chinese/English toggle |
+| ✅ Done | **Responsive Redesign** | Mobile card-list + bottom sheet, desktop table + CSV upload dual views |
 | 🔄 WIP | **Tags/Groups** | Label birthdays (family/friends), export by group |
 | 📋 Planned | **Import Enhancement** | CSV preview, validation, better error messages |
 | 📋 Planned | **Chinese Numerals** | Support input like "八月十五" |

@@ -1,5 +1,5 @@
-name,lunarMonth,lunarDay,note,daysBefore,mode
-妈妈,8,15,农历八月十五,3,once
-爸爸,5,5,农历五月初五,7,daily
-奶奶,12,23,农历腊月廿三,7,daily
-孩子,3,10,农历三月初十,1,once
+name,lunarMonth,lunarDay,note,daysBefore,mode,calendar
+妈妈,8,15,农历八月十五,3,once,lunar
+爸爸,5,5,农历五月初五,7,daily,lunar
+奶奶,12,23,农历腊月廿三,7,daily,lunar
+自己,6,15,公历六月十五,3,once,solar
