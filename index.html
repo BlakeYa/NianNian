@@ -1799,48 +1799,6 @@ function parseCSV(text) {
   }
 }
 
-  // Build set of existing names for dedup
-  const existingNames = new Set(people.map(p => p.name.trim()));
-
-  let added = 0;
-  let skipped = 0;
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split(',').map(c => c.trim());
-    const name = cols[nameIdx];
-    const month = chineseToNumber(cols[monthIdx]) || parseInt(cols[monthIdx]);
-    const day = chineseToNumber(cols[dayIdx]) || parseInt(cols[dayIdx]);
-    if (!name || isNaN(month) || isNaN(day)) continue;
-
-    // Dedup by name
-    if (existingNames.has(name.trim())) {
-      skipped++;
-      continue;
-    }
-
-    people.push({
-      id: genId(),
-      name: name,
-      lunarMonth: month,
-      lunarDay: day,
-      note: noteIdx >= 0 ? cols[noteIdx] || '' : '',
-      daysBefore: daysIdx >= 0 ? parseInt(cols[daysIdx]) || 1 : 1,
-      mode: modeIdx >= 0 ? (cols[modeIdx] || 'once') : 'once'
-    });
-    existingNames.add(name.trim());
-    added++;
-  }
-
-  if (added > 0) {
-    renderTable();
-    const msg = __('csv_imported') + ' ' + added + ' ' + __('gen_people') + (skipped > 0 ? __('csv_skipped') + ' ' + skipped : '');
-    toast(msg);
-  } else if (skipped > 0) {
-    toast( __('csv_dup_all'));
-  } else {
-    toast( __('csv_no_data'));
-  }
-}
-
 // ---- Upload Zone Events ----
 uploadZone.addEventListener('click', function() {
   fileInput.click();
