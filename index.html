@@ -120,6 +120,15 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 .year-btn:hover{border-color:#C73B3B;color:#C73B3B}
 .year-btn.active{border-color:#C73B3B;background:#C73B3B;color:#fff}
 
+/* ===== Info Section (collapsible help) ===== */
+.info-details{border:1px solid #eee;padding:14px 16px}
+.info-details[open]{border-color:#ddd}
+.info-summary{font-size:0.95rem;margin-bottom:0;outline:none}
+.info-summary::-webkit-details-marker{display:none}
+.info-arrow{transition:transform 0.2s}
+.info-details[open] .info-arrow{transform:rotate(180deg);display:inline-block}
+@media(min-width:768px){.info-details[open]{border-color:#C73B3B33}}
+
 /* ===== Import Guide ===== */
 .guide-grid{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:480px){.guide-grid{grid-template-columns:1fr 1fr}}
@@ -260,53 +269,117 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
   </div>
 </section>
 
-<!-- ======== Import Guide ======== -->
-<section class="card">
-  <div class="card-title" data-i18n="guide_title">📖 导入日历指南</div>
-  <p style="font-size:0.85rem;color:#666;margin-bottom:12px" data-i18n="guide_hint">下载 .ics 文件后，按你的设备选择导入方式：</p>
+<details id="infoSection" class="card info-details">
+  <summary class="card-title info-summary" style="cursor:pointer">
+    <span style="font-size:0.9rem">📖 使用帮助 &amp; 🔒 隐私</span>
+    <span class="info-arrow" style="font-size:0.8rem;color:#aaa"> ▼</span>
+  </summary>
+  <div style="margin-top:12px">
 
-  <div style="background:#FFF8F0;border:1px solid #E8A87C;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:0.85rem">
-    <span data-i18n="guide_tip">💡 如果已经有「念念·农历生日」日历，更新时记得先右键删除旧日历再导入新文件。分多次导入同一个日历，Apple 日历会当成不同事件重复展示。</span>
-  </div>
+    <!-- ======== Import Guide ======== -->
+    <section class="card" style="box-shadow:none;padding:0 0 16px 0;margin-bottom:16px">
+      <div class="card-title" data-i18n="guide_title" style="font-size:0.95rem">📖 导入日历指南</div>
+      <p style="font-size:0.82rem;color:#666;margin-bottom:10px" data-i18n="guide_hint">下载 .ics 文件后，按你的设备选择导入方式：</p>
 
-  <div class="guide-grid">
-    <div class="guide-card">
-      <div class="device-icon">💻</div>
-      <h4 data-i18n="guide_mac">Mac</h4>
-      <ol>
-        <li data-i18n="guide_mac_1">双击下载的 <code>.ics</code> 文件</li>
-        <li data-i18n="guide_mac_2">日历 App 自动打开</li>
-        <li data-i18n="guide_mac_3"><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
-        <li data-i18n="guide_mac_4">点击「好」完成导入</li>
-      </ol>
-    </div>
-    <div class="guide-card">
-      <div class="device-icon">📱</div>
-      <h4 data-i18n="guide_ios">iPhone / iPad</h4>
-      <ol>
-        <li data-i18n="guide_ios_1">将 <code>.ics</code> 文件发到微信或邮件</li>
-        <li data-i18n="guide_ios_2">点击文件 → 选择「用日历打开」</li>
-        <li data-i18n="guide_ios_3"><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
-        <li data-i18n="guide_ios_4">点击「完成」→ iCloud 自动同步</li>
-      </ol>
-    </div>
-    <div class="guide-card">
-      <div class="device-icon">🔄</div>
-      <h4 data-i18n="guide_update_title">如何更新 / 如何删除</h4>
-      <ol>
-        <li data-i18n="guide_upd_1">在网页修改后重新生成并下载 ICS</li>
-        <li data-i18n="guide_upd_2">日历 App 左侧栏<strong>右键删除</strong>旧的「念念·农历生日」日历</li>
-        <li data-i18n="guide_upd_3">双击新 ICS 重新导入到同名日历</li>
-        <li data-i18n="guide_upd_4">iCloud 自动同步所有设备</li>
-      </ol>
-      <div style="margin-top:6px;font-size:0.8rem;color:#888">
-        💡 删除日历只移除生日事件，不影响其他日程。先删旧日历再导新文件，不会产生重复事件。
+      <div style="background:#FFF8F0;border:1px solid #E8A87C;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:0.82rem">
+        <span data-i18n="guide_tip">💡 如果已经有「念念·农历生日」日历，更新时记得先右键删除旧日历再导入新文件。分多次导入同一个日历，Apple 日历会当成不同事件重复展示。</span>
       </div>
-    </div>
-  </div>
 
-  
-</section>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <div class="device-icon">💻</div>
+          <h4 data-i18n="guide_mac" style="font-size:0.88rem">Mac</h4>
+          <ol>
+            <li data-i18n="guide_mac_1">双击下载的 <code>.ics</code> 文件</li>
+            <li data-i18n="guide_mac_2">日历 App 自动打开</li>
+            <li data-i18n="guide_mac_3"><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
+            <li data-i18n="guide_mac_4">点击「好」完成导入</li>
+          </ol>
+        </div>
+        <div class="guide-card">
+          <div class="device-icon">📱</div>
+          <h4 data-i18n="guide_ios" style="font-size:0.88rem">iPhone / iPad</h4>
+          <ol>
+            <li data-i18n="guide_ios_1">将 <code>.ics</code> 文件发到微信或邮件</li>
+            <li data-i18n="guide_ios_2">点击文件 → 选择「用日历打开」</li>
+            <li data-i18n="guide_ios_3"><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
+            <li data-i18n="guide_ios_4">点击「完成」→ iCloud 自动同步</li>
+          </ol>
+        </div>
+        <div class="guide-card">
+          <div class="device-icon">🔄</div>
+          <h4 data-i18n="guide_update_title" style="font-size:0.88rem">如何更新 / 如何删除</h4>
+          <ol>
+            <li data-i18n="guide_upd_1">在网页修改后重新生成并下载 ICS</li>
+            <li data-i18n="guide_upd_2">日历 App 左侧栏<strong>右键删除</strong>旧的「念念·农历生日」日历</li>
+            <li data-i18n="guide_upd_3">双击新 ICS 重新导入到同名日历</li>
+            <li data-i18n="guide_upd_4">iCloud 自动同步所有设备</li>
+          </ol>
+          <div style="margin-top:4px;font-size:0.78rem;color:#888">
+            💡 删除日历只移除生日事件，不影响其他日程。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== FAQ ======== -->
+    <section class="card" style="box-shadow:none;padding:0 0 16px 0;margin-bottom:16px">
+      <div class="card-title" data-i18n="faq_title" style="font-size:0.95rem">❓ 常见问题</div>
+      <div style="font-size:0.85rem">
+        <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
+          <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_wrong_cal">🤦 导入到错误的日历了怎么办？</summary>
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+            <p><strong>情况 A</strong>：导入到了独立的「念念·农历生日」日历 → <span style="color:#2E7D32">直接删除该日历即可</span>。</p>
+            <p><strong>情况 B</strong>：导入到了已有日历 → 导出备份 → 删日历 → 重建 → 选择性导入。</p>
+          </div>
+        </details>
+        <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
+          <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_update">🔄 新增了家人，怎么更新？</summary>
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+            网页改名单 → 重新生成 → 日历中删旧日历 → 导入新文件。先删再导不会产生重复事件。
+          </div>
+        </details>
+        <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
+          <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_privacy">🔒 数据安全吗？</summary>
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+            念念是纯客户端工具：没有服务器、没有数据库、没有 API，所有计算在浏览器内完成，数据永不离开你的设备。
+          </div>
+        </details>
+        <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
+          <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_android">📱 支持 Android 吗？</summary>
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+            .ics 是标准格式，Android 上可用 Google 日历或 ICSx⁵ 导入。
+          </div>
+        </details>
+        <details style="padding:8px 10px;background:#fafafa;border-radius:6px">
+          <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_excel">📄 支持 Excel 吗？</summary>
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+            当前支持 .csv，用 Excel / Numbers / WPS 打开编辑后另存为 CSV 即可。
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ======== Privacy ======== -->
+    <section class="card" style="box-shadow:none;padding:0">
+      <div class="privacy-box" style="font-size:0.82rem">
+        <strong style="color:#333" data-i18n="privacy_title">🔒 隐私承诺</strong>
+        <div data-i18n="privacy_desc" style="margin-top:4px">此工具完全运行在你的浏览器中。</div>
+        <ul style="margin-top:6px">
+          <li>数据永不离开你的设备</li>
+          <li>无服务器、无数据库、无 API</li>
+          <li>农历库内联，不请求任何 CDN</li>
+          <li>完整开源，代码可审计</li>
+        </ul>
+        <div style="margin-top:6px;font-size:0.78rem">
+          <a href="PRIVACY.md" target="_blank">完整隐私声明</a> ｜
+          <a href="https://github.com/BlakeYa/niannian" target="_blank">GitHub</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</details>
 
 <!-- ======== FAQ ======== -->
 <section class="card">
@@ -374,26 +447,6 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
         当前支持 <strong>.csv</strong> 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。
       </div>
     </details>
-  </div>
-</section>
-
-<!-- ======== Privacy ======== -->
-<section class="card">
-  <div class="card-title" data-i18n="privacy_title">🔒 隐私承诺</div>
-  <div class="privacy-box">
-    <div class="lock" data-i18n="privacy_desc">此工具完全运行在你的浏览器中。</div>
-    <ul>
-      <li>你的数据永远不会离开你的设备</li>
-      <li>没有服务器、没有数据库、没有 API</li>
-      <li>所有计算在浏览器内完成，无需联网</li>
-      <li>农历转换库直接内联，不请求任何 CDN</li>
-      <li>无分析工具、无埋点、无 Cookie</li>
-      <li>完整开源，代码可审计</li>
-    </ul>
-    <div style="margin-top:8px;font-size:0.82rem">
-      🔍 完整隐私声明见 <a href="PRIVACY.md" target="_blank">PRIVACY.md</a> ｜
-      源代码：<a href="https://github.com/BlakeYa/niannian" target="_blank">github.com/BlakeYa/niannian</a>
-    </div>
   </div>
 </section>
 
@@ -1435,6 +1488,11 @@ function __(key) {
 // Apply initial language
 document.addEventListener('DOMContentLoaded', function() {
   setLang(currentLang);
+  // Auto-open info section on desktop
+  if (window.innerWidth >= 768) {
+    const info = document.getElementById('infoSection');
+    if (info) info.open = true;
+  }
 });
 
 
