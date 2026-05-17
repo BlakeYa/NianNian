@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#C73B3B">
+<meta name="theme-color" content="#1B2838">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="念念">
@@ -11,23 +11,23 @@
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C73B3B'/%3E%3Ccircle cx='50' cy='50' r='32' fill='white' opacity='0.95'/%3E%3Ccircle cx='62' cy='46' r='28' fill='%23C73B3B'/%3E%3Ccircle cx='30' cy='38' r='3' fill='white' opacity='0.8'/%3E%3Ccircle cx='68' cy='30' r='2' fill='white' opacity='0.7'/%3E%3Ccircle cx='38' cy='68' r='2.5' fill='white' opacity='0.7'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231B2838'/%3E%3Ccircle cx='50' cy='50' r='32' fill='white' opacity='0.95'/%3E%3Ccircle cx='62' cy='46' r='28' fill='%231B2838'/%3E%3Ccircle cx='30' cy='38' r='3' fill='white' opacity='0.8'/%3E%3Ccircle cx='68' cy='30' r='2' fill='white' opacity='0.7'/%3E%3Ccircle cx='38' cy='68' r='2.5' fill='white' opacity='0.7'/%3E%3C/svg%3E">
 <title>念念 · 农历生日助手</title>
 
 <style>
-:root{--primary:#C73B3B;--primary-dark:#B02E2E;--bg:#FFF8F0;--text:#2D2D2D;--text-secondary:#666;--text-muted:#888;--success:#2E7D32;--success-bg:#E8F5E9;--radius:12px;--radius-sm:8px;--radius-pill:999px;--shadow-sm:0 1px 3px rgba(0,0,0,.04);--shadow:0 2px 12px rgba(0,0,0,.05);--shadow-lg:0 4px 20px rgba(0,0,0,.06);--shadow-btn:0 2px 8px rgba(199,59,59,.25)}
+:root{--primary:#1B2838;--primary-dark:#2C3E50;--bg:#F5F2ED;--text:#1B2838;--text-secondary:#8E8E93;--text-muted:#8E8E93;--accent:#C4944A;--success:#4CAF50;--success-bg:#E8F5E9;--radius:12px;--radius-sm:8px;--radius-pill:999px;--shadow-sm:0 1px 3px rgba(0,0,0,.04);--shadow:0 2px 12px rgba(0,0,0,.05);--shadow-lg:0 4px 20px rgba(0,0,0,.06);--shadow-btn:0 2px 8px rgba(27,40,56,.2)}
 
 /* ===== Reset & Base ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;-webkit-text-size-adjust:100%}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  background:linear-gradient(180deg,#FFF8F0 0%,#FFF5EE 100%);color:#2D2D2D;line-height:1.6;min-height:100vh;
+  background:linear-gradient(180deg,#F5F2ED 0%,#F0EBE4 100%);color:#1B2838;line-height:1.6;min-height:100vh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)
 }
-a{color:#C73B3B;text-decoration:none}
+a{color:#1B2838;text-decoration:none}
 a:hover{text-decoration:underline}
-:focus-visible{outline:2px solid #C73B3B;outline-offset:2px}
+:focus-visible{outline:2px solid #C4944A;outline-offset:2px}
 
 /* ===== Layout ===== */
 .container{max-width:720px;margin:0 auto;padding:16px}
@@ -36,37 +36,37 @@ a:hover{text-decoration:underline}
 
 /* ===== Header ===== */
 .header{position:relative;text-align:center;padding:clamp(24px,6vw,40px) 0 clamp(16px,4vw,24px)}
-.header .logo{font-size:clamp(1.6rem,7vw,2.2rem);font-weight:700;color:#C73B3B;letter-spacing:3px;line-height:1.2}
-.header .logo-sub{font-size:clamp(0.8rem,3vw,0.9rem);color:#C73B3B;opacity:.55;margin-top:0;letter-spacing:4px;text-transform:uppercase}
-.header .tagline{font-size:clamp(0.85rem,3vw,0.95rem);color:#888;margin-top:10px;max-width:280px;margin-left:auto;margin-right:auto;line-height:1.5}
-.lang-pill{position:absolute;top:clamp(20px,4vw,28px);right:0;display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:32px;padding:0 14px;background:rgba(199,59,59,.08);color:#C73B3B;border:1px solid rgba(199,59,59,.15);border-radius:999px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.5px;user-select:none;font-family:inherit}
-.lang-pill:hover{background:rgba(199,59,59,.15);border-color:rgba(199,59,59,.3)}
+.header .logo{font-size:clamp(1.6rem,7vw,2.2rem);font-weight:700;color:#1B2838;letter-spacing:3px;line-height:1.2}
+.header .logo-sub{font-size:clamp(0.8rem,3vw,0.9rem);color:#1B2838;opacity:.55;margin-top:0;letter-spacing:4px;text-transform:uppercase}
+.header .tagline{font-size:clamp(0.85rem,3vw,0.95rem);color:#8E8E93;margin-top:10px;max-width:280px;margin-left:auto;margin-right:auto;line-height:1.5}
+.lang-pill{position:absolute;top:clamp(20px,4vw,28px);right:0;display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:32px;padding:0 14px;background:rgba(27,40,56,.08);color:#1B2838;border:1px solid rgba(27,40,56,.15);border-radius:999px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.5px;user-select:none;font-family:inherit}
+.lang-pill:hover{background:rgba(27,40,56,.15);border-color:rgba(27,40,56,.3)}
 .lang-pill:active{transform:scale(.95)}
-.privacy-badge{display:inline-block;margin-top:14px;padding:5px 16px;background:#E8F5E9;color:#2E7D32;border-radius:999px;font-size:clamp(.72rem,2.5vw,.78rem);font-weight:500;letter-spacing:.3px}
+.privacy-badge{display:inline-block;margin-top:14px;padding:5px 16px;background:rgba(196,148,74,.12);color:#A67B3A;border-radius:999px;font-size:clamp(.72rem,2.5vw,.78rem);font-weight:500;letter-spacing:.3px}
 
 /* ===== Section Card ===== */
 .card{background:#fff;border-radius:12px;padding:clamp(18px,3.5vw,24px);margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.05),0 1px 3px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);transition:box-shadow .2s}
-.card-title{font-size:clamp(.95rem,3vw,1.05rem);font-weight:600;color:#333;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.card-title .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#C73B3B;color:#fff;font-size:.82rem;font-weight:700;flex-shrink:0;box-shadow:0 2px 6px rgba(199,59,59,.25)}
+.card-title{font-size:clamp(.95rem,3vw,1.05rem);font-weight:600;color:#1B2838;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.card-title .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#1B2838;color:#fff;font-size:.82rem;font-weight:700;flex-shrink:0;box-shadow:0 2px 6px rgba(27,40,56,.25)}
 
 /* ===== Buttons ===== */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:clamp(10px,2vw,12px) clamp(18px,3vw,22px);border-radius:10px;border:none;font-size:clamp(.85rem,2.5vw,.9rem);font-weight:500;cursor:pointer;transition:all .15s ease;white-space:nowrap;user-select:none;min-height:44px}
 .btn:active{transform:scale(.96)}
-.btn-primary{background:#C73B3B;color:#fff;box-shadow:0 2px 8px rgba(199,59,59,.25)}
-.btn-primary:hover{background:#B02E2E;box-shadow:0 3px 12px rgba(199,59,59,.35)}
+.btn-primary{background:#1B2838;color:#fff;box-shadow:0 2px 8px rgba(27,40,56,.25)}
+.btn-primary:hover{background:#2C3E50;box-shadow:0 3px 12px rgba(27,40,56,.35)}
 .btn-primary:disabled{background:#ccc;cursor:not-allowed;transform:none;box-shadow:none}
 .btn-secondary{background:#f5f5f5;color:#555;border:1px solid #eee}
 .btn-secondary:hover{background:#eee;border-color:#ddd}
-.btn-outline{background:transparent;color:#C73B3B;border:1.5px solid #C73B3B}
-.btn-outline:hover{background:#FFF0F0;border-color:#B02E2E}
+.btn-outline{background:transparent;color:#1B2838;border:1.5px solid #1B2838}
+.btn-outline:hover{background:rgba(27,40,56,.06);border-color:#2C3E50}
 .btn-sm{padding:clamp(6px,1.5vw,8px) clamp(14px,2vw,16px);font-size:clamp(.8rem,2.5vw,.82rem);min-height:44px;border-radius:8px}
 .btn-block{width:100%;justify-content:center}
-.btn-download{background:#2E7D32;color:#fff;padding:clamp(13px,2.5vw,16px) clamp(28px,4vw,32px);font-size:clamp(.95rem,3vw,1.05rem);border-radius:12px;box-shadow:0 3px 12px rgba(46,125,50,.25);font-weight:600;letter-spacing:.5px}
-.btn-download:hover{background:#256829;box-shadow:0 4px 16px rgba(46,125,50,.35)}
+.btn-download{background:#C4944A;color:#fff;padding:clamp(13px,2.5vw,16px) clamp(28px,4vw,32px);font-size:clamp(.95rem,3vw,1.05rem);border-radius:12px;box-shadow:0 3px 12px rgba(196,148,74,.3);font-weight:600;letter-spacing:.5px}
+.btn-download:hover{background:#B8863E;box-shadow:0 4px 16px rgba(196,148,74,.4)}
 
 /* ===== Upload Zone ===== */
 .upload-zone{border:2px dashed #ddd;border-radius:12px;padding:clamp(24px,5vw,32px) 16px;text-align:center;cursor:pointer;transition:all .15s;margin-bottom:14px;background:#fafafa}
-.upload-zone:hover,.upload-zone.dragover{border-color:#C73B3B;background:#FFF8F8}
+.upload-zone:hover,.upload-zone.dragover{border-color:#C4944A;background:rgba(196,148,74,.05)}
 .upload-zone .icon{font-size:clamp(1.5rem,5vw,2rem);margin-bottom:8px}
 .upload-zone .text{font-size:clamp(.85rem,2.5vw,.9rem);color:#888}
 .upload-zone .hint{font-size:clamp(.72rem,2vw,.78rem);color:#aaa;margin-top:6px}
@@ -79,19 +79,19 @@ th,td{
   border-bottom:1px solid #eee;white-space:nowrap
 }
 th{
-  font-weight:600;color:#666;font-size:clamp(0.75rem,2.5vw,0.8rem);
+  font-weight:600;color:#8E8E93;font-size:clamp(0.75rem,2.5vw,0.8rem);
   background:#fafafa;position:sticky;top:0
 }
 td input,td select{
   width:100%;padding:clamp(5px,1vw,6px);border:1px solid #ddd;border-radius:4px;
   font-size:clamp(0.78rem,2.5vw,0.85rem);background:#fff;font-family:inherit;min-height:44px
 }
-td input:focus,td select:focus{outline:none;border-color:#C73B3B}
+td input:focus,td select:focus{outline:none;border-color:#C4944A}
 td .btn-del{
   background:none;border:none;color:#ccc;cursor:pointer;font-size:clamp(1rem,3vw,1.1rem);
   padding:2px 6px;border-radius:4px;min-height:44px;min-width:44px
 }
-td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
+td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 
 /* ===== Year Selector ===== */
 .year-selector{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
@@ -100,8 +100,8 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
   background:#fff;cursor:pointer;font-size:clamp(0.85rem,2.5vw,0.9rem);font-weight:500;
   transition:all 0.12s;min-height:44px;flex:1 1 auto
 }
-.year-btn:hover{border-color:#C73B3B;color:#C73B3B}
-.year-btn.active{border-color:#C73B3B;background:#C73B3B;color:#fff}
+.year-btn:hover{border-color:#C4944A;color:#C4944A}
+.year-btn.active{border-color:#C4944A;background:#C4944A;color:#fff}
 
 /* ===== Info Section (collapsible help) ===== */
 .info-details{border:1px solid #eee;padding:14px 16px}
@@ -110,7 +110,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 .info-summary::-webkit-details-marker{display:none}
 .info-arrow{transition:transform 0.2s}
 .info-details[open] .info-arrow{transform:rotate(180deg);display:inline-block}
-@media(min-width:768px){.info-details[open]{border-color:#C73B3B33}}
+@media(min-width:768px){.info-details[open]{border-color:rgba(196,148,74,.2)}}
 
 /* ===== Import Guide ===== */
 .guide-grid{display:grid;grid-template-columns:1fr;gap:12px}
@@ -120,7 +120,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
   padding:16px;background:#fafafa;border-radius:10px;font-size:clamp(0.82rem,2.5vw,0.88rem)
 }
 .guide-card .device-icon{font-size:1.5rem;margin-bottom:4px}
-.guide-card h4{font-size:0.92rem;margin-bottom:6px;color:#333}
+.guide-card h4{font-size:0.92rem;margin-bottom:6px;color:#1B2838}
 .guide-card ol{padding-left:18px;color:#555}
 .guide-card ol li{margin-bottom:4px}
 
@@ -132,7 +132,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 .privacy-box .lock{font-size:1.2rem}
 .privacy-box ul{list-style:none;padding:0;margin-top:8px}
 .privacy-box ul li{padding:3px 0;padding-left:20px;position:relative}
-.privacy-box ul li::before{content:"\2713";position:absolute;left:0;color:#2E7D32;font-weight:700}
+.privacy-box ul li::before{content:"\2713";position:absolute;left:0;color:#4CAF50;font-weight:700}
 
 /* ===== Footer ===== */
 .footer{text-align:center;padding:24px 0 40px;font-size:clamp(0.75rem,2.5vw,0.8rem);color:#aaa}
@@ -156,7 +156,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 /* ===== Generate Result ===== */
 .gen-result{text-align:center;padding:16px 0}
 .gen-result .success-icon{font-size:clamp(2rem,6vw,2.5rem);margin-bottom:8px}
-.gen-result .msg{font-size:clamp(0.88rem,3vw,0.95rem);color:#333;margin-bottom:4px}
+.gen-result .msg{font-size:clamp(0.88rem,3vw,0.95rem);color:#1B2838;margin-bottom:4px}
 .gen-result .detail{font-size:clamp(0.78rem,2.5vw,0.82rem);color:#888}
 
 /* ===== Mobile Overrides (< 480px) ===== */
@@ -189,14 +189,14 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 .person-card:active{transform:scale(.98)}
 .person-card .avatar{
   width:48px;height:48px;border-radius:50%;
-  background:linear-gradient(135deg,#C73B3B,#E05A5A);
+  background:linear-gradient(135deg,#1B2838,#3A4A5C);
   display:flex;align-items:center;justify-content:center;
   color:#fff;font-size:1.3rem;font-weight:600;
-  flex-shrink:0;box-shadow:0 2px 8px rgba(199,59,59,.2)
+  flex-shrink:0;box-shadow:0 2px 8px rgba(27,40,56,.2)
 }
 .person-card .info{flex:1;min-width:0}
-.person-card .info .name{font-size:1rem;font-weight:600;color:#333;margin-bottom:2px}
-.person-card .info .lunar-date{font-size:.82rem;color:#C73B3B;font-weight:500;margin-bottom:1px}
+.person-card .info .name{font-size:1rem;font-weight:600;color:#1B2838;margin-bottom:2px}
+.person-card .info .lunar-date{font-size:.82rem;color:#C4944A;font-weight:500;margin-bottom:1px}
 .person-card .info .reminder{font-size:.75rem;color:#888}
 .person-card .actions{display:flex;gap:6px;flex-shrink:0}
 .person-card .btn-card-action{
@@ -204,7 +204,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
   min-width:44px;min-height:44px;border-radius:8px;transition:all .12s
 }
 .person-card .btn-card-action:hover{background:#f5f5f5}
-.person-card .btn-card-action.danger:hover{color:#C73B3B;background:#FFF0F0}
+.person-card .btn-card-action.danger:hover{color:#C0424A;background:#FFF0F0}
 
 /* ===== Mobile Add Button ===== */
 .mobile-add-btn{margin-bottom:16px;padding:clamp(14px,3vw,16px);font-size:1.05rem;gap:8px;border-radius:12px}
@@ -229,7 +229,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 .bottom-sheet.open{transform:translateY(0)}
 .bottom-sheet-handle{width:36px;height:4px;border-radius:2px;background:#ddd;margin:10px auto}
 .bottom-sheet-header{
-  font-size:1.1rem;font-weight:600;color:#333;text-align:center;padding:4px 0 16px
+  font-size:1.1rem;font-weight:600;color:#1B2838;text-align:center;padding:4px 0 16px
 }
 .bottom-sheet-body{padding-bottom:12px}
 .bottom-sheet-footer{
@@ -247,7 +247,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
   font-size:.95rem;font-family:inherit;background:#fff;transition:border-color .15s;min-height:44px;
   -webkit-appearance:none;appearance:none
 }
-.mobile-field input:focus,.mobile-field select:focus{border-color:#C73B3B;outline:none}
+.mobile-field input:focus,.mobile-field select:focus{border-color:#C4944A;outline:none}
 .mobile-field select{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 14px center;padding-right:36px
@@ -260,7 +260,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 .mobile-bottom-bar{
   position:sticky;bottom:0;z-index:100;margin-top:8px;
   padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));
-  background:linear-gradient(180deg,transparent,#FFF8F0 8px)
+  background:linear-gradient(180deg,transparent,#F5F2ED 8px)
 }
 .mobile-bottom-bar .btn-download{width:100%;justify-content:center;border-radius:12px;padding:16px;font-size:1.05rem}
 .mobile-bottom-bar .count-badge{
@@ -443,7 +443,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
       <button class="btn btn-primary" id="bsSave" data-i18n="btn_save">保存</button>
     </div>
     <div id="bsDeleteWrap" class="bottom-sheet-delete hidden">
-      <button class="btn btn-outline" id="bsDelete" style="color:#C73B3B;border-color:#e0b0b0" data-i18n="mobile_delete_person">删除此人</button>
+      <button class="btn btn-outline" id="bsDelete" style="color:#C0424A;border-color:rgba(192,66,74,.3)" data-i18n="mobile_delete_person">删除此人</button>
     </div>
   </div>
 </div>
@@ -460,7 +460,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
       <div class="card-title" data-i18n="guide_title" style="font-size:0.95rem">📖 导入日历指南</div>
       <p style="font-size:0.82rem;color:#666;margin-bottom:10px" data-i18n="guide_hint">下载 .ics 文件后，按你的设备选择导入方式：</p>
 
-      <div style="background:#FFF8F0;border:1px solid #E8A87C;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:0.82rem">
+      <div style="background:rgba(196,148,74,.08);border:1px solid rgba(196,148,74,.25);border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:0.82rem">
         <span data-i18n="guide_tip">💡 如果已经有「念念·农历生日」日历，更新时记得先右键删除旧日历再导入新文件。分多次导入同一个日历，Apple 日历会当成不同事件重复展示。</span>
       </div>
 
@@ -541,7 +541,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
     <!-- ======== Privacy ======== -->
     <section class="card" style="box-shadow:none;padding:0">
       <div class="privacy-box" style="font-size:0.82rem">
-        <strong style="color:#333" data-i18n="privacy_title">🔒 隐私承诺</strong>
+        <strong style="color:#1B2838" data-i18n="privacy_title">🔒 隐私承诺</strong>
         <div data-i18n="privacy_desc" style="margin-top:4px">此工具完全运行在你的浏览器中。</div>
         <ul style="margin-top:6px">
           <li data-i18n="privacy_check_1">数据永不离开你的设备</li>
@@ -2418,12 +2418,12 @@ function saveBottomSheet() {
   var calendar = document.getElementById('bsCalendar').value;
 
   if (!name) {
-    toast('\u8bf7\u8f93\u5165\u59d3\u540d');
+    toast('请输入姓名');
     document.getElementById('bsName').focus();
     return;
   }
   if (isNaN(month) || month < 1 || month > 12) {
-    toast('\u8bf7\u8f93\u5165\u6709\u6548\u6708\u4efd (1-12)');
+    toast('请输入有效月份 (1-12)');
     return;
   }
   // Validate day based on calendar type
