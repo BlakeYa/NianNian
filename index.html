@@ -2,13 +2,15 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#C73B3B">
-<meta name="description" content="念念(NianNian) - 把家人的农历生日装进你的日历，每年准时提醒。纯客户端工具，隐私安全。">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="念念">
+<meta name="description" content="念念(NianNian) - 把家人的农历生日装进你的日历，每年准时提醒。纯客户端工具，隐私安全。">
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C73B3B'/%3E%3Ccircle cx='50' cy='50' r='32' fill='white' opacity='0.95'/%3E%3Ccircle cx='62' cy='46' r='28' fill='%23C73B3B'/%3E%3Ccircle cx='30' cy='38' r='3' fill='white' opacity='0.8'/%3E%3Ccircle cx='68' cy='30' r='2' fill='white' opacity='0.7'/%3E%3Ccircle cx='38' cy='68' r='2.5' fill='white' opacity='0.7'/%3E%3C/svg%3E">
 <title>念念 · 农历生日助手</title>
 
@@ -18,33 +20,36 @@
 html{font-size:16px;-webkit-text-size-adjust:100%}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  background:#FFF8F0;color:#2D2D2D;line-height:1.6;min-height:100vh
+  background:#FFF8F0;color:#2D2D2D;line-height:1.6;min-height:100vh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)
 }
 a{color:#C73B3B;text-decoration:none}
 a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid #C73B3B;outline-offset:2px}
 
 /* ===== Layout ===== */
 .container{max-width:720px;margin:0 auto;padding:16px}
-@media(min-width:768px){.container{padding:32px 24px}}
+@media(min-width:768px){.container{padding:24px}}
+@media(min-width:1024px){.container{max-width:800px;padding:32px 24px}}
 
 /* ===== Header ===== */
-.header{text-align:center;padding:32px 0 24px}
-.header .logo{font-size:2rem;font-weight:700;color:#C73B3B;letter-spacing:2px}
-.header .logo-sub{font-size:0.9rem;color:#888;margin-top:2px}
-.header .tagline{font-size:0.95rem;color:#666;margin-top:8px}
+.header{text-align:center;padding:clamp(20px,5vw,32px) 0 clamp(16px,4vw,24px)}
+.header .logo{font-size:clamp(1.5rem,6vw,2rem);font-weight:700;color:#C73B3B;letter-spacing:2px}
+.header .logo-sub{font-size:clamp(0.8rem,3vw,0.9rem);color:#888;margin-top:2px}
+.header .tagline{font-size:clamp(0.85rem,3vw,0.95rem);color:#666;margin-top:8px}
 .privacy-badge{
   display:inline-block;margin-top:12px;padding:4px 14px;
   background:#E8F5E9;color:#2E7D32;border-radius:20px;
-  font-size:0.8rem;font-weight:500
+  font-size:clamp(0.75rem,2.5vw,0.8rem);font-weight:500
 }
 
 /* ===== Section Card ===== */
 .card{
-  background:#fff;border-radius:12px;padding:20px;
-  margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)
+  background:#fff;border-radius:12px;padding:clamp(14px,3vw,20px);
+  margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.07)
 }
 .card-title{
-  font-size:1.05rem;font-weight:600;color:#333;
+  font-size:clamp(0.95rem,3vw,1.05rem);font-weight:600;color:#333;
   margin-bottom:12px;display:flex;align-items:center;gap:8px
 }
 .card-title .step-num{
@@ -56,9 +61,9 @@ a:hover{text-decoration:underline}
 /* ===== Buttons ===== */
 .btn{
   display:inline-flex;align-items:center;gap:6px;
-  padding:10px 20px;border-radius:8px;border:none;
-  font-size:0.9rem;font-weight:500;cursor:pointer;
-  transition:all 0.15s;white-space:nowrap;user-select:none
+  padding:clamp(10px,2vw,12px) clamp(16px,3vw,20px);border-radius:8px;border:none;
+  font-size:clamp(0.85rem,2.5vw,0.9rem);font-weight:500;cursor:pointer;
+  transition:all 0.12s;white-space:nowrap;user-select:none;min-height:44px
 }
 .btn:active{transform:scale(0.97)}
 .btn-primary{background:#C73B3B;color:#fff}
@@ -68,51 +73,59 @@ a:hover{text-decoration:underline}
 .btn-secondary:hover{background:#e5e5e5}
 .btn-outline{background:transparent;color:#C73B3B;border:1.5px solid #C73B3B}
 .btn-outline:hover{background:#FFF0F0}
-.btn-sm{padding:6px 14px;font-size:0.82rem}
+.btn-sm{padding:clamp(6px,1.5vw,8px) clamp(12px,2vw,14px);font-size:clamp(0.8rem,2.5vw,0.82rem);min-height:44px}
 .btn-block{width:100%;justify-content:center}
-.btn-download{background:#2E7D32;color:#fff;padding:14px 28px;font-size:1.05rem}
+.btn-download{background:#2E7D32;color:#fff;padding:clamp(12px,2.5vw,14px) clamp(24px,4vw,28px);font-size:clamp(0.95rem,3vw,1.05rem)}
 .btn-download:hover{background:#256829}
 
 /* ===== Upload Zone ===== */
 .upload-zone{
-  border:2px dashed #ddd;border-radius:10px;padding:28px 16px;
-  text-align:center;cursor:pointer;transition:all 0.15s;margin-bottom:12px
+  border:2px dashed #ddd;border-radius:10px;padding:clamp(20px,4vw,28px) 16px;
+  text-align:center;cursor:pointer;transition:all 0.12s;margin-bottom:12px
 }
 .upload-zone:hover,.upload-zone.dragover{border-color:#C73B3B;background:#FFF5F5}
-.upload-zone .icon{font-size:1.8rem;margin-bottom:6px}
-.upload-zone .text{font-size:0.9rem;color:#888}
-.upload-zone .hint{font-size:0.78rem;color:#aaa;margin-top:4px}
+.upload-zone .icon{font-size:clamp(1.4rem,5vw,1.8rem);margin-bottom:6px}
+.upload-zone .text{font-size:clamp(0.82rem,2.5vw,0.9rem);color:#888}
+.upload-zone .hint{font-size:clamp(0.72rem,2vw,0.78rem);color:#aaa;margin-top:4px}
 
 /* ===== Table ===== */
-.table-wrap{overflow-x:auto;margin-top:12px}
-table{width:100%;border-collapse:collapse;font-size:0.85rem;min-width:600px}
-th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #eee;white-space:nowrap}
-th{font-weight:600;color:#666;font-size:0.8rem;background:#fafafa;position:sticky;top:0}
+.table-wrap{overflow-x:auto;margin-top:12px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:clamp(0.78rem,2.5vw,0.85rem);min-width:480px}
+th,td{
+  padding:clamp(6px,1.5vw,8px) clamp(4px,1vw,6px);text-align:left;
+  border-bottom:1px solid #eee;white-space:nowrap
+}
+th{
+  font-weight:600;color:#666;font-size:clamp(0.75rem,2.5vw,0.8rem);
+  background:#fafafa;position:sticky;top:0
+}
 td input,td select{
-  width:100%;padding:5px 6px;border:1px solid #ddd;border-radius:4px;
-  font-size:0.85rem;background:#fff;font-family:inherit
+  width:100%;padding:clamp(5px,1vw,6px);border:1px solid #ddd;border-radius:4px;
+  font-size:clamp(0.78rem,2.5vw,0.85rem);background:#fff;font-family:inherit;min-height:44px
 }
 td input:focus,td select:focus{outline:none;border-color:#C73B3B}
 td .btn-del{
-  background:none;border:none;color:#ccc;cursor:pointer;font-size:1.1rem;
-  padding:2px 6px;border-radius:4px
+  background:none;border:none;color:#ccc;cursor:pointer;font-size:clamp(1rem,3vw,1.1rem);
+  padding:2px 6px;border-radius:4px;min-height:44px;min-width:44px
 }
 td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 
 /* ===== Year Selector ===== */
 .year-selector{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .year-btn{
-  padding:8px 18px;border:1.5px solid #ddd;border-radius:8px;
-  background:#fff;cursor:pointer;font-size:0.9rem;font-weight:500;transition:all 0.12s
+  padding:clamp(8px,2vw,10px) clamp(14px,3vw,18px);border:1.5px solid #ddd;border-radius:8px;
+  background:#fff;cursor:pointer;font-size:clamp(0.85rem,2.5vw,0.9rem);font-weight:500;
+  transition:all 0.12s;min-height:44px;flex:1 1 auto
 }
 .year-btn:hover{border-color:#C73B3B;color:#C73B3B}
 .year-btn.active{border-color:#C73B3B;background:#C73B3B;color:#fff}
 
 /* ===== Import Guide ===== */
 .guide-grid{display:grid;grid-template-columns:1fr;gap:12px}
-@media(min-width:600px){.guide-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(min-width:480px){.guide-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:768px){.guide-grid{grid-template-columns:1fr 1fr 1fr}}
 .guide-card{
-  padding:16px;background:#fafafa;border-radius:10px;font-size:0.88rem
+  padding:16px;background:#fafafa;border-radius:10px;font-size:clamp(0.82rem,2.5vw,0.88rem)
 }
 .guide-card .device-icon{font-size:1.5rem;margin-bottom:4px}
 .guide-card h4{font-size:0.92rem;margin-bottom:6px;color:#333}
@@ -122,22 +135,15 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 /* ===== Privacy ===== */
 .privacy-box{
   background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;
-  padding:16px;font-size:0.85rem;color:#555;line-height:1.7
+  padding:16px;font-size:clamp(0.8rem,2.5vw,0.85rem);color:#555;line-height:1.7
 }
 .privacy-box .lock{font-size:1.2rem}
 .privacy-box ul{list-style:none;padding:0;margin-top:8px}
 .privacy-box ul li{padding:3px 0;padding-left:20px;position:relative}
-.privacy-box ul li::before{content:"✓";position:absolute;left:0;color:#2E7D32;font-weight:700}
-
-/* ===== Count ===== */
-.count-badge{
-  display:inline-block;margin-left:8px;
-  background:#FFF0F0;color:#C73B3B;padding:2px 10px;border-radius:12px;
-  font-size:0.78rem;font-weight:500
-}
+.privacy-box ul li::before{content:"\2713";position:absolute;left:0;color:#2E7D32;font-weight:700}
 
 /* ===== Footer ===== */
-.footer{text-align:center;padding:24px 0 40px;font-size:0.8rem;color:#aaa}
+.footer{text-align:center;padding:24px 0 40px;font-size:clamp(0.75rem,2.5vw,0.8rem);color:#aaa}
 
 /* ===== Toast ===== */
 .toast{
@@ -149,17 +155,27 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 .toast.show{opacity:1}
 
 /* ===== Empty state ===== */
-.empty-state{text-align:center;padding:24px 0;color:#aaa;font-size:0.9rem}
-.empty-state .icon{font-size:2rem;margin-bottom:8px}
+.empty-state{text-align:center;padding:24px 0;color:#aaa;font-size:clamp(0.82rem,2.5vw,0.9rem)}
+.empty-state .icon{font-size:clamp(1.5rem,5vw,2rem);margin-bottom:8px}
 
 /* ===== Hide helper ===== */
 .hidden{display:none!important}
 
 /* ===== Generate Result ===== */
 .gen-result{text-align:center;padding:16px 0}
-.gen-result .success-icon{font-size:2.5rem;margin-bottom:8px}
-.gen-result .msg{font-size:0.95rem;color:#333;margin-bottom:4px}
-.gen-result .detail{font-size:0.82rem;color:#888}
+.gen-result .success-icon{font-size:clamp(2rem,6vw,2.5rem);margin-bottom:8px}
+.gen-result .msg{font-size:clamp(0.88rem,3vw,0.95rem);color:#333;margin-bottom:4px}
+.gen-result .detail{font-size:clamp(0.78rem,2.5vw,0.82rem);color:#888}
+
+/* ===== Mobile Overrides (< 480px) ===== */
+@media(max-width:479px){
+  .btn{width:100%;justify-content:center}
+  .btn-sm{padding:10px 14px}
+  .col-note,.col-mode{display:none}
+  .year-btn{flex:1 1 calc(50% - 4px)}
+  table{min-width:320px}
+  .container{padding:12px}
+}
 </style>
 </head>
 <body>
@@ -168,28 +184,33 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 
 <!-- ======== Header ======== -->
 <header class="header">
-  <div class="logo">🏮 念念</div>
-  <div class="logo-sub">NianNian</div>
-  <div class="tagline">把家人的农历生日装进你的日历</div>
-  <div class="privacy-badge">🔒 纯客户端 · 数据不上传</div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div class="logo">🏮 念念</div>
+      <div class="logo-sub">NianNian</div>
+    </div>
+    <button id="langToggle" class="btn btn-sm btn-outline" style="margin-top:4px" data-i18n="lang_btn">EN</button>
+  </div>
+  <div class="tagline" data-i18n="tagline">把家人的农历生日装进你的日历</div>
+  <div class="privacy-badge" data-i18n="privacy_badge">🔒 纯客户端 · 数据不上传</div>
 </header>
 
 <!-- ======== Step 1: Data ======== -->
 <section class="card">
-  <div class="card-title"><span class="step-num">1</span> 添加家人生日</div>
+  <div class="card-title"><span class="step-num">1</span><span data-i18n="step1_title"> 添加家人生日</span></div>
 
   
   <div class="upload-zone" id="uploadZone">
     <div class="icon">📂</div>
-    <div class="text">上传 CSV 文件，或拖拽到此处</div>
-    <div class="hint">支持 .csv 格式，也可在下方表格直接填写</div>
+    <div class="text" data-i18n="upload_text">上传 CSV 文件，或拖拽到此处</div>
+    <div class="hint" data-i18n="upload_hint">支持 .csv 格式，也可在下方表格直接填写</div>
   </div>
   <input type="file" id="fileInput" accept=".csv" style="display:none">
 
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-    <button class="btn btn-outline btn-sm" id="downloadSampleBtn">📄 下载样例 CSV</button>
-    <button class="btn btn-secondary btn-sm" id="addRowBtn">＋ 添加一行</button>
-    <button class="btn btn-secondary btn-sm" id="clearAllBtn">🗑️ 清空</button>
+    <button class="btn btn-outline btn-sm" id="downloadSampleBtn" data-i18n="btn_sample">📄 下载样例 CSV</button>
+    <button class="btn btn-secondary btn-sm" id="addRowBtn" data-i18n="btn_add">＋ 添加一行</button>
+    <button class="btn btn-secondary btn-sm" id="clearAllBtn" data-i18n="btn_clear">🗑️ 清空</button>
   </div>
 
   <!-- Table -->
@@ -197,13 +218,14 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
     <table>
       <thead>
         <tr>
-          <th style="width:22%">姓名</th>
-          <th style="width:12%">农历月</th>
-          <th style="width:12%">农历日</th>
-          <th style="width:18%">备注</th>
-          <th style="width:14%">提前(天)</th>
-          <th style="width:16%">提醒方式</th>
-          <th style="width:6%"></th>
+          <th style="width:22%" data-i18n="th_name">姓名</th>
+          <th style="width:12%" data-i18n="th_month">农历月</th>
+          <th style="width:12%" data-i18n="th_day">农历日</th>
+          <th style="width:18%" class="col-note" data-i18n="th_note">备注</th>
+          <th style="width:14%" data-i18n="th_days">提前(天)</th>
+          <th style="width:16%" class="col-mode" data-i18n="th_mode">提醒方式</th>
+          <th style="width:8%" data-i18n="th_group">分组</th>
+    <th style="width:6%"></th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -211,26 +233,26 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
   </div>
   <div class="empty-state" id="emptyState">
     <div class="icon">📋</div>
-    <div>还没有添加生日数据<br>上传 CSV 或点击「添加一行」开始</div>
+    <div data-i18n="empty_text">还没有添加生日数据<br data-i18n="empty_br">上传 CSV 或点击「添加一行」开始</div>
   </div>
 </section>
 
 <!-- ======== Step 2: Settings ======== -->
 <section class="card">
-  <div class="card-title"><span class="step-num">2</span> 设置</div>
-  <div style="font-size:0.85rem;color:#555;margin-bottom:6px">生成未来多少年的日历：</div>
+  <div class="card-title"><span class="step-num">2</span><span data-i18n="step2_title"> 设置</span></div>
+  <div style="font-size:0.85rem;color:#555;margin-bottom:6px"><span data-i18n="step2_hint">生成未来多少年的日历：</span></div>
   <div class="year-selector" id="yearSelector">
-    <button class="year-btn" data-years="10">10 年</button>
-    <button class="year-btn" data-years="30">30 年</button>
-    <button class="year-btn active" data-years="60">60 年</button>
-    <button class="year-btn" data-years="100">100 年</button>
+    <button class="year-btn" data-years="10"><span data-i18n="years_10">10</span><span data-i18n="years_label">年</span></button>
+    <button class="year-btn" data-years="30"><span data-i18n="years_30">30</span><span data-i18n="years_label">年</span></button>
+    <button class="year-btn active" data-years="60"><span data-i18n="years_60">60</span><span data-i18n="years_label">年</span></button>
+    <button class="year-btn" data-years="100"><span data-i18n="years_100">100</span><span data-i18n="years_label">年</span></button>
   </div>
 </section>
 
 <!-- ======== Step 3: Generate ======== -->
 <section class="card">
-  <div class="card-title"><span class="step-num">3</span> 生成并下载</div>
-  <button class="btn btn-download btn-block" id="generateBtn">🎯 生成 ICS 并下载</button>
+  <div class="card-title"><span class="step-num">3</span><span data-i18n="step3_title"> 生成并下载</span></div>
+  <button class="btn btn-download btn-block" id="generateBtn" data-i18n="btn_generate">🎯 生成 ICS 并下载</button>
   <div id="genResult" class="gen-result hidden">
     <div class="success-icon">✅</div>
     <div class="msg" id="genMsg"></div>
@@ -240,45 +262,42 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 
 <!-- ======== Import Guide ======== -->
 <section class="card">
-  <div class="card-title">📖 导入日历指南</div>
-  <p style="font-size:0.85rem;color:#666;margin-bottom:12px">
-    下载 .ics 文件后，按你的设备选择导入方式：
-  </p>
+  <div class="card-title" data-i18n="guide_title">📖 导入日历指南</div>
+  <p style="font-size:0.85rem;color:#666;margin-bottom:12px" data-i18n="guide_hint">下载 .ics 文件后，按你的设备选择导入方式：</p>
 
   <div style="background:#FFF8F0;border:1px solid #E8A87C;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:0.85rem">
-    💡 <strong>小提示</strong>：如果已经有「念念·农历生日」日历，更新时记得先右键删除旧日历再导入新文件。<br>
-    分多次导入同一个日历，Apple 日历会当成不同事件重复展示。
+    <span data-i18n="guide_tip">💡 如果已经有「念念·农历生日」日历，更新时记得先右键删除旧日历再导入新文件。分多次导入同一个日历，Apple 日历会当成不同事件重复展示。</span>
   </div>
 
   <div class="guide-grid">
     <div class="guide-card">
       <div class="device-icon">💻</div>
-      <h4>Mac</h4>
+      <h4 data-i18n="guide_mac">Mac</h4>
       <ol>
-        <li>双击下载的 <code>.ics</code> 文件</li>
-        <li>日历 App 自动打开</li>
-        <li><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
-        <li>点击「好」完成导入</li>
+        <li data-i18n="guide_mac_1">双击下载的 <code>.ics</code> 文件</li>
+        <li data-i18n="guide_mac_2">日历 App 自动打开</li>
+        <li data-i18n="guide_mac_3"><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
+        <li data-i18n="guide_mac_4">点击「好」完成导入</li>
       </ol>
     </div>
     <div class="guide-card">
       <div class="device-icon">📱</div>
-      <h4>iPhone / iPad</h4>
+      <h4 data-i18n="guide_ios">iPhone / iPad</h4>
       <ol>
-        <li>将 <code>.ics</code> 文件发到微信或邮件</li>
-        <li>点击文件 → 选择「用日历打开」</li>
-        <li><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
-        <li>点击「完成」→ iCloud 自动同步</li>
+        <li data-i18n="guide_ios_1">将 <code>.ics</code> 文件发到微信或邮件</li>
+        <li data-i18n="guide_ios_2">点击文件 → 选择「用日历打开」</li>
+        <li data-i18n="guide_ios_3"><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
+        <li data-i18n="guide_ios_4">点击「完成」→ iCloud 自动同步</li>
       </ol>
     </div>
     <div class="guide-card">
       <div class="device-icon">🔄</div>
-      <h4>如何更新 / 如何删除</h4>
+      <h4 data-i18n="guide_update_title">如何更新 / 如何删除</h4>
       <ol>
-        <li>在网页修改后重新生成并下载 ICS</li>
-        <li>日历 App 左侧栏<strong>右键删除</strong>旧的「念念·农历生日」日历</li>
-        <li>双击新 ICS 重新导入到同名日历</li>
-        <li>iCloud 自动同步所有设备</li>
+        <li data-i18n="guide_upd_1">在网页修改后重新生成并下载 ICS</li>
+        <li data-i18n="guide_upd_2">日历 App 左侧栏<strong>右键删除</strong>旧的「念念·农历生日」日历</li>
+        <li data-i18n="guide_upd_3">双击新 ICS 重新导入到同名日历</li>
+        <li data-i18n="guide_upd_4">iCloud 自动同步所有设备</li>
       </ol>
       <div style="margin-top:6px;font-size:0.8rem;color:#888">
         💡 删除日历只移除生日事件，不影响其他日程。先删旧日历再导新文件，不会产生重复事件。
@@ -291,10 +310,10 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 
 <!-- ======== FAQ ======== -->
 <section class="card">
-  <div class="card-title">❓ 常见问题</div>
+  <div class="card-title" data-i18n="faq_title">❓ 常见问题</div>
   <div style="font-size:0.88rem">
     <details style="margin-bottom:10px;padding:10px 12px;background:#fafafa;border-radius:8px">
-      <summary style="cursor:pointer;font-weight:500">🤦 导入到错误的日历了怎么办？</summary>
+      <summary style="cursor:pointer;font-weight:500" data-i18n="faq_wrong_cal">🤦 导入到错误的日历了怎么办？</summary>
       <div style="margin-top:8px;color:#555;line-height:1.7">
         <p><strong>情况 A</strong>：导入到了独立的「念念·农历生日」日历 → <span style="color:#2E7D32">直接删除该日历即可</span>，一秒清空。</p>
         <p><strong>情况 B</strong>：导入到了已有的日历（如「个人」）→ 两种处理方式：</p>
@@ -307,7 +326,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
     </details>
 
     <details style="margin-bottom:10px;padding:10px 12px;background:#fafafa;border-radius:8px">
-      <summary style="cursor:pointer;font-weight:500">🔄 新增了家人 / 改了年份，怎么更新？</summary>
+      <summary style="cursor:pointer;font-weight:500" data-i18n="faq_update">🔄 新增了家人 / 改了年份，怎么更新？</summary>
       <div style="margin-top:8px;color:#555;line-height:1.7">
         <p>步骤：</p>
         <ol style="padding-left:18px">
@@ -323,7 +342,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
     </details>
 
     <details style="margin-bottom:10px;padding:10px 12px;background:#fafafa;border-radius:8px">
-      <summary style="cursor:pointer;font-weight:500">🔒 我的数据会上传到服务器吗？</summary>
+      <summary style="cursor:pointer;font-weight:500" data-i18n="faq_privacy">🔒 我的数据会上传到服务器吗？</summary>
       <div style="margin-top:8px;color:#555;line-height:1.7">
         <p><strong>绝对不会。</strong>念念是纯客户端工具：</p>
         <ul style="padding-left:18px">
@@ -337,7 +356,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
     </details>
 
     <details style="margin-bottom:10px;padding:10px 12px;background:#fafafa;border-radius:8px">
-      <summary style="cursor:pointer;font-weight:500">📱 支持 Android 手机吗？</summary>
+      <summary style="cursor:pointer;font-weight:500" data-i18n="faq_android">📱 支持 Android 手机吗？</summary>
       <div style="margin-top:8px;color:#555;line-height:1.7">
         <p>念念生成的 <code>.ics</code> 文件是<strong>标准日历格式</strong>，支持任何平台的日历 App。</p>
         <p>Android 上你可以：</p>
@@ -350,7 +369,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
     </details>
 
     <details style="padding:10px 12px;background:#fafafa;border-radius:8px">
-      <summary style="cursor:pointer;font-weight:500">📄 支持 Excel (.xlsx) 格式吗？</summary>
+      <summary style="cursor:pointer;font-weight:500" data-i18n="faq_excel">📄 支持 Excel (.xlsx) 格式吗？</summary>
       <div style="margin-top:8px;color:#555;line-height:1.7">
         当前支持 <strong>.csv</strong> 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。
       </div>
@@ -360,9 +379,9 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 
 <!-- ======== Privacy ======== -->
 <section class="card">
-  <div class="card-title">🔒 隐私承诺</div>
+  <div class="card-title" data-i18n="privacy_title">🔒 隐私承诺</div>
   <div class="privacy-box">
-    <div class="lock">此工具完全运行在你的浏览器中。</div>
+    <div class="lock" data-i18n="privacy_desc">此工具完全运行在你的浏览器中。</div>
     <ul>
       <li>你的数据永远不会离开你的设备</li>
       <li>没有服务器、没有数据库、没有 API</li>
@@ -1239,6 +1258,186 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 
 // ---- solarlunar shorthand ----
 const sl = (window.solarlunar && window.solarlunar.default) || {};
+// ---- i18n Bilingual System ----
+let currentLang = localStorage.getItem('niannian_lang') || 'zh';
+const i18n = {
+  zh: {
+    lang_btn: 'EN',
+    tagline: '把家人的农历生日装进你的日历',
+    privacy_badge: '🔒 纯客户端 · 数据不上传',
+    step1_title: ' 添加家人生日',
+    upload_text: '上传 CSV 文件，或拖拽到此处',
+    upload_hint: '支持 .csv 格式，也可在下方表格直接填写',
+    btn_sample: '📄 下载样例 CSV',
+    btn_add: '＋ 添加一行',
+    btn_clear: '🗑️ 清空',
+    th_name: '姓名', th_month: '农历月', th_day: '农历日', th_note: '备注', th_days: '提前(天)', th_mode: '提醒方式',
+    grp_family: '家人',
+    grp_friend: '朋友',
+    grp_colleague: '同事',
+    th_group: '分组',
+    empty_text: '还没有添加生日数据\n上传 CSV 或点击「添加一行」开始',
+    step2_title: ' 设置', step2_hint: '生成未来多少年的日历：',
+    step3_title: ' 生成并下载', btn_generate: '🎯 生成 ICS 并下载',
+    guide_title: '📖 导入日历指南', guide_hint: '下载 .ics 文件后，按你的设备选择导入方式：',
+    guide_tip: '💡 如果已经有「念念·农历生日」日历，更新时记得先右键删除旧日历再导入新文件。分多次导入同一个日历，Apple 日历会当成不同事件重复展示。',
+    guide_mac: 'Mac', guide_ios: 'iPhone / iPad', guide_update_title: '如何更新 / 如何删除',
+    faq_title: '❓ 常见问题',
+    privacy_title: '🔒 隐私承诺', privacy_desc: '此工具完全运行在你的浏览器中。',
+    years_label: '年',
+    // Dynamic keys (used in JS)
+    toast_no_data: '请先添加家人生日数据',
+    toast_lib_err: '农历转换库加载失败，请重新打开页面',
+    toast_empty: '没有生成任何事件，请检查数据',
+    toast_downloaded: '下载成功！请导入日历',
+    toast_cleared: '已清空',
+    toast_csv_empty: 'CSV 文件内容为空',
+    toast_csv_format: 'CSV 格式错误：缺少 name, lunarMonth, lunarDay 列',
+    csv_imported: '成功导入',
+    csv_skipped: '位家人，已跳过',
+    csv_dup_all: 'CSV 中所有姓名都已存在，无需重复导入',
+    csv_no_data: '没有找到有效数据',
+    confirm_clear: '确定要清空所有生日数据吗？',
+    gen_success: '已生成',
+    gen_people: '位家人共',
+    gen_events: '个事件',
+    gen_coverage: '覆盖',
+    gen_years: '年 · 文件已自动下载',
+    // Guide steps
+    guide_mac_1: '双击下载的 .ics 文件',
+    guide_mac_2: '日历 App 自动打开',
+    guide_mac_3: '选择「新建日历」命名为「念念·农历生日」',
+    guide_mac_4: '点击「好」完成导入',
+    guide_ios_1: '将 .ics 文件发到微信或邮件',
+    guide_ios_2: '点击文件 → 选择「用日历打开」',
+    guide_ios_3: '选择「新建日历」命名为「念念·农历生日」',
+    guide_ios_4: '点击「完成」→ iCloud 自动同步',
+    guide_upd_1: '在网页修改后重新生成并下载 ICS',
+    guide_upd_2: '日历 App 左侧栏右键删除旧的「念念·农历生日」日历',
+    guide_upd_3: '双击新 ICS 重新导入到同名日历',
+    guide_upd_4: 'iCloud 自动同步所有设备',
+    // FAQ
+    faq_wrong_cal: '🤦 导入到错误的日历了怎么办？',
+    faq_wrong_a: '情况 A：导入到了独立的「念念·农历生日」日历 → 直接删除该日历即可，一秒清空。',
+    faq_wrong_b: '情况 B：导入到了已有的日历（如「个人」）→ 两种处理方式：',
+    faq_update: '🔄 新增了家人 / 改了年份，怎么更新？',
+    faq_update_p: '步骤：',
+    faq_privacy: '🔒 我的数据会上传到服务器吗？',
+    faq_privacy_p: '绝对不会。念念是纯客户端工具：',
+    faq_android: '📱 支持 Android 手机吗？',
+    faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
+    faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
+    // Placeholders for inputs
+    ph_name: '姓名', ph_month: '月', ph_day: '日', ph_note: '可选', ph_days: '天',
+    // Table rendering option labels
+    opt_once: '一次', opt_daily: '每天', opt_everyOther: '隔天',
+  },
+  en: {
+    lang_btn: '中',
+    tagline: 'Lunar birthdays in your calendar',
+    privacy_badge: '🔒 100% Client-side & Private',
+    step1_title: ' Add Family Birthdays',
+    upload_text: 'Upload a CSV file, or drag & drop here',
+    upload_hint: 'Supports .csv format, or edit in the table below',
+    btn_sample: '📄 Download Sample CSV',
+    btn_add: '＋ Add Row',
+    btn_clear: '🗑️ Clear All',
+    th_name: 'Name', th_month: 'Month', th_day: 'Day', th_note: 'Note', th_days: 'Days', th_mode: 'Mode',
+    grp_family: 'Family',
+    grp_friend: 'Friend',
+    grp_colleague: 'Colleague',
+    th_group: 'Group',
+    empty_text: 'No birthdays yet\nUpload CSV or click "Add Row" to start',
+    step2_title: ' Settings', step2_hint: 'Generate how many years:',
+    step3_title: ' Generate & Download', btn_generate: '🎯 Generate ICS & Download',
+    guide_title: '📖 Import Guide', guide_hint: 'Choose your device below:',
+    guide_tip: '💡 If you already have a "NianNian Birthdays" calendar, delete the old one before importing a new file. Importing multiple times without deleting creates duplicate events.',
+    guide_mac: 'Mac', guide_ios: 'iPhone / iPad', guide_update_title: 'How to Update / Delete',
+    faq_title: '❓ FAQ',
+    privacy_title: '🔒 Privacy', privacy_desc: 'This tool runs entirely in your browser.',
+    years_label: ' yrs',
+    toast_no_data: 'Please add birthday data first',
+    toast_lib_err: 'Calendar library failed to load. Please refresh.',
+    toast_empty: 'No events generated. Please check your data.',
+    toast_downloaded: 'Downloaded! Import into your calendar.',
+    toast_cleared: 'Cleared',
+    toast_csv_empty: 'CSV file is empty',
+    toast_csv_format: 'CSV format error: missing name, lunarMonth, lunarDay columns',
+    csv_imported: 'Imported',
+    csv_skipped: 'people, skipped',
+    csv_dup_all: 'All names already exist in your list',
+    csv_no_data: 'No valid data found',
+    confirm_clear: 'Clear all birthday data?',
+    gen_success: 'Generated',
+    gen_people: 'people',
+    gen_events: 'events',
+    gen_coverage: 'Covering',
+    gen_years: 'years',
+    guide_mac_1: 'Double-click the .ics file',
+    guide_mac_2: 'Calendar.app opens automatically',
+    guide_mac_3: 'Create a new calendar named "NianNian Birthdays"',
+    guide_mac_4: 'Click OK to import',
+    guide_ios_1: 'Send .ics file via WeChat or email',
+    guide_ios_2: 'Tap the file → "Open with Calendar"',
+    guide_ios_3: 'Choose "New Calendar" named "NianNian Birthdays"',
+    guide_ios_4: 'Tap "Done" → iCloud syncs automatically',
+    guide_upd_1: 'Modify the list on the web page → regenerate ICS',
+    guide_upd_2: 'In Calendar, right-click delete the old "NianNian Birthdays" calendar',
+    guide_upd_3: 'Double-click the new ICS to re-import',
+    guide_upd_4: 'iCloud syncs to all devices',
+    faq_wrong_cal: '🤦 Imported into the wrong calendar?',
+    faq_wrong_a: 'Case A: Imported into "NianNian Birthdays" calendar → Just delete that calendar.',
+    faq_wrong_b: 'Case B: Imported into an existing calendar → Two options:',
+    faq_update: '🔄 How to update birthdays?',
+    faq_update_p: 'Steps:',
+    faq_privacy: '🔒 Does my data get uploaded?',
+    faq_privacy_p: 'Absolutely not. NianNian is a client-only tool:',
+    faq_android: '📱 Android support?',
+    faq_excel: '📄 Excel (.xlsx) support?',
+    faq_excel_p: 'Currently supports .csv format. You can open it in Excel / Numbers / WPS / Google Sheets and save as CSV.',
+    ph_name: 'Name', ph_month: 'Mth', ph_day: 'Day', ph_note: 'Optional', ph_days: 'Days',
+    opt_once: 'Once', opt_daily: 'Daily', opt_everyOther: 'Every 2d',
+  }
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('niannian_lang', lang);
+  // Update static elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (i18n[lang] && i18n[lang][key] !== undefined) {
+      el.textContent = i18n[lang][key];
+    }
+  });
+  // Update inputs with data-i18n-placeholder
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (i18n[lang] && i18n[lang][key] !== undefined) {
+      el.placeholder = i18n[lang][key];
+    }
+  });
+  // Update lang toggle button
+  const toggle = document.getElementById('langToggle');
+  if (toggle) toggle.textContent = i18n[lang].lang_btn;
+  // Re-render table to update translated text in dynamically generated rows
+  renderTable();
+}
+
+
+function __(key) {
+  if (i18n[currentLang] && i18n[currentLang][key] !== undefined) {
+    return i18n[currentLang][key];
+  }
+  return key;
+}
+
+// Apply initial language
+document.addEventListener('DOMContentLoaded', function() {
+  setLang(currentLang);
+});
+
+
 
 // ---- State ----
 let people = [];
@@ -1277,6 +1476,22 @@ function sanitizeName(s) {
 }
 
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+// Chinese numeral to Arabic number (e.g. "八月" → 8, "廿三" → 23)
+function chineseToNumber(s) {
+  if (!s) return NaN;
+  s = String(s).trim();
+  // Already a number
+  if (/^\d+$/.test(s)) return parseInt(s);
+  const map = { '正':1,'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10,'十一':11,'十二':12,'廿':20,'三十':30,'廿一':21,'廿二':22,'廿三':23,'廿四':24,'廿五':25,'廿六':26,'廿七':27,'廿八':28,'廿九':29,'三十':30,'腊':12 };
+  // Strip "月" and "日" suffixes
+  s = s.replace(/[月日]/g, '');
+  if (map[s] !== undefined) return map[s];
+  // Handle 十月X, 十一月X, 十二月X
+  if (s.startsWith('十')) return 10 + (map[s[1]] || 0);
+  if (s.startsWith('二十')) return 20 + (map[s[2]] || 0);
+  return parseInt(s) || NaN;
+}
 
 function toast(msg, duration) {
   toastEl.textContent = msg;
@@ -1327,7 +1542,7 @@ function generateTriggers(daysBefore, mode) {
 // ---- ICS Generation ----
 function generateICS() {
   if (people.length === 0) {
-    toast('请先添加家人生日数据');
+    toast( __('toast_no_data'));
     return null;
   }
 
@@ -1382,7 +1597,7 @@ function generateICS() {
   }
 
   if (totalEvents === 0) {
-    toast('没有生成任何事件，请检查数据');
+    toast( __('toast_empty'));
     return null;
   }
 
@@ -1430,15 +1645,20 @@ function renderTable() {
   for (let i = 0; i < people.length; i++) {
     const p = people[i];
     html += '<tr>' +
-      '<td><input type="text" value="' + escHtml(p.name || '') + '" data-idx="' + i + '" data-field="name" class="cell-edit" placeholder="姓名"></td>' +
-      '<td><input type="number" min="1" max="12" value="' + (p.lunarMonth || '') + '" data-idx="' + i + '" data-field="lunarMonth" class="cell-edit" placeholder="月"></td>' +
-      '<td><input type="number" min="1" max="30" value="' + (p.lunarDay || '') + '" data-idx="' + i + '" data-field="lunarDay" class="cell-edit" placeholder="日"></td>' +
-      '<td><input type="text" value="' + escHtml(p.note || '') + '" data-idx="' + i + '" data-field="note" class="cell-edit" placeholder="可选"></td>' +
+      '<td><input type="text" value="' + escHtml(p.name || '') + '" data-idx="' + i + '" data-field="name" class="cell-edit" placeholder="姓名" data-i18n-placeholder="ph_name"></td>' +
+      '<td><input type="number" min="1" max="12" value="' + (p.lunarMonth || '') + '" data-idx="' + i + '" data-field="lunarMonth" class="cell-edit" placeholder="月" data-i18n-placeholder="ph_month"></td>' +
+      '<td><input type="number" min="1" max="30" value="' + (p.lunarDay || '') + '" data-idx="' + i + '" data-field="lunarDay" class="cell-edit" placeholder="日" data-i18n-placeholder="ph_day"></td>' +
+      '<td class="col-note"><input type="text" value="' + escHtml(p.note || '') + '" data-idx="' + i + '" data-field="note" class="cell-edit" placeholder="可选" data-i18n-placeholder="ph_note"></td>' +
       '<td><input type="number" min="0" max="30" value="' + (p.daysBefore || 1) + '" data-idx="' + i + '" data-field="daysBefore" class="cell-edit" placeholder="天"></td>' +
-      '<td><select data-idx="' + i + '" data-field="mode" class="cell-edit">' +
+      '<td class="col-mode"><select data-idx="' + i + '" data-field="mode" class="cell-edit">' +
         '<option value="once"' + (p.mode === 'once' ? ' selected' : '') + '>一次</option>' +
         '<option value="daily"' + (p.mode === 'daily' ? ' selected' : '') + '>每天</option>' +
         '<option value="everyOtherDay"' + (p.mode === 'everyOtherDay' ? ' selected' : '') + '>隔天</option>' +
+      '</select></td>' +
+      '<td><select data-idx="' + i + '" data-field="group" class="cell-edit">' +
+        '<option value="family"' + (p.group === 'family' ? ' selected' : '') + '>' + __('grp_family') + '</option>' +
+        '<option value="friend"' + (p.group === 'friend' ? ' selected' : '') + '>' + __('grp_friend') + '</option>' +
+        '<option value="colleague"' + (p.group === 'colleague' ? ' selected' : '') + '>' + __('grp_colleague') + '</option>' +
       '</select></td>' +
       '<td><button class="btn-del" data-idx="' + i + '" title="删除">✕</button></td>' +
       '</tr>';
@@ -1466,8 +1686,8 @@ tableBody.addEventListener('input', function(e) {
   if (isNaN(idx) || idx < 0 || idx >= people.length) return;
 
   let val = target.value;
-  if (field === 'lunarMonth') { val = Math.max(1, Math.min(12, parseInt(val) || '')); }
-  if (field === 'lunarDay') { val = Math.max(1, Math.min(30, parseInt(val) || '')); }
+      if (field === 'lunarMonth') { val = Math.max(1, Math.min(12, chineseToNumber(val) || parseInt(val) || '')); }
+      if (field === 'lunarDay') { val = Math.max(1, Math.min(30, chineseToNumber(val) || parseInt(val) || '')); }
   if (field === 'daysBefore') { val = Math.max(0, Math.min(30, parseInt(val) || 0)); }
 
   people[idx][field] = val;
@@ -1495,7 +1715,7 @@ tableBody.addEventListener('click', function(e) {
 // ---- CSV Parse ----
 function parseCSV(text) {
   const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
-  if (lines.length < 2) { toast('CSV 文件内容为空'); return; }
+  if (lines.length < 2) { toast( __('toast_csv_empty')); return; }
 
   const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
   const nameIdx = headers.indexOf('name');
@@ -1504,11 +1724,80 @@ function parseCSV(text) {
   const noteIdx = headers.indexOf('note');
   const daysIdx = headers.indexOf('daysbefore');
   const modeIdx = headers.indexOf('mode');
+  const groupIdx = headers.indexOf('group');
 
   if (nameIdx === -1 || monthIdx === -1 || dayIdx === -1) {
-    toast('CSV 格式错误：缺少 name, lunarMonth, lunarDay 列');
+    toast( __('toast_csv_format') + '（第 1 行）');
     return;
   }
+
+  // Parse all rows, collect valid entries and errors
+  const entries = [];
+  const errors = [];
+  for (let i = 1; i < lines.length; i++) {
+    const cols = lines[i].split(',').map(c => c.trim());
+    const name = cols[nameIdx];
+    const month = chineseToNumber(cols[monthIdx]) || parseInt(cols[monthIdx]);
+    const day = chineseToNumber(cols[dayIdx]) || parseInt(cols[dayIdx]);
+    if (!name) { errors.push('第 ' + (i+1) + ' 行：缺少姓名'); continue; }
+    if (isNaN(month) || month < 1 || month > 12) { errors.push('第 ' + (i+1) + ' 行：农历月无效 (' + (cols[monthIdx] || '') + ')'); continue; }
+    if (isNaN(day) || day < 1 || day > 30) { errors.push('第 ' + (i+1) + ' 行：农历日无效 (' + (cols[dayIdx] || '') + ')'); continue; }
+    entries.push({
+      name: name,
+      lunarMonth: month,
+      lunarDay: day,
+      note: noteIdx >= 0 ? cols[noteIdx] || '' : '',
+      daysBefore: daysIdx >= 0 ? parseInt(cols[daysIdx]) || 1 : 1,
+      mode: modeIdx >= 0 ? (cols[modeIdx] || 'once') : 'once',
+      group: groupIdx >= 0 ? (cols[groupIdx] || 'family') : 'family',
+    });
+  }
+
+  // Build preview message
+  let preview = '识别到 ' + entries.length + ' 位家人';
+  if (errors.length > 0) preview += '，' + errors.length + ' 行有误';
+  if (entries.length === 0) { toast(preview + '：' + errors[0]); return; }
+
+  // Show preview with first 3 entries
+  let detail = '';
+  for (let j = 0; j < Math.min(3, entries.length); j++) {
+    detail += '\\n  ' + (j+1) + '. ' + entries[j].name + '：' + entries[j].lunarMonth + '月' + entries[j].lunarDay + '日';
+  }
+  if (entries.length > 3) detail += '\\n  ... 共 ' + entries.length + ' 人';
+
+  if (!confirm(preview + '，确认导入？' + detail)) return;
+
+  // Import with dedup
+  const existingNames = new Set(people.map(p => p.name.trim()));
+  let added = 0;
+  let skipped = 0;
+  for (const entry of entries) {
+    if (existingNames.has(entry.name.trim())) {
+      skipped++;
+      continue;
+    }
+    people.push({ id: genId(), ...entry });
+    existingNames.add(entry.name.trim());
+    added++;
+  }
+
+  if (added > 0) {
+    renderTable();
+    const msg = __('csv_imported') + ' ' + added + ' ' + __('gen_people') + (skipped > 0 ? __('csv_skipped') + ' ' + skipped : '');
+    toast(msg);
+  } else if (skipped > 0) {
+    toast( __('csv_dup_all'));
+  } else {
+    toast( __('csv_no_data'));
+  }
+
+  // Report errors if any
+  if (errors.length > 0) {
+    setTimeout(function() {
+      toast('有 ' + errors.length + ' 行数据被跳过，请检查格式');
+    }, 3000);
+  }
+}
 
   // Build set of existing names for dedup
   const existingNames = new Set(people.map(p => p.name.trim()));
@@ -1518,8 +1807,8 @@ function parseCSV(text) {
   for (let i = 1; i < lines.length; i++) {
     const cols = lines[i].split(',').map(c => c.trim());
     const name = cols[nameIdx];
-    const month = parseInt(cols[monthIdx]);
-    const day = parseInt(cols[dayIdx]);
+    const month = chineseToNumber(cols[monthIdx]) || parseInt(cols[monthIdx]);
+    const day = chineseToNumber(cols[dayIdx]) || parseInt(cols[dayIdx]);
     if (!name || isNaN(month) || isNaN(day)) continue;
 
     // Dedup by name
@@ -1543,12 +1832,12 @@ function parseCSV(text) {
 
   if (added > 0) {
     renderTable();
-    const msg = '成功导入 ' + added + ' 位家人' + (skipped > 0 ? '，已跳过 ' + skipped + ' 个重复姓名' : '');
+    const msg = __('csv_imported') + ' ' + added + ' ' + __('gen_people') + (skipped > 0 ? __('csv_skipped') + ' ' + skipped : '');
     toast(msg);
   } else if (skipped > 0) {
-    toast('CSV 中所有姓名都已存在，无需重复导入');
+    toast( __('csv_dup_all'));
   } else {
-    toast('没有找到有效数据');
+    toast( __('csv_no_data'));
   }
 }
 
@@ -1580,7 +1869,7 @@ fileInput.addEventListener('change', function() {
 
 function handleFile(file) {
   if (!file.name.toLowerCase().endsWith('.csv')) {
-    toast('请上传 .csv 格式文件');
+    toast( __('toast_csv_format'));
     return;
   }
   const reader = new FileReader();
@@ -1627,10 +1916,10 @@ addRowBtn.addEventListener('click', function() {
 // ---- Clear All ----
 clearAllBtn.addEventListener('click', function() {
   if (people.length === 0) return;
-  if (!confirm('确定要清空所有生日数据吗？')) return;
+  if (!confirm( __('confirm_clear'))) return;
   people = [];
   renderTable();
-  toast('已清空');
+  toast( __('toast_cleared'));
 });
 
 // ---- Year Selector ----
@@ -1651,13 +1940,13 @@ generateBtn.addEventListener('click', function() {
 
     // Basic validation
     if (people.length === 0) {
-      toast('⚠️ 请先添加家人生日数据');
+      toast( __('toast_no_data'));
       return;
     }
 
     // Check solarlunar
     if (typeof sl.lunar2solar !== 'function') {
-      toast('⚠️ 农历转换库加载失败，请重新打开页面');
+      toast( __('toast_lib_err'));
       console.error('solarlunar not available:', window.solarlunar);
       return;
     }
@@ -1670,9 +1959,9 @@ generateBtn.addEventListener('click', function() {
 
     download(result.ics);
     genResult.classList.remove('hidden');
-    genMsg.textContent = '🎉 已生成 ' + result.personCount + ' 位家人共 ' + result.count + ' 个事件';
-    genDetail.textContent = '覆盖 ' + selectedYears + ' 年 · 文件已自动下载';
-    toast('下载成功！请导入日历');
+    genMsg.textContent = '🎉 ' + __('gen_success') + ' ' + result.personCount + ' ' + __('gen_people') + ' ' + result.count + ' ' + __('gen_events');
+    genDetail.textContent = __('gen_coverage') + ' ' + selectedYears + ' ' + __('gen_years');
+    toast( __('toast_downloaded'));
   } catch (e) {
     console.error('NianNian error:', e);
     alert('出错了：' + e.message + '\n\n请打开浏览器开发者工具(F12)查看详细错误，或联系开发者。');
@@ -1700,7 +1989,6 @@ function syncFromTable() {
 function init() {
   const hasData = loadState();
   if (hasData && Array.isArray(people)) {
-    // Ensure all entries have required fields
     people = people.map(p => ({
       ...p,
       name: p.name || '',
@@ -1708,12 +1996,19 @@ function init() {
       lunarDay: p.lunarDay || '',
       note: p.note || '',
       daysBefore: p.daysBefore !== undefined ? p.daysBefore : 3,
-      mode: p.mode || 'once'
+      mode: p.mode || 'once',
+      group: p.group || 'family'
     }));
     renderTable();
   } else {
-    people = [];
+    // Pre-fill sample data for first-time users
+    people = [
+      { id: genId(), name: '妈妈', lunarMonth: 8, lunarDay: 15, note: '农历八月十五', daysBefore: 3, mode: 'once', group: 'family' },
+      { id: genId(), name: '爸爸', lunarMonth: 5, lunarDay: 5, note: '农历五月初五', daysBefore: 7, mode: 'daily', group: 'family' },
+      { id: genId(), name: '奶奶', lunarMonth: 12, lunarDay: 23, note: '农历腊月廿三', daysBefore: 7, mode: 'daily', group: 'family' },
+    ];
     renderTable();
+    saveState();
   }
 
   // PWA: Register service worker
