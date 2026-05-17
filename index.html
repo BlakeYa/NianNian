@@ -170,6 +170,107 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
   .lang-pill{top:clamp(12px,3vw,16px)}
   .card{padding:16px}
 }
+
+/* ===== View Controller ===== */
+.mobile-only{display:none!important}
+@media(max-width:767px){
+  .desktop-only{display:none!important}
+  .mobile-only{display:block!important}
+}
+
+/* ===== Person Card (Mobile) ===== */
+.person-card{
+  background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;
+  box-shadow:0 2px 12px rgba(0,0,0,.05),0 1px 3px rgba(0,0,0,.04);
+  border:1px solid rgba(0,0,0,.04);cursor:pointer;transition:all .12s;
+  display:flex;align-items:center;gap:14px;
+  -webkit-tap-highlight-color:transparent;user-select:none
+}
+.person-card:active{transform:scale(.98)}
+.person-card .avatar{
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(135deg,#C73B3B,#E05A5A);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1.3rem;font-weight:600;
+  flex-shrink:0;box-shadow:0 2px 8px rgba(199,59,59,.2)
+}
+.person-card .info{flex:1;min-width:0}
+.person-card .info .name{font-size:1rem;font-weight:600;color:#333;margin-bottom:2px}
+.person-card .info .lunar-date{font-size:.82rem;color:#C73B3B;font-weight:500;margin-bottom:1px}
+.person-card .info .reminder{font-size:.75rem;color:#888}
+.person-card .actions{display:flex;gap:6px;flex-shrink:0}
+.person-card .btn-card-action{
+  background:transparent;border:none;color:#aaa;font-size:.82rem;padding:8px;cursor:pointer;
+  min-width:44px;min-height:44px;border-radius:8px;transition:all .12s
+}
+.person-card .btn-card-action:hover{background:#f5f5f5}
+.person-card .btn-card-action.danger:hover{color:#C73B3B;background:#FFF0F0}
+
+/* ===== Mobile Add Button ===== */
+.mobile-add-btn{margin-bottom:16px;padding:clamp(14px,3vw,16px);font-size:1.05rem;gap:8px;border-radius:12px}
+
+/* ===== Mobile Empty State ===== */
+.mobile-empty{text-align:center;padding:40px 20px;color:#ccc;font-size:.9rem}
+.mobile-empty .icon{font-size:2.5rem;margin-bottom:12px}
+
+/* ===== Bottom Sheet Modal ===== */
+.bottom-sheet-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1000;
+  opacity:0;transition:opacity .25s;pointer-events:none
+}
+.bottom-sheet-overlay.open{opacity:1;pointer-events:auto}
+.bottom-sheet{
+  position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;
+  max-height:85vh;overflow-y:auto;z-index:1001;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);
+  padding:0 20px calc(16px + env(safe-area-inset-bottom,0px)) 20px;
+  -webkit-overflow-scrolling:touch
+}
+.bottom-sheet.open{transform:translateY(0)}
+.bottom-sheet-handle{width:36px;height:4px;border-radius:2px;background:#ddd;margin:10px auto}
+.bottom-sheet-header{
+  font-size:1.1rem;font-weight:600;color:#333;text-align:center;padding:4px 0 16px
+}
+.bottom-sheet-body{padding-bottom:12px}
+.bottom-sheet-footer{
+  display:flex;gap:12px;padding:12px 0;
+  border-top:1px solid #f0f0f0
+}
+.bottom-sheet-footer .btn{flex:1;justify-content:center;padding:14px;border-radius:10px;font-size:.95rem}
+.bottom-sheet-delete{text-align:center;padding:12px 0 4px}
+
+/* ===== Mobile Form Fields ===== */
+.mobile-field{margin-bottom:16px}
+.mobile-field label{display:block;font-size:.82rem;color:#666;font-weight:500;margin-bottom:4px}
+.mobile-field input,.mobile-field select{
+  width:100%;padding:12px 14px;border:1.5px solid #eee;border-radius:10px;
+  font-size:.95rem;font-family:inherit;background:#fff;transition:border-color .15s;min-height:44px;
+  -webkit-appearance:none;appearance:none
+}
+.mobile-field input:focus,.mobile-field select:focus{border-color:#C73B3B;outline:none}
+.mobile-field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px
+}
+.mobile-field .days-row{display:flex;gap:12px;align-items:center}
+.mobile-field .days-row input{width:80px;flex:none}
+.mobile-field .days-row span{color:#888;font-size:.85rem}
+
+/* ===== Mobile Bottom Bar ===== */
+.mobile-bottom-bar{
+  position:sticky;bottom:0;z-index:100;margin-top:8px;
+  padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(180deg,transparent,#FFF8F0 8px)
+}
+.mobile-bottom-bar .btn-download{width:100%;justify-content:center;border-radius:12px;padding:16px;font-size:1.05rem}
+.mobile-bottom-bar .count-badge{
+  display:inline-block;margin-left:8px;padding:2px 10px;
+  background:rgba(255,255,255,.2);border-radius:999px;font-size:.78rem;font-weight:400
+}
+
+/* ===== Mobile Year Section ===== */
+.mobile-year-section{margin-top:8px;margin-bottom:4px}
+.mobile-year-label{font-size:.82rem;color:#888;margin-bottom:8px;text-align:center}
 </style>
 </head>
 <body>
@@ -186,7 +287,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 </header>
 
 <!-- ======== Step 1: Data ======== -->
-<section class="card">
+<section class="card desktop-only">
   <div class="card-title"><span class="step-num">1</span><span data-i18n="step1_title"> 添加家人生日</span></div>
 
   
@@ -228,7 +329,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 </section>
 
 <!-- ======== Step 2: Settings ======== -->
-<section class="card">
+<section class="card desktop-only">
   <div class="card-title"><span class="step-num">2</span><span data-i18n="step2_title"> 设置</span></div>
   <div style="font-size:0.85rem;color:#555;margin-bottom:6px"><span data-i18n="step2_hint">生成未来多少年的日历：</span></div>
   <div class="year-selector" id="yearSelector">
@@ -240,7 +341,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 </section>
 
 <!-- ======== Step 3: Generate ======== -->
-<section class="card">
+<section class="card desktop-only">
   <div class="card-title"><span class="step-num">3</span><span data-i18n="step3_title"> 生成并下载</span></div>
   <button class="btn btn-download btn-block" id="generateBtn" data-i18n="btn_generate">🎯 生成 ICS 并下载</button>
   <div id="genResult" class="gen-result hidden">
@@ -249,6 +350,96 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
     <div class="detail" id="genDetail"></div>
   </div>
 </section>
+
+<!-- ======== Mobile View ======== -->
+<div id="mobileView" class="mobile-only">
+
+  <!-- Add Person CTA -->
+  <button class="btn btn-primary btn-block mobile-add-btn" id="mobileAddBtn">
+    ＋ <span data-i18n="mobile_add_person">添加家人</span>
+  </button>
+
+  <!-- Person Card List -->
+  <div id="mobilePersonCards"></div>
+
+  <!-- Mobile Year Selector -->
+  <div class="mobile-year-section">
+    <div class="mobile-year-label" data-i18n="step2_hint">生成未来多少年的日历：</div>
+    <div class="year-selector" id="mobileYearSelector">
+      <button class="year-btn" data-years="10"><span data-i18n="years_10">10</span><span data-i18n="years_label">年</span></button>
+      <button class="year-btn" data-years="30"><span data-i18n="years_30">30</span><span data-i18n="years_label">年</span></button>
+      <button class="year-btn active" data-years="60"><span data-i18n="years_60">60</span><span data-i18n="years_label">年</span></button>
+      <button class="year-btn" data-years="100"><span data-i18n="years_100">100</span><span data-i18n="years_label">年</span></button>
+    </div>
+  </div>
+
+  <!-- Sticky Bottom Generate Bar -->
+  <div class="mobile-bottom-bar" id="mobileBottomBar">
+    <button class="btn btn-download" id="mobileGenerateBtn">
+      🎯 <span data-i18n="mobile_generate">生成 ICS</span>
+      <span class="count-badge" id="mobileCountBadge"></span>
+    </button>
+  </div>
+
+</div>
+
+<!-- ======== Bottom Sheet Modal ======== -->
+<div id="bottomSheetOverlay" class="bottom-sheet-overlay">
+  <div class="bottom-sheet" id="bottomSheet">
+    <div class="bottom-sheet-handle"></div>
+    <div class="bottom-sheet-header" id="bottomSheetTitle" data-i18n="mobile_add_title">添加家人</div>
+    <div class="bottom-sheet-body">
+      <div class="mobile-field">
+        <label data-i18n="mobile_label_name">姓名</label>
+        <input type="text" id="bsName" maxlength="20" placeholder="姓名">
+      </div>
+      <div class="mobile-field" style="display:flex;gap:12px">
+        <div style="flex:1">
+          <label data-i18n="mobile_label_lunar_month">农历月</label>
+          <input type="number" id="bsMonth" min="1" max="12" placeholder="8" inputmode="numeric">
+        </div>
+        <div style="flex:1">
+          <label data-i18n="mobile_label_lunar_day">农历日</label>
+          <input type="number" id="bsDay" min="1" max="30" placeholder="15" inputmode="numeric">
+        </div>
+      </div>
+      <div class="mobile-field">
+        <label data-i18n="mobile_label_note">备注</label>
+        <input type="text" id="bsNote" placeholder="可选">
+      </div>
+      <div class="mobile-field">
+        <label data-i18n="mobile_label_remind">提前提醒</label>
+        <div class="days-row">
+          <input type="number" id="bsDaysBefore" min="0" max="30" value="3">
+          <span data-i18n="mobile_days_suffix">天</span>
+        </div>
+      </div>
+      <div class="mobile-field">
+        <label data-i18n="mobile_label_mode">提醒方式</label>
+        <select id="bsMode">
+          <option value="once" data-i18n="opt_once">一次</option>
+          <option value="daily" data-i18n="opt_daily">每天</option>
+          <option value="everyOtherDay" data-i18n="opt_everyOther">隔天</option>
+        </select>
+      </div>
+      <div class="mobile-field">
+        <label data-i18n="mobile_label_group">分组</label>
+        <select id="bsGroup">
+          <option value="family" data-i18n="grp_family">家人</option>
+          <option value="friend" data-i18n="grp_friend">朋友</option>
+          <option value="colleague" data-i18n="grp_colleague">同事</option>
+        </select>
+      </div>
+    </div>
+    <div class="bottom-sheet-footer">
+      <button class="btn btn-secondary" id="bsCancel" data-i18n="btn_cancel">取消</button>
+      <button class="btn btn-primary" id="bsSave" data-i18n="btn_save">保存</button>
+    </div>
+    <div id="bsDeleteWrap" class="bottom-sheet-delete hidden">
+      <button class="btn btn-outline" id="bsDelete" style="color:#C73B3B;border-color:#e0b0b0" data-i18n="mobile_delete_person">删除此人</button>
+    </div>
+  </div>
+</div>
 
 <details id="infoSection" class="card info-details">
   <summary class="card-title info-summary" style="cursor:pointer">
@@ -1364,7 +1555,28 @@ const i18n = {
     // Placeholders for inputs
     ph_name: '姓名', ph_month: '月', ph_day: '日', ph_note: '可选', ph_days: '天',
     // Table rendering option labels
-    opt_once: '一次', opt_daily: '每天', opt_everyOther: '隔天',
+      opt_once: '一次', opt_daily: '每天', opt_everyOther: '隔天',
+      // Mobile UI keys
+      btn_cancel: '取消',
+      btn_save: '保存',
+      mobile_add_person: '添加家人',
+      mobile_add_title: '添加家人',
+      mobile_edit_title: '编辑家人',
+      mobile_delete_person: '删除此人',
+      mobile_empty: '还没有添加家人，点击上方按钮开始',
+      mobile_confirm_delete: '确定要删除 {name} 吗？',
+      mobile_label_name: '姓名',
+      mobile_label_lunar_month: '农历月',
+      mobile_label_lunar_day: '农历日',
+      mobile_label_note: '备注',
+      mobile_label_remind: '提前提醒',
+      mobile_label_mode: '提醒方式',
+      mobile_label_group: '分组',
+      mobile_days_suffix: '天',
+      mobile_badge_format: '({count} 位家人 · {years} 年)',
+      mobile_reminder_format: '提前{days}天',
+      mobile_reminder_format_0: '当天提醒',
+      mobile_generate: '生成 ICS',
   },
   en: {
     lang_btn: '中',
@@ -1430,7 +1642,28 @@ const i18n = {
     faq_excel: '📄 Excel (.xlsx) support?',
     faq_excel_p: 'Currently supports .csv format. You can open it in Excel / Numbers / WPS / Google Sheets and save as CSV.',
     ph_name: 'Name', ph_month: 'Mth', ph_day: 'Day', ph_note: 'Optional', ph_days: 'Days',
-    opt_once: 'Once', opt_daily: 'Daily', opt_everyOther: 'Every 2d',
+      opt_once: 'Once', opt_daily: 'Daily', opt_everyOther: 'Every 2d',
+      // Mobile UI keys
+      btn_cancel: 'Cancel',
+      btn_save: 'Save',
+      mobile_add_person: 'Add Person',
+      mobile_add_title: 'Add Person',
+      mobile_edit_title: 'Edit Person',
+      mobile_delete_person: 'Delete',
+      mobile_empty: 'No family members yet. Tap the button above to add.',
+      mobile_confirm_delete: 'Delete {name}?',
+      mobile_label_name: 'Name',
+      mobile_label_lunar_month: 'Lunar Month',
+      mobile_label_lunar_day: 'Lunar Day',
+      mobile_label_note: 'Note',
+      mobile_label_remind: 'Remind Before',
+      mobile_label_mode: 'Reminder Mode',
+      mobile_label_group: 'Group',
+      mobile_days_suffix: 'day(s)',
+      mobile_badge_format: '({count} people · {years} yrs)',
+      mobile_reminder_format: '{days} day(s) before',
+      mobile_reminder_format_0: 'Same day',
+      mobile_generate: 'Generate ICS',
   }
 };
 
@@ -1454,8 +1687,12 @@ function setLang(lang) {
   // Update lang toggle button
   const toggle = document.getElementById('langToggle');
   if (toggle) toggle.textContent = i18n[lang].lang_btn;
-  // Re-render table to update translated text in dynamically generated rows
-  renderTable();
+  // Re-render current view to update translated text
+  if (currentView === 'mobile') {
+    renderMobileUI();
+  } else {
+    renderTable();
+  }
 }
 
 
@@ -1929,11 +2166,13 @@ yearSelector.addEventListener('click', function(e) {
 });
 
 // ---- Generate ----
-generateBtn.addEventListener('click', function() {
+function handleGenerate() {
   try {
     genResult.classList.add('hidden');
 
-    syncFromTable();
+    if (currentView === 'desktop') {
+      syncFromTable();
+    }
 
     // Basic validation
     if (people.length === 0) {
@@ -1963,7 +2202,9 @@ generateBtn.addEventListener('click', function() {
     console.error('NianNian error:', e);
     alert('出错了：' + e.message + '\n\n请打开浏览器开发者工具(F12)查看详细错误，或联系开发者。');
   }
-});
+}
+
+generateBtn.addEventListener('click', handleGenerate);
 
 function syncFromTable() {
   const rows = tableBody.querySelectorAll('tr');
@@ -1981,6 +2222,335 @@ function syncFromTable() {
   });
   saveState();
 }
+
+// ---- View Controller ----
+let currentView = 'desktop';
+let resizeTimerVC = null;
+
+function switchView() {
+  const newView = window.innerWidth < 768 ? 'mobile' : 'desktop';
+  if (newView === currentView) return;
+  currentView = newView;
+  if (currentView === 'mobile') {
+    renderMobileUI();
+  } else {
+    renderTable();
+  }
+  // Sync year selector active state
+  document.querySelectorAll('.year-btn').forEach(function(b) {
+    b.classList.toggle('active', parseInt(b.dataset.years) === selectedYears);
+  });
+}
+
+// ---- Mobile Render Helpers ----
+function getLunarDateDisplay(p) {
+  var month = parseInt(p.lunarMonth);
+  var day = parseInt(p.lunarDay);
+  if (isNaN(month) || isNaN(day)) return '';
+  try {
+    if (sl.toChinaMonth && sl.toChinaDay) {
+      return '\u519c\u5386' + sl.toChinaMonth(month) + sl.toChinaDay(day);
+    }
+  } catch(e) { /* ignore */ }
+  return '\u519c\u5386' + month + '\u6708' + day + '\u65e5';
+}
+
+function getReminderText(p) {
+  var days = parseInt(p.daysBefore) || 0;
+  var prefix;
+  if (days === 0) {
+    prefix = __('mobile_reminder_format_0');
+  } else {
+    prefix = (__('mobile_reminder_format')).replace('{days}', days);
+  }
+  var modeMap = { once: __('opt_once'), daily: __('opt_daily'), everyOtherDay: __('opt_everyOther') };
+  return prefix + ' \u00b7 ' + (modeMap[p.mode] || '');
+}
+
+function updateMobileCount() {
+  var badge = document.getElementById('mobileCountBadge');
+  if (!badge) return;
+  if (people.length === 0) {
+    badge.textContent = '';
+    return;
+  }
+  badge.textContent = (__('mobile_badge_format')).replace('{count}', people.length).replace('{years}', selectedYears);
+}
+
+// ---- Sort: upcoming birthday first ----
+function sortPeopleByUpcoming(arr) {
+  var now = new Date();
+  var currentYear = now.getFullYear();
+  var copy = [];
+  for (var si = 0; si < arr.length; si++) copy.push(arr[si]);
+  return copy.sort(function(a, b) {
+    var aM = parseInt(a.lunarMonth), aD = parseInt(a.lunarDay);
+    var bM = parseInt(b.lunarMonth), bD = parseInt(b.lunarDay);
+    if (isNaN(aM) || isNaN(aD)) return 1;
+    if (isNaN(bM) || isNaN(bD)) return -1;
+    try {
+      var aS = sl.lunar2solar ? sl.lunar2solar(currentYear, aM, aD) : null;
+      var bS = sl.lunar2solar ? sl.lunar2solar(currentYear, bM, bD) : null;
+      if (!aS || aS === -1) return 1;
+      if (!bS || bS === -1) return -1;
+      var aDt = new Date(aS.cYear, aS.cMonth - 1, aS.cDay);
+      var bDt = new Date(bS.cYear, bS.cMonth - 1, bS.cDay);
+      if (aDt < now) aDt.setFullYear(aDt.getFullYear() + 1);
+      if (bDt < now) bDt.setFullYear(bDt.getFullYear() + 1);
+      return aDt - bDt;
+    } catch(e) { return 0; }
+  });
+}
+
+// ---- Mobile Render ----
+function renderMobileUI() {
+  var container = document.getElementById('mobilePersonCards');
+  if (!container) return;
+
+  if (people.length === 0) {
+    container.innerHTML = '<div class="mobile-empty"><div class="icon">\ud83d\udc64</div><div>' + __('mobile_empty') + '</div></div>';
+    updateMobileCount();
+    return;
+  }
+
+  var sorted = sortPeopleByUpcoming(people);
+  var html = '';
+  for (var i = 0; i < sorted.length; i++) {
+    var p = sorted[i];
+    var avatar = p.name ? p.name.charAt(0) : '\ud83d\udc64';
+    var lunarDate = getLunarDateDisplay(p);
+    var reminderText = getReminderText(p);
+
+    html += '<div class="person-card" data-person-id="' + escHtml(p.id) + '">' +
+      '<div class="avatar">' + escHtml(avatar) + '</div>' +
+      '<div class="info">' +
+        '<div class="name">' + escHtml(p.name || '') + '</div>' +
+        '<div class="lunar-date">' + escHtml(lunarDate) + '</div>' +
+        '<div class="reminder">' + escHtml(reminderText) + '</div>' +
+      '</div>' +
+      '<div class="actions">' +
+        '<button class="btn-card-action" data-action="edit" data-person-id="' + escHtml(p.id) + '">\u270e</button>' +
+        '<button class="btn-card-action danger" data-action="delete" data-person-id="' + escHtml(p.id) + '">\u2715</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  container.innerHTML = html;
+  updateMobileCount();
+}
+
+// ---- Bottom Sheet ----
+var editingPersonId = null;
+
+function openBottomSheet(personId) {
+  editingPersonId = personId || null;
+  var overlay = document.getElementById('bottomSheetOverlay');
+  var sheet = document.getElementById('bottomSheet');
+  var title = document.getElementById('bottomSheetTitle');
+  var deleteWrap = document.getElementById('bsDeleteWrap');
+
+  if (personId) {
+    var p = null;
+    for (var i = 0; i < people.length; i++) {
+      if (people[i].id === personId) { p = people[i]; break; }
+    }
+    if (!p) return;
+    document.getElementById('bsName').value = p.name || '';
+    document.getElementById('bsMonth').value = p.lunarMonth || '';
+    document.getElementById('bsDay').value = p.lunarDay || '';
+    document.getElementById('bsNote').value = p.note || '';
+    document.getElementById('bsDaysBefore').value = p.daysBefore != null ? p.daysBefore : 3;
+    document.getElementById('bsMode').value = p.mode || 'once';
+    document.getElementById('bsGroup').value = p.group || 'family';
+    title.textContent = __('mobile_edit_title');
+    if (deleteWrap) deleteWrap.classList.remove('hidden');
+  } else {
+    document.getElementById('bsName').value = '';
+    document.getElementById('bsMonth').value = '';
+    document.getElementById('bsDay').value = '';
+    document.getElementById('bsNote').value = '';
+    document.getElementById('bsDaysBefore').value = 3;
+    document.getElementById('bsMode').value = 'once';
+    document.getElementById('bsGroup').value = 'family';
+    title.textContent = __('mobile_add_title');
+    if (deleteWrap) deleteWrap.classList.add('hidden');
+  }
+
+  overlay.classList.add('open');
+  sheet.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() { document.getElementById('bsName').focus(); }, 350);
+}
+
+function closeBottomSheet() {
+  var overlay = document.getElementById('bottomSheetOverlay');
+  var sheet = document.getElementById('bottomSheet');
+  overlay.classList.remove('open');
+  sheet.classList.remove('open');
+  document.body.style.overflow = '';
+  editingPersonId = null;
+}
+
+function saveBottomSheet() {
+  var name = document.getElementById('bsName').value.trim();
+  var month = parseInt(document.getElementById('bsMonth').value);
+  var day = parseInt(document.getElementById('bsDay').value);
+  var note = document.getElementById('bsNote').value.trim();
+  var daysBefore = parseInt(document.getElementById('bsDaysBefore').value) || 0;
+  var mode = document.getElementById('bsMode').value;
+  var group = document.getElementById('bsGroup').value;
+
+  if (!name) {
+    toast('\u8bf7\u8f93\u5165\u59d3\u540d');
+    document.getElementById('bsName').focus();
+    return;
+  }
+  if (isNaN(month) || month < 1 || month > 12) {
+    toast('\u8bf7\u8f93\u5165\u6709\u6548\u519c\u5386\u6708 (1-12)');
+    return;
+  }
+  if (isNaN(day) || day < 1 || day > 30) {
+    toast('\u8bf7\u8f93\u5165\u6709\u6548\u519c\u5386\u65e5 (1-30)');
+    return;
+  }
+
+  if (editingPersonId) {
+    for (var i = 0; i < people.length; i++) {
+      if (people[i].id === editingPersonId) {
+        people[i].name = name;
+        people[i].lunarMonth = month;
+        people[i].lunarDay = day;
+        people[i].note = note;
+        people[i].daysBefore = daysBefore;
+        people[i].mode = mode;
+        people[i].group = group;
+        break;
+      }
+    }
+  } else {
+    people.push({
+      id: genId(),
+      name: name,
+      lunarMonth: month,
+      lunarDay: day,
+      note: note,
+      daysBefore: daysBefore,
+      mode: mode,
+      group: group
+    });
+  }
+
+  saveState();
+  renderMobileUI();
+  closeBottomSheet();
+}
+
+function deleteCurrentPerson() {
+  if (!editingPersonId) return;
+  var p = null;
+  for (var i = 0; i < people.length; i++) {
+    if (people[i].id === editingPersonId) { p = people[i]; break; }
+  }
+  if (!p) return;
+  var msg = __('mobile_confirm_delete').replace('{name}', p.name);
+  if (!confirm(msg)) return;
+  var newPeople = [];
+  for (var j = 0; j < people.length; j++) {
+    if (people[j].id !== editingPersonId) newPeople.push(people[j]);
+  }
+  people = newPeople;
+  saveState();
+  renderMobileUI();
+  closeBottomSheet();
+}
+
+// ---- Mobile Event Handlers ----
+document.addEventListener('DOMContentLoaded', function() {
+  // Mobile add button
+  var addBtn = document.getElementById('mobileAddBtn');
+  if (addBtn) {
+    addBtn.addEventListener('click', function() { openBottomSheet(null); });
+  }
+
+  // Person card click delegation
+  var cardsContainer = document.getElementById('mobilePersonCards');
+  if (cardsContainer) {
+    cardsContainer.addEventListener('click', function(e) {
+      var actionBtn = e.target.closest('.btn-card-action');
+      if (actionBtn) {
+        var personId = actionBtn.dataset.personId;
+        var action = actionBtn.dataset.action;
+        if (action === 'edit') {
+          openBottomSheet(personId);
+        } else if (action === 'delete') {
+          var pp = null;
+          for (var i = 0; i < people.length; i++) {
+            if (people[i].id === personId) { pp = people[i]; break; }
+          }
+          if (!pp) return;
+          var msg = __('mobile_confirm_delete').replace('{name}', pp.name);
+          if (!confirm(msg)) return;
+          var remaining = [];
+          for (var j = 0; j < people.length; j++) {
+            if (people[j].id !== personId) remaining.push(people[j]);
+          }
+          people = remaining;
+          saveState();
+          renderMobileUI();
+        }
+        return;
+      }
+
+      // Tap on card body -> open edit
+      var card = e.target.closest('.person-card');
+      if (card && card.dataset.personId) {
+        openBottomSheet(card.dataset.personId);
+      }
+    });
+  }
+
+  // Bottom sheet events
+  var bsCancel = document.getElementById('bsCancel');
+  if (bsCancel) bsCancel.addEventListener('click', closeBottomSheet);
+
+  var bsSave = document.getElementById('bsSave');
+  if (bsSave) bsSave.addEventListener('click', saveBottomSheet);
+
+  var bsDelete = document.getElementById('bsDelete');
+  if (bsDelete) bsDelete.addEventListener('click', deleteCurrentPerson);
+
+  var bsOverlay = document.getElementById('bottomSheetOverlay');
+  if (bsOverlay) {
+    bsOverlay.addEventListener('click', function(e) {
+      if (e.target === bsOverlay) closeBottomSheet();
+    });
+  }
+
+  // Mobile generate button
+  var mobileGenBtn = document.getElementById('mobileGenerateBtn');
+  if (mobileGenBtn) {
+    mobileGenBtn.addEventListener('click', handleGenerate);
+  }
+
+  // Mobile year selector
+  var mobileYearSel = document.getElementById('mobileYearSelector');
+  if (mobileYearSel) {
+    mobileYearSel.addEventListener('click', function(e) {
+      var btn = e.target.closest('.year-btn');
+      if (!btn) return;
+      document.querySelectorAll('.year-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedYears = parseInt(btn.dataset.years) || 60;
+      updateMobileCount();
+    });
+  }
+
+  // Resize listener for view switching
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimerVC);
+    resizeTimerVC = setTimeout(switchView, 150);
+  });
+});
 
 // ---- Init ----
 function init() {
@@ -2012,6 +2582,9 @@ function init() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(function() {});
   }
+
+  // Initialize view controller
+  switchView();
 }
 
 // ---- Diagnose solarlunar at startup ----
