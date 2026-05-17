@@ -1706,6 +1706,20 @@ function __(key) {
 // Apply initial language
 document.addEventListener('DOMContentLoaded', function() {
   setLang(currentLang);
+
+  // Lang toggle click handler
+  const langToggle = document.getElementById('langToggle');
+  if (langToggle) {
+    langToggle.addEventListener('click', function() {
+      const newLang = currentLang === 'zh' ? 'en' : 'zh';
+      setLang(newLang);
+      // Re-render mobile UI if in mobile view
+      if (typeof currentView !== 'undefined' && currentView === 'mobile') {
+        renderMobileUI();
+      }
+    });
+  }
+
   // Auto-open info section on desktop
   if (window.innerWidth >= 768) {
     const info = document.getElementById('infoSection');
