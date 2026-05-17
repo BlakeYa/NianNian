@@ -15,12 +15,14 @@
 <title>念念 · 农历生日助手</title>
 
 <style>
+:root{--primary:#C73B3B;--primary-dark:#B02E2E;--bg:#FFF8F0;--text:#2D2D2D;--text-secondary:#666;--text-muted:#888;--success:#2E7D32;--success-bg:#E8F5E9;--radius:12px;--radius-sm:8px;--radius-pill:999px;--shadow-sm:0 1px 3px rgba(0,0,0,.04);--shadow:0 2px 12px rgba(0,0,0,.05);--shadow-lg:0 4px 20px rgba(0,0,0,.06);--shadow-btn:0 2px 8px rgba(199,59,59,.25)}
+
 /* ===== Reset & Base ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;-webkit-text-size-adjust:100%}
 body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  background:#FFF8F0;color:#2D2D2D;line-height:1.6;min-height:100vh;
+  background:linear-gradient(180deg,#FFF8F0 0%,#FFF5EE 100%);color:#2D2D2D;line-height:1.6;min-height:100vh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)
 }
 a{color:#C73B3B;text-decoration:none}
@@ -33,60 +35,41 @@ a:hover{text-decoration:underline}
 @media(min-width:1024px){.container{max-width:800px;padding:32px 24px}}
 
 /* ===== Header ===== */
-.header{text-align:center;padding:clamp(20px,5vw,32px) 0 clamp(16px,4vw,24px)}
-.header .logo{font-size:clamp(1.5rem,6vw,2rem);font-weight:700;color:#C73B3B;letter-spacing:2px}
-.header .logo-sub{font-size:clamp(0.8rem,3vw,0.9rem);color:#888;margin-top:2px}
-.header .tagline{font-size:clamp(0.85rem,3vw,0.95rem);color:#666;margin-top:8px}
-.privacy-badge{
-  display:inline-block;margin-top:12px;padding:4px 14px;
-  background:#E8F5E9;color:#2E7D32;border-radius:20px;
-  font-size:clamp(0.75rem,2.5vw,0.8rem);font-weight:500
-}
+.header{position:relative;text-align:center;padding:clamp(24px,6vw,40px) 0 clamp(16px,4vw,24px)}
+.header .logo{font-size:clamp(1.6rem,7vw,2.2rem);font-weight:700;color:#C73B3B;letter-spacing:3px;line-height:1.2}
+.header .logo-sub{font-size:clamp(0.8rem,3vw,0.9rem);color:#C73B3B;opacity:.55;margin-top:0;letter-spacing:4px;text-transform:uppercase}
+.header .tagline{font-size:clamp(0.85rem,3vw,0.95rem);color:#888;margin-top:10px;max-width:280px;margin-left:auto;margin-right:auto;line-height:1.5}
+.lang-pill{position:absolute;top:clamp(20px,4vw,28px);right:0;display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:32px;padding:0 14px;background:rgba(199,59,59,.08);color:#C73B3B;border:1px solid rgba(199,59,59,.15);border-radius:999px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.5px;user-select:none;font-family:inherit}
+.lang-pill:hover{background:rgba(199,59,59,.15);border-color:rgba(199,59,59,.3)}
+.lang-pill:active{transform:scale(.95)}
+.privacy-badge{display:inline-block;margin-top:14px;padding:5px 16px;background:#E8F5E9;color:#2E7D32;border-radius:999px;font-size:clamp(.72rem,2.5vw,.78rem);font-weight:500;letter-spacing:.3px}
 
 /* ===== Section Card ===== */
-.card{
-  background:#fff;border-radius:12px;padding:clamp(14px,3vw,20px);
-  margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.07)
-}
-.card-title{
-  font-size:clamp(0.95rem,3vw,1.05rem);font-weight:600;color:#333;
-  margin-bottom:12px;display:flex;align-items:center;gap:8px
-}
-.card-title .step-num{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:24px;height:24px;border-radius:50%;background:#C73B3B;
-  color:#fff;font-size:0.8rem;font-weight:600
-}
+.card{background:#fff;border-radius:12px;padding:clamp(18px,3.5vw,24px);margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.05),0 1px 3px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);transition:box-shadow .2s}
+.card-title{font-size:clamp(.95rem,3vw,1.05rem);font-weight:600;color:#333;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.card-title .step-num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#C73B3B;color:#fff;font-size:.82rem;font-weight:700;flex-shrink:0;box-shadow:0 2px 6px rgba(199,59,59,.25)}
 
 /* ===== Buttons ===== */
-.btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:clamp(10px,2vw,12px) clamp(16px,3vw,20px);border-radius:8px;border:none;
-  font-size:clamp(0.85rem,2.5vw,0.9rem);font-weight:500;cursor:pointer;
-  transition:all 0.12s;white-space:nowrap;user-select:none;min-height:44px
-}
-.btn:active{transform:scale(0.97)}
-.btn-primary{background:#C73B3B;color:#fff}
-.btn-primary:hover{background:#B02E2E}
-.btn-primary:disabled{background:#ccc;cursor:not-allowed;transform:none}
-.btn-secondary{background:#f0f0f0;color:#555}
-.btn-secondary:hover{background:#e5e5e5}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:clamp(10px,2vw,12px) clamp(18px,3vw,22px);border-radius:10px;border:none;font-size:clamp(.85rem,2.5vw,.9rem);font-weight:500;cursor:pointer;transition:all .15s ease;white-space:nowrap;user-select:none;min-height:44px}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:#C73B3B;color:#fff;box-shadow:0 2px 8px rgba(199,59,59,.25)}
+.btn-primary:hover{background:#B02E2E;box-shadow:0 3px 12px rgba(199,59,59,.35)}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-secondary{background:#f5f5f5;color:#555;border:1px solid #eee}
+.btn-secondary:hover{background:#eee;border-color:#ddd}
 .btn-outline{background:transparent;color:#C73B3B;border:1.5px solid #C73B3B}
-.btn-outline:hover{background:#FFF0F0}
-.btn-sm{padding:clamp(6px,1.5vw,8px) clamp(12px,2vw,14px);font-size:clamp(0.8rem,2.5vw,0.82rem);min-height:44px}
+.btn-outline:hover{background:#FFF0F0;border-color:#B02E2E}
+.btn-sm{padding:clamp(6px,1.5vw,8px) clamp(14px,2vw,16px);font-size:clamp(.8rem,2.5vw,.82rem);min-height:44px;border-radius:8px}
 .btn-block{width:100%;justify-content:center}
-.btn-download{background:#2E7D32;color:#fff;padding:clamp(12px,2.5vw,14px) clamp(24px,4vw,28px);font-size:clamp(0.95rem,3vw,1.05rem)}
-.btn-download:hover{background:#256829}
+.btn-download{background:#2E7D32;color:#fff;padding:clamp(13px,2.5vw,16px) clamp(28px,4vw,32px);font-size:clamp(.95rem,3vw,1.05rem);border-radius:12px;box-shadow:0 3px 12px rgba(46,125,50,.25);font-weight:600;letter-spacing:.5px}
+.btn-download:hover{background:#256829;box-shadow:0 4px 16px rgba(46,125,50,.35)}
 
 /* ===== Upload Zone ===== */
-.upload-zone{
-  border:2px dashed #ddd;border-radius:10px;padding:clamp(20px,4vw,28px) 16px;
-  text-align:center;cursor:pointer;transition:all 0.12s;margin-bottom:12px
-}
-.upload-zone:hover,.upload-zone.dragover{border-color:#C73B3B;background:#FFF5F5}
-.upload-zone .icon{font-size:clamp(1.4rem,5vw,1.8rem);margin-bottom:6px}
-.upload-zone .text{font-size:clamp(0.82rem,2.5vw,0.9rem);color:#888}
-.upload-zone .hint{font-size:clamp(0.72rem,2vw,0.78rem);color:#aaa;margin-top:4px}
+.upload-zone{border:2px dashed #ddd;border-radius:12px;padding:clamp(24px,5vw,32px) 16px;text-align:center;cursor:pointer;transition:all .15s;margin-bottom:14px;background:#fafafa}
+.upload-zone:hover,.upload-zone.dragover{border-color:#C73B3B;background:#FFF8F8}
+.upload-zone .icon{font-size:clamp(1.5rem,5vw,2rem);margin-bottom:8px}
+.upload-zone .text{font-size:clamp(.85rem,2.5vw,.9rem);color:#888}
+.upload-zone .hint{font-size:clamp(.72rem,2vw,.78rem);color:#aaa;margin-top:6px}
 
 /* ===== Table ===== */
 .table-wrap{overflow-x:auto;margin-top:12px;-webkit-overflow-scrolling:touch}
@@ -179,11 +162,13 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 /* ===== Mobile Overrides (< 480px) ===== */
 @media(max-width:479px){
   .btn{width:100%;justify-content:center}
-  .btn-sm{padding:10px 14px}
+  .btn-sm{padding:10px 16px}
   .col-note,.col-mode{display:none}
   .year-btn{flex:1 1 calc(50% - 4px)}
   table{min-width:320px}
-  .container{padding:12px}
+  .container{padding:10px}
+  .lang-pill{top:clamp(12px,3vw,16px)}
+  .card{padding:16px}
 }
 </style>
 </head>
@@ -193,13 +178,9 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
 
 <!-- ======== Header ======== -->
 <header class="header">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start">
-    <div>
-      <div class="logo">🏮 念念</div>
-      <div class="logo-sub">NianNian</div>
-    </div>
-    <button id="langToggle" class="btn btn-sm btn-outline" style="margin-top:4px" data-i18n="lang_btn">EN</button>
-  </div>
+  <div class="logo">🏮 念念</div>
+  <div class="logo-sub">NianNian</div>
+  <button id="langToggle" class="lang-pill" data-i18n="lang_btn">EN</button>
   <div class="tagline" data-i18n="tagline">把家人的农历生日装进你的日历</div>
   <div class="privacy-badge" data-i18n="privacy_badge">🔒 纯客户端 · 数据不上传</div>
 </header>
