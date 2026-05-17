@@ -500,32 +500,31 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
       <div style="font-size:0.85rem">
         <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
           <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_wrong_cal">🤦 导入到错误的日历了怎么办？</summary>
-          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
-            <p><strong>情况 A</strong>：导入到了独立的「念念·农历生日」日历 → <span style="color:#2E7D32">直接删除该日历即可</span>。</p>
-            <p><strong>情况 B</strong>：导入到了已有日历 → 导出备份 → 删日历 → 重建 → 选择性导入。</p>
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_wrong_a">
+            导入到了独立的日历 → 直接删除即可。导入到了已有日历 → 导出备份 → 删日历 → 重建。
           </div>
         </details>
         <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
           <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_update">🔄 新增了家人，怎么更新？</summary>
-          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_update_p">
             网页改名单 → 重新生成 → 日历中删旧日历 → 导入新文件。先删再导不会产生重复事件。
           </div>
         </details>
         <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
           <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_privacy">🔒 数据安全吗？</summary>
-          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_privacy_p">
             念念是纯客户端工具：没有服务器、没有数据库、没有 API，所有计算在浏览器内完成，数据永不离开你的设备。
           </div>
         </details>
         <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
           <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_android">📱 支持 Android 吗？</summary>
-          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_android_p">
             .ics 是标准格式，Android 上可用 Google 日历或 ICSx⁵ 导入。
           </div>
         </details>
         <details style="padding:8px 10px;background:#fafafa;border-radius:6px">
           <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_excel">📄 支持 Excel 吗？</summary>
-          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem">
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_excel_p">
             当前支持 .csv，用 Excel / Numbers / WPS 打开编辑后另存为 CSV 即可。
           </div>
         </details>
@@ -1543,13 +1542,14 @@ const i18n = {
     guide_upd_4: 'iCloud 自动同步所有设备',
     // FAQ
     faq_wrong_cal: '🤦 导入到错误的日历了怎么办？',
-    faq_wrong_a: '情况 A：导入到了独立的「念念·农历生日」日历 → 直接删除该日历即可，一秒清空。',
+    faq_wrong_a: '导入到了独立的日历 → 直接删除即可。导入到了已有日历 → 导出备份 → 删日历 → 重建。',
     faq_wrong_b: '情况 B：导入到了已有的日历（如「个人」）→ 两种处理方式：',
     faq_update: '🔄 新增了家人 / 改了年份，怎么更新？',
     faq_update_p: '步骤：',
     faq_privacy: '🔒 我的数据会上传到服务器吗？',
     faq_privacy_p: '绝对不会。念念是纯客户端工具：',
     faq_android: '📱 支持 Android 手机吗？',
+    faq_android_p: '.ics 是标准格式，Android 上可用 Google 日历或 ICSx⁵ 导入。',
     faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
     faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
     // Placeholders for inputs
@@ -1632,13 +1632,14 @@ const i18n = {
     guide_upd_3: 'Double-click the new ICS to re-import',
     guide_upd_4: 'iCloud syncs to all devices',
     faq_wrong_cal: '🤦 Imported into the wrong calendar?',
-    faq_wrong_a: 'Case A: Imported into "NianNian Birthdays" calendar → Just delete that calendar.',
+    faq_wrong_a: 'Imported into a dedicated calendar → Just delete it. Imported into an existing calendar → Export → Delete → Rebuild.',
     faq_wrong_b: 'Case B: Imported into an existing calendar → Two options:',
     faq_update: '🔄 How to update birthdays?',
     faq_update_p: 'Steps:',
     faq_privacy: '🔒 Does my data get uploaded?',
     faq_privacy_p: 'Absolutely not. NianNian is a client-only tool:',
     faq_android: '📱 Android support?',
+    faq_android_p: '.ics is a standard format. On Android, use Google Calendar or ICSx⁵ to import.',
     faq_excel: '📄 Excel (.xlsx) support?',
     faq_excel_p: 'Currently supports .csv format. You can open it in Excel / Numbers / WPS / Google Sheets and save as CSV.',
     ph_name: 'Name', ph_month: 'Mth', ph_day: 'Day', ph_note: 'Optional', ph_days: 'Days',
