@@ -393,13 +393,20 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
         <label data-i18n="mobile_label_name">姓名</label>
         <input type="text" id="bsName" maxlength="20" placeholder="姓名">
       </div>
+      <div class="mobile-field">
+        <label data-i18n="mobile_label_calendar">类型</label>
+        <select id="bsCalendar" onchange="updateCalendarLabels()">
+          <option value="lunar" data-i18n="calendar_lunar">阴历</option>
+          <option value="solar" data-i18n="calendar_solar">阳历</option>
+        </select>
+      </div>
       <div class="mobile-field" style="display:flex;gap:12px">
         <div style="flex:1">
-          <label data-i18n="mobile_label_lunar_month">农历月</label>
+          <label id="bsLabelMonth">月份</label>
           <input type="number" id="bsMonth" min="1" max="12" placeholder="8" inputmode="numeric">
         </div>
         <div style="flex:1">
-          <label data-i18n="mobile_label_lunar_day">农历日</label>
+          <label id="bsLabelDay">日期</label>
           <input type="number" id="bsDay" min="1" max="30" placeholder="15" inputmode="numeric">
         </div>
       </div>
@@ -420,13 +427,6 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
           <option value="once" data-i18n="opt_once">一次</option>
           <option value="daily" data-i18n="opt_daily">每天</option>
           <option value="everyOtherDay" data-i18n="opt_everyOther">隔天</option>
-        </select>
-      </div>
-      <div class="mobile-field">
-        <label data-i18n="mobile_label_calendar">历法</label>
-        <select id="bsCalendar">
-          <option value="lunar" data-i18n="calendar_lunar">农历</option>
-          <option value="solar" data-i18n="calendar_solar">公历</option>
         </select>
       </div>
       <div class="mobile-field">
@@ -1511,15 +1511,17 @@ const i18n = {
       mobile_empty: '还没有添加家人，点击上方按钮开始',
       mobile_confirm_delete: '确定要删除 {name} 吗？',
       mobile_label_name: '姓名',
-      mobile_label_lunar_month: '农历月',
-      mobile_label_lunar_day: '农历日',
+mobile_label_lunar_month: '月份',
+    mobile_label_lunar_day: '日期',
+    mobile_label_solar_month: '月份',
+    mobile_label_solar_day: '日期',
       mobile_label_note: '备注',
       mobile_label_remind: '提前提醒',
       mobile_label_mode: '提醒方式',
       mobile_label_group: '分组',
-    mobile_label_calendar: '历法',
-    calendar_lunar: '农历',
-    calendar_solar: '公历',
+    mobile_label_calendar: '类型',
+    calendar_lunar: '阴历',
+    calendar_solar: '阳历',
     th_calendar: '历法',
       mobile_days_suffix: '天',
       mobile_badge_format: '({count} 位家人 · {years} 年)',
@@ -1610,15 +1612,17 @@ const i18n = {
       mobile_empty: 'No family members yet. Tap the button above to add.',
       mobile_confirm_delete: 'Delete {name}?',
       mobile_label_name: 'Name',
-      mobile_label_lunar_month: 'Lunar Month',
-      mobile_label_lunar_day: 'Lunar Day',
+mobile_label_lunar_month: 'Month',
+    mobile_label_lunar_day: 'Day',
+    mobile_label_solar_month: 'Month',
+    mobile_label_solar_day: 'Day',
       mobile_label_note: 'Note',
       mobile_label_remind: 'Remind Before',
       mobile_label_mode: 'Reminder Mode',
       mobile_label_group: 'Group',
-    mobile_label_calendar: 'Calendar',
-    calendar_lunar: 'Lunar',
-    calendar_solar: 'Solar',
+    mobile_label_calendar: 'Type',
+    calendar_lunar: '阴历',
+    calendar_solar: '阳历',
     th_calendar: 'Cal',
       mobile_days_suffix: 'day(s)',
       mobile_badge_format: '({count} people · {years} yrs)',
@@ -2349,6 +2353,7 @@ function openBottomSheet(personId) {
     document.getElementById('bsMode').value = p.mode || 'once';
     document.getElementById('bsGroup').value = p.group || 'family';
     document.getElementById('bsCalendar').value = p.calendar || 'lunar';
+    updateCalendarLabels();
     title.textContent = __('mobile_edit_title');
     if (deleteWrap) deleteWrap.classList.remove('hidden');
   } else {
@@ -2359,6 +2364,8 @@ function openBottomSheet(personId) {
     document.getElementById('bsDaysBefore').value = 3;
     document.getElementById('bsMode').value = 'once';
     document.getElementById('bsGroup').value = 'family';
+    document.getElementById('bsCalendar').value = 'lunar';
+    updateCalendarLabels();
     title.textContent = __('mobile_add_title');
     if (deleteWrap) deleteWrap.classList.add('hidden');
   }
@@ -2367,6 +2374,21 @@ function openBottomSheet(personId) {
   sheet.classList.add('open');
   document.body.style.overflow = 'hidden';
   setTimeout(function() { document.getElementById('bsName').focus(); }, 350);
+}
+
+
+function updateCalendarLabels() {
+  var cal = document.getElementById('bsCalendar');
+  var monthLabel = document.getElementById('bsLabelMonth');
+  var dayLabel = document.getElementById('bsLabelDay');
+  if (!cal || !monthLabel || !dayLabel) return;
+  if (cal.value === 'solar') {
+    monthLabel.textContent = __('mobile_label_solar_month') || 'Month';
+    dayLabel.textContent = __('mobile_label_solar_day') || 'Day';
+  } else {
+    monthLabel.textContent = __('mobile_label_lunar_month') || 'Month';
+    dayLabel.textContent = __('mobile_label_lunar_day') || 'Day';
+  }
 }
 
 function closeBottomSheet() {
@@ -2412,6 +2434,7 @@ function saveBottomSheet() {
         people[i].daysBefore = daysBefore;
         people[i].mode = mode;
         people[i].group = group;
+        people[i].calendar = calendar;
         break;
       }
     }
@@ -2424,7 +2447,8 @@ function saveBottomSheet() {
       note: note,
       daysBefore: daysBefore,
       mode: mode,
-      group: group
+      group: group,
+      calendar: calendar,
     });
   }
 
