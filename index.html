@@ -396,7 +396,7 @@ td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
       <div class="mobile-field">
         <label data-i18n="mobile_label_calendar">类型</label>
         <select id="bsCalendar" onchange="updateCalendarLabels()">
-          <option value="lunar" data-i18n="calendar_lunar">阴历</option>
+          <option value="lunar" data-i18n="calendar_lunar">农历</option>
           <option value="solar" data-i18n="calendar_solar">阳历</option>
         </select>
       </div>
@@ -1520,7 +1520,7 @@ mobile_label_lunar_month: '月份',
       mobile_label_mode: '提醒方式',
       mobile_label_group: '分组',
     mobile_label_calendar: '类型',
-    calendar_lunar: '阴历',
+    calendar_lunar: '农历',
     calendar_solar: '阳历',
     th_calendar: '历法',
       mobile_days_suffix: '天',
@@ -1621,7 +1621,7 @@ mobile_label_lunar_month: 'Month',
       mobile_label_mode: 'Reminder Mode',
       mobile_label_group: 'Group',
     mobile_label_calendar: 'Type',
-    calendar_lunar: '阴历',
+    calendar_lunar: '农历',
     calendar_solar: '阳历',
     th_calendar: 'Cal',
       mobile_days_suffix: 'day(s)',
@@ -2416,11 +2416,21 @@ function saveBottomSheet() {
     return;
   }
   if (isNaN(month) || month < 1 || month > 12) {
-    toast('\u8bf7\u8f93\u5165\u6709\u6548\u519c\u5386\u6708 (1-12)');
+    toast('\u8bf7\u8f93\u5165\u6709\u6548\u6708\u4efd (1-12)');
     return;
   }
-  if (isNaN(day) || day < 1 || day > 30) {
-    toast('\u8bf7\u8f93\u5165\u6709\u6548\u519c\u5386\u65e5 (1-30)');
+  // Validate day based on calendar type
+  var maxDay = 30;
+  if (calendar === 'solar') {
+    var solarDays = [31,28,31,30,31,30,31,31,30,31,30,31];
+    maxDay = solarDays[month - 1] || 31;
+    if (month === 2) {
+      var yr = new Date().getFullYear();
+      if ((yr % 4 === 0 && yr % 100 !== 0) || (yr % 400 === 0)) maxDay = 29;
+    }
+  }
+  if (isNaN(day) || day < 1 || day > maxDay) {
+    toast('\u8bf7\u8f93\u5165\u6709\u6548\u65e5\u671f (1-' + maxDay + ')');
     return;
   }
 
