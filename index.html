@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#C73B3B">
+<meta name="description" content="念念(NianNian) - 把家人的农历生日装进你的日历，每年准时提醒。纯客户端工具，隐私安全。">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="念念">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23C73B3B'/%3E%3Ccircle cx='50' cy='50' r='32' fill='white' opacity='0.95'/%3E%3Ccircle cx='62' cy='46' r='28' fill='%23C73B3B'/%3E%3Ccircle cx='30' cy='38' r='3' fill='white' opacity='0.8'/%3E%3Ccircle cx='68' cy='30' r='2' fill='white' opacity='0.7'/%3E%3Ccircle cx='38' cy='68' r='2.5' fill='white' opacity='0.7'/%3E%3C/svg%3E">
+<title>念念 · 农历生日助手</title>
+
+<style>
+/* ===== Reset & Base ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:#FFF8F0;color:#2D2D2D;line-height:1.6;min-height:100vh
+}
+a{color:#C73B3B;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ===== Layout ===== */
+.container{max-width:720px;margin:0 auto;padding:16px}
+@media(min-width:768px){.container{padding:32px 24px}}
+
+/* ===== Header ===== */
+.header{text-align:center;padding:32px 0 24px}
+.header .logo{font-size:2rem;font-weight:700;color:#C73B3B;letter-spacing:2px}
+.header .logo-sub{font-size:0.9rem;color:#888;margin-top:2px}
+.header .tagline{font-size:0.95rem;color:#666;margin-top:8px}
+.privacy-badge{
+  display:inline-block;margin-top:12px;padding:4px 14px;
+  background:#E8F5E9;color:#2E7D32;border-radius:20px;
+  font-size:0.8rem;font-weight:500
+}
+
+/* ===== Section Card ===== */
+.card{
+  background:#fff;border-radius:12px;padding:20px;
+  margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,0.06)
+}
+.card-title{
+  font-size:1.05rem;font-weight:600;color:#333;
+  margin-bottom:12px;display:flex;align-items:center;gap:8px
+}
+.card-title .step-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;background:#C73B3B;
+  color:#fff;font-size:0.8rem;font-weight:600
+}
+
+/* ===== Buttons ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 20px;border-radius:8px;border:none;
+  font-size:0.9rem;font-weight:500;cursor:pointer;
+  transition:all 0.15s;white-space:nowrap;user-select:none
+}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:#C73B3B;color:#fff}
+.btn-primary:hover{background:#B02E2E}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed;transform:none}
+.btn-secondary{background:#f0f0f0;color:#555}
+.btn-secondary:hover{background:#e5e5e5}
+.btn-outline{background:transparent;color:#C73B3B;border:1.5px solid #C73B3B}
+.btn-outline:hover{background:#FFF0F0}
+.btn-sm{padding:6px 14px;font-size:0.82rem}
+.btn-block{width:100%;justify-content:center}
+.btn-download{background:#2E7D32;color:#fff;padding:14px 28px;font-size:1.05rem}
+.btn-download:hover{background:#256829}
+
+/* ===== Upload Zone ===== */
+.upload-zone{
+  border:2px dashed #ddd;border-radius:10px;padding:28px 16px;
+  text-align:center;cursor:pointer;transition:all 0.15s;margin-bottom:12px
+}
+.upload-zone:hover,.upload-zone.dragover{border-color:#C73B3B;background:#FFF5F5}
+.upload-zone .icon{font-size:1.8rem;margin-bottom:6px}
+.upload-zone .text{font-size:0.9rem;color:#888}
+.upload-zone .hint{font-size:0.78rem;color:#aaa;margin-top:4px}
+
+/* ===== Table ===== */
+.table-wrap{overflow-x:auto;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;min-width:600px}
+th,td{padding:8px 6px;text-align:left;border-bottom:1px solid #eee;white-space:nowrap}
+th{font-weight:600;color:#666;font-size:0.8rem;background:#fafafa;position:sticky;top:0}
+td input,td select{
+  width:100%;padding:5px 6px;border:1px solid #ddd;border-radius:4px;
+  font-size:0.85rem;background:#fff;font-family:inherit
+}
+td input:focus,td select:focus{outline:none;border-color:#C73B3B}
+td .btn-del{
+  background:none;border:none;color:#ccc;cursor:pointer;font-size:1.1rem;
+  padding:2px 6px;border-radius:4px
+}
+td .btn-del:hover{color:#C73B3B;background:#FFF0F0}
+
+/* ===== Year Selector ===== */
+.year-selector{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.year-btn{
+  padding:8px 18px;border:1.5px solid #ddd;border-radius:8px;
+  background:#fff;cursor:pointer;font-size:0.9rem;font-weight:500;transition:all 0.12s
+}
+.year-btn:hover{border-color:#C73B3B;color:#C73B3B}
+.year-btn.active{border-color:#C73B3B;background:#C73B3B;color:#fff}
+
+/* ===== Import Guide ===== */
+.guide-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:600px){.guide-grid{grid-template-columns:1fr 1fr 1fr}}
+.guide-card{
+  padding:16px;background:#fafafa;border-radius:10px;font-size:0.88rem
+}
+.guide-card .device-icon{font-size:1.5rem;margin-bottom:4px}
+.guide-card h4{font-size:0.92rem;margin-bottom:6px;color:#333}
+.guide-card ol{padding-left:18px;color:#555}
+.guide-card ol li{margin-bottom:4px}
+
+/* ===== Privacy ===== */
+.privacy-box{
+  background:#F9FAFB;border:1px solid #E5E7EB;border-radius:10px;
+  padding:16px;font-size:0.85rem;color:#555;line-height:1.7
+}
+.privacy-box .lock{font-size:1.2rem}
+.privacy-box ul{list-style:none;padding:0;margin-top:8px}
+.privacy-box ul li{padding:3px 0;padding-left:20px;position:relative}
+.privacy-box ul li::before{content:"✓";position:absolute;left:0;color:#2E7D32;font-weight:700}
+
+/* ===== Count ===== */
+.count-badge{
+  display:inline-block;margin-left:8px;
+  background:#FFF0F0;color:#C73B3B;padding:2px 10px;border-radius:12px;
+  font-size:0.78rem;font-weight:500
+}
+
+/* ===== Footer ===== */
+.footer{text-align:center;padding:24px 0 40px;font-size:0.8rem;color:#aaa}
+
+/* ===== Toast ===== */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:#333;color:#fff;padding:10px 20px;border-radius:8px;
+  font-size:0.85rem;z-index:999;opacity:0;transition:opacity 0.3s;
+  pointer-events:none;white-space:nowrap;max-width:90vw
+}
+.toast.show{opacity:1}
+
+/* ===== Empty state ===== */
+.empty-state{text-align:center;padding:24px 0;color:#aaa;font-size:0.9rem}
+.empty-state .icon{font-size:2rem;margin-bottom:8px}
+
+/* ===== Hide helper ===== */
+.hidden{display:none!important}
+
+/* ===== Generate Result ===== */
+.gen-result{text-align:center;padding:16px 0}
+.gen-result .success-icon{font-size:2.5rem;margin-bottom:8px}
+.gen-result .msg{font-size:0.95rem;color:#333;margin-bottom:4px}
+.gen-result .detail{font-size:0.82rem;color:#888}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ======== Header ======== -->
+<header class="header">
+  <div class="logo">🏮 念念</div>
+  <div class="logo-sub">NianNian</div>
+  <div class="tagline">把家人的农历生日装进你的日历</div>
+  <div class="privacy-badge">🔒 纯客户端 · 数据不上传</div>
+</header>
+
+<!-- ======== Step 1: Data ======== -->
+<section class="card">
+  <div class="card-title"><span class="step-num">1</span> 添加家人生日</div>
+
+  
+  <div class="upload-zone" id="uploadZone">
+    <div class="icon">📂</div>
+    <div class="text">上传 CSV 文件，或拖拽到此处</div>
+    <div class="hint">支持 .csv 格式，也可在下方表格直接填写</div>
+  </div>
+  <input type="file" id="fileInput" accept=".csv" style="display:none">
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+    <button class="btn btn-outline btn-sm" id="downloadSampleBtn">📄 下载样例 CSV</button>
+    <button class="btn btn-secondary btn-sm" id="addRowBtn">＋ 添加一行</button>
+    <button class="btn btn-secondary btn-sm" id="clearAllBtn">🗑️ 清空</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap" id="tableWrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%">姓名</th>
+          <th style="width:12%">农历月</th>
+          <th style="width:12%">农历日</th>
+          <th style="width:18%">备注</th>
+          <th style="width:14%">提前(天)</th>
+          <th style="width:16%">提醒方式</th>
+          <th style="width:6%"></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+  <div class="empty-state" id="emptyState">
+    <div class="icon">📋</div>
+    <div>还没有添加生日数据<br>上传 CSV 或点击「添加一行」开始</div>
+  </div>
+</section>
+
+<!-- ======== Step 2: Settings ======== -->
+<section class="card">
+  <div class="card-title"><span class="step-num">2</span> 设置</div>
+  <div style="font-size:0.85rem;color:#555;margin-bottom:6px">生成未来多少年的日历：</div>
+  <div class="year-selector" id="yearSelector">
+    <button class="year-btn" data-years="10">10 年</button>
+    <button class="year-btn" data-years="30">30 年</button>
+    <button class="year-btn active" data-years="60">60 年</button>
+    <button class="year-btn" data-years="100">100 年</button>
+  </div>
+</section>
+
+<!-- ======== Step 3: Generate ======== -->
+<section class="card">
+  <div class="card-title"><span class="step-num">3</span> 生成并下载</div>
+  <button class="btn btn-download btn-block" id="generateBtn">🎯 生成 ICS 并下载</button>
+  <div id="genResult" class="gen-result hidden">
+    <div class="success-icon">✅</div>
+    <div class="msg" id="genMsg"></div>
+    <div class="detail" id="genDetail"></div>
+  </div>
+</section>
+
+<!-- ======== Import Guide ======== -->
+<section class="card">
+  <div class="card-title">📖 导入日历指南</div>
+  <p style="font-size:0.85rem;color:#666;margin-bottom:12px">
+    下载 .ics 文件后，按你的设备选择导入方式：
+  </p>
+
+  <div style="background:#FFF8F0;border:1px solid #E8A87C;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:0.85rem">
+    💡 <strong>小提示</strong>：如果已经有「念念·农历生日」日历，更新时记得先右键删除旧日历再导入新文件。<br>
+    分多次导入同一个日历，Apple 日历会当成不同事件重复展示。
+  </div>
+
+  <div class="guide-grid">
+    <div class="guide-card">
+      <div class="device-icon">💻</div>
+      <h4>Mac</h4>
+      <ol>
+        <li>双击下载的 <code>.ics</code> 文件</li>
+        <li>日历 App 自动打开</li>
+        <li><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
+        <li>点击「好」完成导入</li>
+      </ol>
+    </div>
+    <div class="guide-card">
+      <div class="device-icon">📱</div>
+      <h4>iPhone / iPad</h4>
+      <ol>
+        <li>将 <code>.ics</code> 文件发到微信或邮件</li>
+        <li>点击文件 → 选择「用日历打开」</li>
+        <li><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
+        <li>点击「完成」→ iCloud 自动同步</li>
+      </ol>
+    </div>
+    <div class="guide-card">
+      <div class="device-icon">🔄</div>
+      <h4>如何更新 / 如何删除</h4>
+      <ol>
+        <li>在网页修改后重新生成并下载 ICS</li>
+        <li>日历 App 左侧栏<strong>右键删除</strong>旧的「念念·农历生日」日历</li>
+        <li>双击新 ICS 重新导入到同名日历</li>
+        <li>iCloud 自动同步所有设备</li>
+      </ol>
+      <div style="margin-top:6px;font-size:0.8rem;color:#888">
+        💡 删除日历只移除生日事件，不影响其他日程。先删旧日历再导新文件，不会产生重复事件。
+      </div>
+    </div>
+  </div>
+
+  
+</section>
+
+<!-- ======== FAQ ======== -->
+<section class="card">
+  <div class="card-title">❓ 常见问题</div>
+  <div style="font-size:0.88rem">
+    <details style="margin-bottom:10px;padding:10px 12px;background:#fafafa;border-radius:8px">
+      <summary style="cursor:pointer;font-weight:500">🤦 导入到错误的日历了怎么办？</summary>
+      <div style="margin-top:8px;color:#555;line-height:1.7">
+        <p><strong>情况 A</strong>：导入到了独立的「念念·农历生日」日历 → <span style="color:#2E7D32">直接删除该日历即可</span>，一秒清空。</p>
+        <p><strong>情况 B</strong>：导入到了已有的日历（如「个人」）→ 两种处理方式：</p>
+        <ol style="padding-left:18px">
+          <li><strong>导出备份法</strong>：先导出该日历作备份 → 删除该日历 → 重建 → 选择性导入备份</li>
+          <li><strong>批量删除</strong>：Mac 日历切换到列表视图 → 按标题排序 → 全选「XX 生日」事件 → Delete</li>
+        </ol>
+        <p style="margin-top:6px">💡 建议：以后每次导入都选「新建日历」命名为「念念·农历生日」，方便一键管理。</p>
+      </div>
+    </details>
+
+    <details style="margin-bottom:10px;padding:10px 12px;background:#fafafa;border-radius:8px">
+      <summary style="cursor:pointer;font-weight:500">🔄 新增了家人 / 改了年份，怎么更新？</summary>
+      <div style="margin-top:8px;color:#555;line-height:1.7">
+        <p>步骤：</p>
+        <ol style="padding-left:18px">
+          <li>网页上修改名单或年份 → 重新生成 ICS</li>
+          <li>日历 App 中右键删除旧的「念念·农历生日」日历</li>
+          <li>双击新 ICS 导入 → iCloud 同步</li>
+        </ol>
+        <p style="margin-top:6px;font-size:0.82rem;color:#888">
+          先删旧日历再导入新文件，就不会产生重复事件。<br>
+          如果多次导入不删旧的，Apple 日历会把同一人生日显示成多个重复事件。
+        </p>
+      </div>
+    </details>
+
+    <details style="margin-bottom:10px;padding:10px 12px;background:#fafafa;border-radius:8px">
+      <summary style="cursor:pointer;font-weight:500">🔒 我的数据会上传到服务器吗？</summary>
+      <div style="margin-top:8px;color:#555;line-height:1.7">
+        <p><strong>绝对不会。</strong>念念是纯客户端工具：</p>
+        <ul style="padding-left:18px">
+          <li>没有服务器，没有数据库，没有 API</li>
+          <li>所有计算在浏览器内完成</li>
+          <li>农历转换库直接内联在 HTML 中，不请求任何 CDN</li>
+          <li>你可以下载 HTML 到本地，断网也能用</li>
+          <li>完整开源，代码可审计</li>
+        </ul>
+      </div>
+    </details>
+
+    <details style="margin-bottom:10px;padding:10px 12px;background:#fafafa;border-radius:8px">
+      <summary style="cursor:pointer;font-weight:500">📱 支持 Android 手机吗？</summary>
+      <div style="margin-top:8px;color:#555;line-height:1.7">
+        <p>念念生成的 <code>.ics</code> 文件是<strong>标准日历格式</strong>，支持任何平台的日历 App。</p>
+        <p>Android 上你可以：</p>
+        <ul style="padding-left:18px">
+          <li>用 Google 日历导入（网页版 calendar.google.com → 设置 → 导入）</li>
+          <li>或者安装开源 App <strong>ICSx⁵</strong>，用它打开 .ics 文件即可导入系统日历</li>
+        </ul>
+        <p style="margin-top:4px">详细导入指南后续会在 v2 中补充。</p>
+      </div>
+    </details>
+
+    <details style="padding:10px 12px;background:#fafafa;border-radius:8px">
+      <summary style="cursor:pointer;font-weight:500">📄 支持 Excel (.xlsx) 格式吗？</summary>
+      <div style="margin-top:8px;color:#555;line-height:1.7">
+        当前支持 <strong>.csv</strong> 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ======== Privacy ======== -->
+<section class="card">
+  <div class="card-title">🔒 隐私承诺</div>
+  <div class="privacy-box">
+    <div class="lock">此工具完全运行在你的浏览器中。</div>
+    <ul>
+      <li>你的数据永远不会离开你的设备</li>
+      <li>没有服务器、没有数据库、没有 API</li>
+      <li>所有计算在浏览器内完成，无需联网</li>
+      <li>农历转换库直接内联，不请求任何 CDN</li>
+      <li>无分析工具、无埋点、无 Cookie</li>
+      <li>完整开源，代码可审计</li>
+    </ul>
+    <div style="margin-top:8px;font-size:0.82rem">
+      🔍 完整隐私声明见 <a href="PRIVACY.md" target="_blank">PRIVACY.md</a> ｜
+      源代码：<a href="https://github.com/BlakeYa/niannian" target="_blank">github.com/BlakeYa/niannian</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======== Footer ======== -->
+<footer class="footer">
+  🏮 念念 (NianNian) · MIT 开源 ·
+  <a href="https://github.com/BlakeYa/niannian" target="_blank">GitHub</a>
+</footer>
+
+</div>
+
+<!-- ======== Toast ======== -->
+<div class="toast" id="toast"></div>
+
+<!-- ======== Inline solarlunar ======== -->
+<script>
+/* solarlunar v3.1.0 - inlined for privacy - https://github.com/yize/solarlunar */
+(function() {
+  var exports = window.solarlunar = {};
+ 'use strict';
+
+  /**
+   * 农历 1900-2100 的润大小信息表
+   * @return Array
+   */
+  var lunarInfo = [0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0, 0x09ad0, 0x055d2,//1900-1909
+    0x04ae0, 0x0a5b6, 0x0a4d0, 0x0d250, 0x1d255, 0x0b540, 0x0d6a0, 0x0ada2, 0x095b0, 0x14977,//1910-1919
+    0x04970, 0x0a4b0, 0x0b4b5, 0x06a50, 0x06d40, 0x1ab54, 0x02b60, 0x09570, 0x052f2, 0x04970,//1920-1929
+    0x06566, 0x0d4a0, 0x0ea50, 0x06e95, 0x05ad0, 0x02b60, 0x186e3, 0x092e0, 0x1c8d7, 0x0c950,//1930-1939
+    0x0d4a0, 0x1d8a6, 0x0b550, 0x056a0, 0x1a5b4, 0x025d0, 0x092d0, 0x0d2b2, 0x0a950, 0x0b557,//1940-1949
+    0x06ca0, 0x0b550, 0x15355, 0x04da0, 0x0a5b0, 0x14573, 0x052b0, 0x0a9a8, 0x0e950, 0x06aa0,//1950-1959
+    0x0aea6, 0x0ab50, 0x04b60, 0x0aae4, 0x0a570, 0x05260, 0x0f263, 0x0d950, 0x05b57, 0x056a0,//1960-1969
+    0x096d0, 0x04dd5, 0x04ad0, 0x0a4d0, 0x0d4d4, 0x0d250, 0x0d558, 0x0b540, 0x0b6a0, 0x195a6,//1970-1979
+    0x095b0, 0x049b0, 0x0a974, 0x0a4b0, 0x0b27a, 0x06a50, 0x06d40, 0x0af46, 0x0ab60, 0x09570,//1980-1989
+    0x04af5, 0x04970, 0x064b0, 0x074a3, 0x0ea50, 0x06b58, 0x05ac0, 0x0ab60, 0x096d5, 0x092e0,//1990-1999
+    0x0c960, 0x0d954, 0x0d4a0, 0x0da50, 0x07552, 0x056a0, 0x0abb7, 0x025d0, 0x092d0, 0x0cab5,//2000-2009
+    0x0a950, 0x0b4a0, 0x0baa4, 0x0ad50, 0x055d9, 0x04ba0, 0x0a5b0, 0x15176, 0x052b0, 0x0a930,//2010-2019
+    0x07954, 0x06aa0, 0x0ad50, 0x05b52, 0x04b60, 0x0a6e6, 0x0a4e0, 0x0d260, 0x0ea65, 0x0d530,//2020-2029
+    0x05aa0, 0x076a3, 0x096d0, 0x04afb, 0x04ad0, 0x0a4d0, 0x1d0b6, 0x0d250, 0x0d520, 0x0dd45,//2030-2039
+    0x0b5a0, 0x056d0, 0x055b2, 0x049b0, 0x0a577, 0x0a4b0, 0x0aa50, 0x1b255, 0x06d20, 0x0ada0,//2040-2049
+    /**Add By JJonline@JJonline.Cn**/
+    0x14b63, 0x09370, 0x049f8, 0x04970, 0x064b0, 0x168a6, 0x0ea50, 0x06b20, 0x1a6c4, 0x0aae0,//2050-2059
+    0x092e0, 0x0d2e3, 0x0c960, 0x0d557, 0x0d4a0, 0x0da50, 0x05d55, 0x056a0, 0x0a6d0, 0x055d4,//2060-2069
+    0x052d0, 0x0a9b8, 0x0a950, 0x0b4a0, 0x0b6a6, 0x0ad50, 0x055a0, 0x0aba4, 0x0a5b0, 0x052b0,//2070-2079
+    0x0b273, 0x06930, 0x07337, 0x06aa0, 0x0ad50, 0x14b55, 0x04b60, 0x0a570, 0x054e4, 0x0d160,//2080-2089
+    0x0e968, 0x0d520, 0x0daa0, 0x16aa6, 0x056d0, 0x04ae0, 0x0a9d4, 0x0a4d0, 0x0d150, 0x0f252,//2090-2099
+    0x0d520];//2100;
+
+  /**
+   * 公历每个月份的天数普通表
+   * @Array Of Property
+   * @return Number
+   */
+  var solarMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  /**
+   * 天干地支之天干速查表
+   * @Array Of Property trans['甲','乙','丙','丁','戊','己','庚','辛','壬','癸']
+   * @return Cn string
+   */
+  var gan = [
+    '\u7532',
+    '\u4e59',
+    '\u4e19',
+    '\u4e01',
+    '\u620a',
+    '\u5df1',
+    '\u5e9a',
+    '\u8f9b',
+    '\u58ec',
+    '\u7678'
+  ];
+
+  /**
+   * 天干地支之地支速查表
+   * @Array Of Property
+   * @trans['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥']
+   * @return Cn string
+   */
+  var zhi = [
+    '\u5b50',
+    '\u4e11',
+    '\u5bc5',
+    '\u536f',
+    '\u8fb0',
+    '\u5df3',
+    '\u5348',
+    '\u672a',
+    '\u7533',
+    '\u9149',
+    '\u620c',
+    '\u4ea5'
+  ];
+
+  /**
+   * 天干地支之地支速查表<=>生肖
+   * @Array Of Property
+   * @trans['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪']
+   * @return Cn string
+   */
+  var animals = [
+    '\u9f20',
+    '\u725b',
+    '\u864e',
+    '\u5154',
+    '\u9f99',
+    '\u86c7',
+    '\u9a6c',
+    '\u7f8a',
+    '\u7334',
+    '\u9e21',
+    '\u72d7',
+    '\u732a'
+  ];
+
+  /**
+   * 24节气速查表
+   * @Array Of Property
+   * @trans['小寒','大寒','立春','雨水','惊蛰','春分','清明','谷雨','立夏','小满','芒种','夏至','小暑','大暑','立秋','处暑','白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至']
+   * @return Cn string
+   */
+  var lunarTerm = [
+    '\u5c0f\u5bd2', '\u5927\u5bd2', '\u7acb\u6625', '\u96e8\u6c34', '\u60ca\u86f0', '\u6625\u5206', '\u6e05\u660e', '\u8c37\u96e8', '\u7acb\u590f', '\u5c0f\u6ee1', '\u8292\u79cd', '\u590f\u81f3', '\u5c0f\u6691', '\u5927\u6691', '\u7acb\u79cb', '\u5904\u6691', '\u767d\u9732', '\u79cb\u5206', '\u5bd2\u9732', '\u971c\u964d', '\u7acb\u51ac', '\u5c0f\u96ea', '\u5927\u96ea', '\u51ac\u81f3'
+  ];
+
+  /**
+   * 1900-2100各年的24节气日期速查表
+   * @Array Of Property
+   * @return 0x string For splice
+   */
+  var lTermInfo = [
+    '9778397bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e', '97bcf97c3598082c95f8c965cc920f',
+    '97bd0b06bdb0722c965ce1cfcc920f', 'b027097bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e',
+    '97bcf97c359801ec95f8c965cc920f', '97bd0b06bdb0722c965ce1cfcc920f', 'b027097bd097c36b0b6fc9274c91aa',
+    '97b6b97bd19801ec9210c965cc920e', '97bcf97c359801ec95f8c965cc920f', '97bd0b06bdb0722c965ce1cfcc920f',
+    'b027097bd097c36b0b6fc9274c91aa', '9778397bd19801ec9210c965cc920e', '97b6b97bd19801ec95f8c965cc920f',
+    '97bd09801d98082c95f8e1cfcc920f', '97bd097bd097c36b0b6fc9210c8dc2', '9778397bd197c36c9210c9274c91aa',
+    '97b6b97bd19801ec95f8c965cc920e', '97bd09801d98082c95f8e1cfcc920f', '97bd097bd097c36b0b6fc9210c8dc2',
+    '9778397bd097c36c9210c9274c91aa', '97b6b97bd19801ec95f8c965cc920e', '97bcf97c3598082c95f8e1cfcc920f',
+    '97bd097bd097c36b0b6fc9210c8dc2', '9778397bd097c36c9210c9274c91aa', '97b6b97bd19801ec9210c965cc920e',
+    '97bcf97c3598082c95f8c965cc920f', '97bd097bd097c35b0b6fc920fb0722', '9778397bd097c36b0b6fc9274c91aa',
+    '97b6b97bd19801ec9210c965cc920e', '97bcf97c3598082c95f8c965cc920f', '97bd097bd097c35b0b6fc920fb0722',
+    '9778397bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e', '97bcf97c359801ec95f8c965cc920f',
+    '97bd097bd097c35b0b6fc920fb0722', '9778397bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e',
+    '97bcf97c359801ec95f8c965cc920f', '97bd097bd097c35b0b6fc920fb0722', '9778397bd097c36b0b6fc9274c91aa',
+    '97b6b97bd19801ec9210c965cc920e', '97bcf97c359801ec95f8c965cc920f', '97bd097bd07f595b0b6fc920fb0722',
+    '9778397bd097c36b0b6fc9210c8dc2', '9778397bd19801ec9210c9274c920e', '97b6b97bd19801ec95f8c965cc920f',
+    '97bd07f5307f595b0b0bc920fb0722', '7f0e397bd097c36b0b6fc9210c8dc2', '9778397bd097c36c9210c9274c920e',
+    '97b6b97bd19801ec95f8c965cc920f', '97bd07f5307f595b0b0bc920fb0722', '7f0e397bd097c36b0b6fc9210c8dc2',
+    '9778397bd097c36c9210c9274c91aa', '97b6b97bd19801ec9210c965cc920e', '97bd07f1487f595b0b0bc920fb0722',
+    '7f0e397bd097c36b0b6fc9210c8dc2', '9778397bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e',
+    '97bcf7f1487f595b0b0bb0b6fb0722', '7f0e397bd097c35b0b6fc920fb0722', '9778397bd097c36b0b6fc9274c91aa',
+    '97b6b97bd19801ec9210c965cc920e', '97bcf7f1487f595b0b0bb0b6fb0722', '7f0e397bd097c35b0b6fc920fb0722',
+    '9778397bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e', '97bcf7f1487f531b0b0bb0b6fb0722',
+    '7f0e397bd097c35b0b6fc920fb0722', '9778397bd097c36b0b6fc9274c91aa', '97b6b97bd19801ec9210c965cc920e',
+    '97bcf7f1487f531b0b0bb0b6fb0722', '7f0e397bd07f595b0b6fc920fb0722', '9778397bd097c36b0b6fc9274c91aa',
+    '97b6b97bd19801ec9210c9274c920e', '97bcf7f0e47f531b0b0bb0b6fb0722', '7f0e397bd07f595b0b0bc920fb0722',
+    '9778397bd097c36b0b6fc9210c91aa', '97b6b97bd197c36c9210c9274c920e', '97bcf7f0e47f531b0b0bb0b6fb0722',
+    '7f0e397bd07f595b0b0bc920fb0722', '9778397bd097c36b0b6fc9210c8dc2', '9778397bd097c36c9210c9274c920e',
+    '97b6b7f0e47f531b0723b0b6fb0722', '7f0e37f5307f595b0b0bc920fb0722', '7f0e397bd097c36b0b6fc9210c8dc2',
+    '9778397bd097c36b0b70c9274c91aa', '97b6b7f0e47f531b0723b0b6fb0721', '7f0e37f1487f595b0b0bb0b6fb0722',
+    '7f0e397bd097c35b0b6fc9210c8dc2', '9778397bd097c36b0b6fc9274c91aa', '97b6b7f0e47f531b0723b0b6fb0721',
+    '7f0e27f1487f595b0b0bb0b6fb0722', '7f0e397bd097c35b0b6fc920fb0722', '9778397bd097c36b0b6fc9274c91aa',
+    '97b6b7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722', '7f0e397bd097c35b0b6fc920fb0722',
+    '9778397bd097c36b0b6fc9274c91aa', '97b6b7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722',
+    '7f0e397bd097c35b0b6fc920fb0722', '9778397bd097c36b0b6fc9274c91aa', '97b6b7f0e47f531b0723b0b6fb0721',
+    '7f0e27f1487f531b0b0bb0b6fb0722', '7f0e397bd07f595b0b0bc920fb0722', '9778397bd097c36b0b6fc9274c91aa',
+    '97b6b7f0e47f531b0723b0787b0721', '7f0e27f0e47f531b0b0bb0b6fb0722', '7f0e397bd07f595b0b0bc920fb0722',
+    '9778397bd097c36b0b6fc9210c91aa', '97b6b7f0e47f149b0723b0787b0721', '7f0e27f0e47f531b0723b0b6fb0722',
+    '7f0e397bd07f595b0b0bc920fb0722', '9778397bd097c36b0b6fc9210c8dc2', '977837f0e37f149b0723b0787b0721',
+    '7f07e7f0e47f531b0723b0b6fb0722', '7f0e37f5307f595b0b0bc920fb0722', '7f0e397bd097c35b0b6fc9210c8dc2',
+    '977837f0e37f14998082b0787b0721', '7f07e7f0e47f531b0723b0b6fb0721', '7f0e37f1487f595b0b0bb0b6fb0722',
+    '7f0e397bd097c35b0b6fc9210c8dc2', '977837f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721',
+    '7f0e27f1487f531b0b0bb0b6fb0722', '7f0e397bd097c35b0b6fc920fb0722', '977837f0e37f14998082b0787b06bd',
+    '7f07e7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722', '7f0e397bd097c35b0b6fc920fb0722',
+    '977837f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722',
+    '7f0e397bd07f595b0b0bc920fb0722', '977837f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721',
+    '7f0e27f1487f531b0b0bb0b6fb0722', '7f0e397bd07f595b0b0bc920fb0722', '977837f0e37f14998082b0787b06bd',
+    '7f07e7f0e47f149b0723b0787b0721', '7f0e27f0e47f531b0b0bb0b6fb0722', '7f0e397bd07f595b0b0bc920fb0722',
+    '977837f0e37f14998082b0723b06bd', '7f07e7f0e37f149b0723b0787b0721', '7f0e27f0e47f531b0723b0b6fb0722',
+    '7f0e397bd07f595b0b0bc920fb0722', '977837f0e37f14898082b0723b02d5', '7ec967f0e37f14998082b0787b0721',
+    '7f07e7f0e47f531b0723b0b6fb0722', '7f0e37f1487f595b0b0bb0b6fb0722', '7f0e37f0e37f14898082b0723b02d5',
+    '7ec967f0e37f14998082b0787b0721', '7f07e7f0e47f531b0723b0b6fb0722', '7f0e37f1487f531b0b0bb0b6fb0722',
+    '7f0e37f0e37f14898082b0723b02d5', '7ec967f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721',
+    '7f0e37f1487f531b0b0bb0b6fb0722', '7f0e37f0e37f14898082b072297c35', '7ec967f0e37f14998082b0787b06bd',
+    '7f07e7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722', '7f0e37f0e37f14898082b072297c35',
+    '7ec967f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722',
+    '7f0e37f0e366aa89801eb072297c35', '7ec967f0e37f14998082b0787b06bd', '7f07e7f0e47f149b0723b0787b0721',
+    '7f0e27f1487f531b0b0bb0b6fb0722', '7f0e37f0e366aa89801eb072297c35', '7ec967f0e37f14998082b0723b06bd',
+    '7f07e7f0e47f149b0723b0787b0721', '7f0e27f0e47f531b0723b0b6fb0722', '7f0e37f0e366aa89801eb072297c35',
+    '7ec967f0e37f14998082b0723b06bd', '7f07e7f0e37f14998083b0787b0721', '7f0e27f0e47f531b0723b0b6fb0722',
+    '7f0e37f0e366aa89801eb072297c35', '7ec967f0e37f14898082b0723b02d5', '7f07e7f0e37f14998082b0787b0721',
+    '7f07e7f0e47f531b0723b0b6fb0722', '7f0e36665b66aa89801e9808297c35', '665f67f0e37f14898082b0723b02d5',
+    '7ec967f0e37f14998082b0787b0721', '7f07e7f0e47f531b0723b0b6fb0722', '7f0e36665b66a449801e9808297c35',
+    '665f67f0e37f14898082b0723b02d5', '7ec967f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721',
+    '7f0e36665b66a449801e9808297c35', '665f67f0e37f14898082b072297c35', '7ec967f0e37f14998082b0787b06bd',
+    '7f07e7f0e47f531b0723b0b6fb0721', '7f0e26665b66a449801e9808297c35', '665f67f0e37f1489801eb072297c35',
+    '7ec967f0e37f14998082b0787b06bd', '7f07e7f0e47f531b0723b0b6fb0721', '7f0e27f1487f531b0b0bb0b6fb0722'
+  ];
+
+  /**
+   * 数字转中文速查表
+   * @Array Of Property
+   * @trans ['日','一','二','三','四','五','六','七','八','九','十']
+   * @return Cn string
+   */
+  var nStr1 = [
+    '\u65e5',
+    '\u4e00',
+    '\u4e8c',
+    '\u4e09',
+    '\u56db',
+    '\u4e94',
+    '\u516d',
+    '\u4e03',
+    '\u516b',
+    '\u4e5d',
+    '\u5341'
+  ];
+
+  /**
+   * 日期转农历称呼速查表
+   * @Array Of Property
+   * @trans ['初','十','廿','卅']
+   * @return Cn string
+   */
+  var nStr2 = ['\u521d', '\u5341', '\u5eff', '\u5345'];
+
+  /**
+   * 月份转农历称呼速查表
+   * @Array Of Property
+   * @trans ['正','一','二','三','四','五','六','七','八','九','十','冬','腊']
+   * @return Cn string
+   */
+  var nStr3 = [
+    '\u6b63',
+    '\u4e8c',
+    '\u4e09',
+    '\u56db',
+    '\u4e94',
+    '\u516d',
+    '\u4e03',
+    '\u516b',
+    '\u4e5d',
+    '\u5341',
+    '\u51ac',
+    '\u814a'
+  ];
+
+  /**
+   * 年份数字转中文速查表
+   * @Array Of Property
+   * @trans ['零','一','二','三','四','五','六','七','八','九','十']
+   * @return Cn string
+   */
+  var nStr4 = [
+    '\u96f6',
+    '\u4e00',
+    '\u4e8c',
+    '\u4e09',
+    '\u56db',
+    '\u4e94',
+    '\u516d',
+    '\u4e03',
+    '\u516b',
+    '\u4e5d',
+    '\u5341'
+  ];
+
+  /**
+   * @1900-2100区间内的公历、农历互转
+   * @charset  UTF-8
+   * @author  Ajing(JJonline@JJonline.Cn), Modernized by OpenCode
+   * @Time  2014-7-21
+   * @Version  $ID$
+   * @公历转农历：solarLunar.solar2lunar(1987,11,01); //[you can ignore params of prefix 0]
+   * @农历转公历：solarLunar.lunar2solar(1987,09,10); //[you can ignore params of prefix 0]
+   * @link http://blog.jjonline.cn/userInterFace/173.html
+   */
+
+
+  const solarLunar = {
+    lunarInfo,
+    solarMonth,
+    gan,
+    zhi,
+    animals,
+    lunarTerm,
+    lTermInfo,
+    nStr1,
+    nStr2,
+    nStr3,
+    nStr4,
+
+    /**
+     * 返回农历y年一整年的总天数
+     * @param {number} y - lunar Year
+     * @returns {number}
+     * @eg:var count = solarLunar.lYearDays(1987) ;//count=387
+     */
+    lYearDays(y) {
+      let sum = 348;
+      const info = lunarInfo[y - 1900];
+      // 优化：直接计算位数，减少循环
+      sum += info & 0x8000 ? 1 : 0;
+      sum += info & 0x4000 ? 1 : 0;
+      sum += info & 0x2000 ? 1 : 0;
+      sum += info & 0x1000 ? 1 : 0;
+      sum += info & 0x0800 ? 1 : 0;
+      sum += info & 0x0400 ? 1 : 0;
+      sum += info & 0x0200 ? 1 : 0;
+      sum += info & 0x0100 ? 1 : 0;
+      sum += info & 0x0080 ? 1 : 0;
+      sum += info & 0x0040 ? 1 : 0;
+      sum += info & 0x0020 ? 1 : 0;
+      sum += info & 0x0010 ? 1 : 0;
+      return sum + solarLunar.leapDays(y);
+    },
+
+    /**
+     * 返回农历y年闰月是哪个月；若y年没有闰月 则返回0
+     * @param {number} y - lunar Year
+     * @returns {number} (0-12)
+     * @eg:var leapMonth = solarLunar.leapMonth(1987) ;//leapMonth=6
+     */
+    leapMonth(y) {
+      //闰字编码 \u95f0
+      return lunarInfo[y - 1900] & 0xf;
+    },
+
+    /**
+     * 返回农历y年闰月的天数 若该年没有闰月则返回0
+     * @param {number} y - lunar Year
+     * @returns {number} (0、29、30)
+     * @eg:var leapMonthDay = solarLunar.leapDays(1987) ;//leapMonthDay=29
+     */
+    leapDays(y) {
+      if (solarLunar.leapMonth(y)) {
+        return lunarInfo[y - 1900] & 0x10000 ? 30 : 29;
+      }
+      return 0;
+    },
+
+    /**
+     * 返回农历 y 年 m 月（非闰月）的总天数，计算 m 为闰月时的天数请使用 leapDays 方法
+     * @param {number} y - lunar Year
+     * @param {number} m - lunar Month
+     * @returns {number} (-1、29、30)
+     * @eg:var MonthDay = solarLunar.monthDays(1987,9) ;//MonthDay=29
+     */
+    monthDays(y, m) {
+      if (m > 12 || m < 1) {
+        return -1;
+      } //月份参数从1至12，参数错误返回-1
+      return lunarInfo[y - 1900] & (0x10000 >> m) ? 30 : 29;
+    },
+
+    /**
+     * 获取时辰干支
+     * @param {number} h - 公历小时 (0-23)
+     * @param {number} dayGanIndex - 日干索引 (0-9)，0=甲，1=乙，...，9=癸
+     * @returns {string} 时辰干支，如 "甲子"
+     * @eg:var shichen = solarLunar.getShiChen(23, 0); // 23:00 的子时，日干为甲时
+     */
+    getShiChen(h, dayGanIndex) {
+      const hourZhiIndex = (h + 1) / 2 >= 24 ? 0 : Math.floor((h + 1) / 2) % 12;
+      const hourGanIndex = (dayGanIndex * 2 + hourZhiIndex) % 10;
+      return gan[hourGanIndex] + zhi[hourZhiIndex];
+    },
+
+    /**
+     * 返回公历(!)y年m月的天数
+     * @param {number} y - solar Year
+     * @param {number} m - solar Month
+     * @returns {number} (-1、28、29、30、31)
+     * @eg:var solarMonthDay = solarLunar.solarDays(1987) ;//solarMonthDay=30
+     */
+    solarDays(y, m) {
+      if (m > 12 || m < 1) {
+        return -1;
+      } //若参数错误 返回-1
+      const ms = m - 1;
+      if (ms === 1) {
+        //2月份的闰平规律测算后确认返回28或29
+        return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 29 : 28;
+      } else {
+        return solarMonth[ms];
+      }
+    },
+
+    /**
+     * 传入offset偏移量返回干支
+     * @param {number} offset - 相对甲子的偏移量
+     * @returns {string} Cn string
+     */
+    toGanZhi(offset) {
+      return gan[offset % 10] + zhi[offset % 12];
+    },
+
+    /**
+     * 传入公历(!) y 年获得该年第 n 个节气的公历日期
+     * @param {number} y - 公历年(1900-2100)；n二十四节气中的第几个节气(1~24)；从n=1(小寒)算起
+     * @param {number} n - 二十四节气中的第几个节气(1~24)
+     * @returns {number}
+     * @eg:var _24 = solarLunar.getTerm(1987,3) ;//_24=4;意即1987年2月4日立春
+     */
+    getTerm(y, n) {
+      if (y < 1900 || y > 2100) {
+        return -1;
+      }
+      if (n < 1 || n > 24) {
+        return -1;
+      }
+      const _table = lTermInfo[y - 1900];
+      const _info = [
+        parseInt('0x' + _table.substr(0, 5)).toString(),
+        parseInt('0x' + _table.substr(5, 5)).toString(),
+        parseInt('0x' + _table.substr(10, 5)).toString(),
+        parseInt('0x' + _table.substr(15, 5)).toString(),
+        parseInt('0x' + _table.substr(20, 5)).toString(),
+        parseInt('0x' + _table.substr(25, 5)).toString(),
+      ];
+      const _calDay = [
+        _info[0].substr(0, 1),
+        _info[0].substr(1, 2),
+        _info[0].substr(3, 1),
+        _info[0].substr(4, 2),
+
+        _info[1].substr(0, 1),
+        _info[1].substr(1, 2),
+        _info[1].substr(3, 1),
+        _info[1].substr(4, 2),
+
+        _info[2].substr(0, 1),
+        _info[2].substr(1, 2),
+        _info[2].substr(3, 1),
+        _info[2].substr(4, 2),
+
+        _info[3].substr(0, 1),
+        _info[3].substr(1, 2),
+        _info[3].substr(3, 1),
+        _info[3].substr(4, 2),
+
+        _info[4].substr(0, 1),
+        _info[4].substr(1, 2),
+        _info[4].substr(3, 1),
+        _info[4].substr(4, 2),
+
+        _info[5].substr(0, 1),
+        _info[5].substr(1, 2),
+        _info[5].substr(3, 1),
+        _info[5].substr(4, 2),
+      ];
+      return parseInt(_calDay[n - 1]);
+    },
+
+    /**
+     * 传入农历年份数字返回汉语通俗表示法
+     * @param {number} y - lunar year
+     * @returns {string}
+     * @eg:
+     */
+    toChinaYear(y) {
+      //年 => \u5E74
+      const oxxx = Math.floor(y / 1000);
+      const xoxx = Math.floor((y % 1000) / 100);
+      const xxox = Math.floor((y % 100) / 10);
+      const xxxo = y % 10;
+
+      return nStr4[oxxx] + nStr4[xoxx] + nStr4[xxox] + nStr4[xxxo] + '\u5E74';
+    },
+
+    /**
+     * 传入农历数字月份返回汉语通俗表示法
+     * @param {number} m - lunar month
+     * @returns {string}
+     * @eg:var cnMonth = solarLunar.toChinaMonth(12) ;//cnMonth='腊月'
+     */
+    toChinaMonth(m) {
+      // 月 => \u6708
+      if (m > 12 || m < 1) {
+        return -1;
+      } //若参数错误 返回-1
+      let s = nStr3[m - 1];
+      s += '\u6708'; //加上月字
+      return s;
+    },
+
+    /**
+     * 传入农历日期数字返回汉字表示法
+     * @param {number} d - lunar day
+     * @returns {string} Cn string
+     * @eg:var cnDay = solarLunar.toChinaDay(21) ;//cnMonth='廿一'
+     */
+    toChinaDay(d) {
+      //日 => \u65e5
+      let s = '';
+      switch (d) {
+      case 10:
+        s = '\u521d\u5341';
+        break;
+      case 20:
+        s = '\u4e8c\u5341';
+        break;
+      case 30:
+        s = '\u4e09\u5341';
+        break;
+      default:
+        s = nStr2[Math.floor(d / 10)];
+        s += nStr1[d % 10];
+      }
+      return s;
+    },
+
+    /**
+     * 年份转生肖 => 精确划分生肖分界线是"立春"
+     * @param {number} y - year
+     * @param {number} [m] - month (可选，用于精确计算)
+     * @param {number} [d] - day (可选，用于精确计算)
+     * @returns {string} Cn string
+     * @eg:var animal = solarLunar.getAnimal(1987) ;//animal='兔'
+     */
+    getAnimal(y, m, d) {
+      // 如果提供了月日参数，基于立春进行精确计算
+      if (m !== undefined && d !== undefined) {
+        const term3 = solarLunar.getTerm(y, 3); // 立春日期
+        // 如果日期在立春之前，则生肖按上一年计算
+        if (m < 2 || (m === 2 && d < term3)) {
+          y = y - 1;
+        }
+      }
+      return animals[(y - 4) % 12];
+    },
+
+    /**
+     * 传入公历年月日获得详细的公历、农历object信息 <=>JSON
+     * @param {number} y - solar year
+     * @param {number} m - solar month
+     * @param {number} d - solar day
+     * @returns {object} JSON object
+     * @eg:console.log(solarLunar.solar2lunar(1987,11,01));
+     */
+    solar2lunar(y, m, d) {
+      //参数区间1900.1.31~2100.12.31
+      // 输入验证
+      if (y == null || m == null || d == null) {
+        const objDate = new Date();
+        y = objDate.getFullYear();
+        m = objDate.getMonth() + 1;
+        d = objDate.getDate();
+      }
+
+      // 类型转换和验证
+      y = Number(y);
+      m = Number(m);
+      d = Number(d);
+
+      if (isNaN(y) || isNaN(m) || isNaN(d)) {
+        return -1;
+      }
+
+      if (y < 1900 || y > 2100) {
+        return -1;
+      } //年份限定、上限
+      if (y === 1900 && m === 1 && d < 31) {
+        return -1;
+      } //下限
+
+      // 验证月份和日期的有效性
+      if (m < 1 || m > 12) {
+        return -1;
+      }
+      const maxDay = solarLunar.solarDays(y, m);
+      if (d < 1 || d > maxDay) {
+        return -1;
+      }
+
+      const objDate = new Date(y, parseInt(m) - 1, d);
+      let i,
+        temp = 0;
+      //修正ymd参数
+      y = objDate.getFullYear();
+      m = objDate.getMonth() + 1;
+      d = objDate.getDate();
+      let offset =
+        (Date.UTC(objDate.getFullYear(), objDate.getMonth(), objDate.getDate()) -
+          Date.UTC(1900, 0, 31)) /
+        86400000;
+
+      // 使用原有的线性搜索算法以保持兼容性，但修复变量重声明问题
+      temp = 0;
+      for (i = 1900; i < 2101 && offset > 0; i++) {
+        temp = solarLunar.lYearDays(i);
+        offset -= temp;
+      }
+      if (offset < 0) {
+        offset += temp;
+        i--;
+      }
+
+      const finalYear = i;
+
+      //是否今天
+      const isTodayObj = new Date();
+      let isToday = false;
+      if (
+        isTodayObj.getFullYear() === y &&
+        isTodayObj.getMonth() + 1 === m &&
+        isTodayObj.getDate() === d
+      ) {
+        isToday = true;
+      }
+      //星期几
+      const nWeek = objDate.getDay();
+      const cWeek = nStr1[nWeek];
+      const nWeekAdjusted = nWeek === 0 ? 7 : nWeek; //数字表示周几顺应天朝周一开始的惯例
+
+      //农历年
+      const year = finalYear;
+
+      const leapMonth = solarLunar.leapMonth(finalYear); //闰哪个月
+
+      let isLeap = false;
+
+      //效验闰月
+      for (i = 1; i < 13 && offset > 0; i++) {
+        //闰月
+        if (leapMonth > 0 && i === leapMonth + 1 && isLeap === false) {
+          --i;
+          isLeap = true;
+          temp = solarLunar.leapDays(year); //计算农历闰月天数
+        } else {
+          temp = solarLunar.monthDays(year, i); //计算农历普通月天数
+        }
+        //解除闰月
+        if (isLeap === true && i === leapMonth + 1) {
+          isLeap = false;
+        }
+        offset -= temp;
+      }
+
+      if (offset === 0 && leapMonth > 0 && i === leapMonth + 1) {
+        if (isLeap) {
+          isLeap = false;
+        } else {
+          isLeap = true;
+          --i;
+        }
+      }
+      if (offset < 0) {
+        offset += temp;
+        --i;
+      }
+      //农历月
+      const month = i;
+      //农历日
+      const day = offset + 1;
+
+      //天干地支处理
+      // 注意：干支年以立春为分界线，这是中国传统历法
+      // 立春通常在2月3-5日之间，立春之前出生的人，干支属上一年
+      const sm = m - 1;
+      const term3 = solarLunar.getTerm(y, 3); //该公历年立春日期
+      let gzY = solarLunar.toGanZhi(y - 4); //普通按年份计算，下方尚需按立春节气来修正
+      //依据立春日进行修正gzY
+      // 立春通常在2月3-5日之间，如果日期早于立春，应按上一年计算
+      if (m < 2 || (m === 2 && d < term3)) {
+        gzY = solarLunar.toGanZhi(y - 1 - 4);
+      }
+
+      //月柱 1900年1月小寒以前为 丙子月(60进制12)
+      const firstNode = solarLunar.getTerm(y, m * 2 - 1); //返回当月「节」为几日开始
+      const secondNode = solarLunar.getTerm(y, m * 2); //返回当月「节」为几日开始
+
+      //依据12节气修正干支月
+      // 使用原始的正确算法：年干支索引*12 + 月份 + 偏移
+      let gzM = solarLunar.toGanZhi((y - 1900) * 12 + m + 11);
+      if (d >= firstNode) {
+        gzM = solarLunar.toGanZhi((y - 1900) * 12 + m + 12);
+      }
+
+      //传入的日期的节气与否
+      let isTerm = false;
+      let term = '';
+      if (firstNode === d) {
+        isTerm = true;
+        term = lunarTerm[m * 2 - 2];
+      }
+      if (secondNode === d) {
+        isTerm = true;
+        term = lunarTerm[m * 2 - 1];
+      }
+      //日柱 当月一日与 1900/1/1 相差天数
+      const dayCyclical = Date.UTC(y, sm, 1, 0, 0, 0, 0) / 86400000 + 25567 + 10;
+      const gzD = solarLunar.toGanZhi(dayCyclical + d - 1);
+      return {
+        lYear: year,
+        lMonth: month,
+        lDay: day,
+        animal: solarLunar.getAnimal(year),
+        yearCn: solarLunar.toChinaYear(year),
+        monthCn: (isLeap && leapMonth === month ? '\u95f0' : '') + solarLunar.toChinaMonth(month),
+        dayCn: solarLunar.toChinaDay(day),
+        cYear: y,
+        cMonth: m,
+        cDay: d,
+        gzYear: gzY,
+        gzMonth: gzM,
+        gzDay: gzD,
+        isToday,
+        isLeap,
+        nWeek: nWeekAdjusted, //数字表示周几顺应天朝周一开始的惯例
+        ncWeek: '\u661f\u671f' + cWeek,
+        isTerm,
+        term,
+      };
+    },
+
+    /**
+     * 传入公历年月日以及传入的月份是否闰月获得详细的公历、农历object信息 <=>JSON
+     * @param {number} y - lunar year
+     * @param {number} m - lunar month
+     * @param {number} d - lunar day
+     * @param {boolean} isLeapMonth - lunar month is leap or not.
+     * @returns {object} JSON object
+     * @eg:console.log(solarLunar.lunar2solar(1987,9,10));
+     */
+    lunar2solar(y, m, d, isLeapMonth) {
+      //参数区间1900.1.31~2100.12.1
+      // 输入验证
+      y = Number(y);
+      m = Number(m);
+      d = Number(d);
+      isLeapMonth = Boolean(isLeapMonth); // 确保是布尔值
+
+      if (isNaN(y) || isNaN(m) || isNaN(d)) {
+        return -1;
+      }
+      const leapMonth = solarLunar.leapMonth(y);
+      if (isLeapMonth && leapMonth !== m) {
+        return -1;
+      } //传参要求计算该闰月公历 但该年得出的闰月与传参的月份并不同
+      if ((y === 2100 && m === 12 && d > 1) || (y === 1900 && m === 1 && d < 31)) {
+        return -1;
+      } //超出了最大极限值
+      const day = solarLunar.monthDays(y, m);
+      if (y < 1900 || y > 2100 || d > day) {
+        return -1;
+      } //参数合法性效验
+
+      //计算农历的时间差
+      let offset = 0;
+      for (let i = 1900; i < y; i++) {
+        offset += solarLunar.lYearDays(i);
+      }
+      let leap = 0,
+        isAdd = false;
+      for (let i = 1; i < m; i++) {
+        leap = solarLunar.leapMonth(y);
+        if (!isAdd) {
+          //处理闰月
+          if (leap <= i && leap > 0) {
+            offset += solarLunar.leapDays(y);
+            isAdd = true;
+          }
+        }
+        offset += solarLunar.monthDays(y, i);
+      }
+      //转换闰月农历 需补充该年闰月的前一个月的时差
+      if (isLeapMonth) {
+        offset += day;
+      }
+      //1900年农历正月一日的公历时间为1900年1月30日0时0分0秒(该时间也是本农历的最开始起始点)
+      const stmap = Date.UTC(1900, 1, 30, 0, 0, 0);
+      const calObj = new Date((offset + d - 31) * 86400000 + stmap);
+      const cY = calObj.getUTCFullYear();
+      const cM = calObj.getUTCMonth() + 1;
+      const cD = calObj.getUTCDate();
+
+      return solarLunar.solar2lunar(cY, cM, cD);
+    },
+
+    /**
+     * 获取指定日期的传统节日
+     * @param {number} year - 公历年
+     * @param {number} month - 公历月
+     * @param {number} day - 公历日
+     * @returns {string[]} 传统节日数组
+     */
+    getFestivals(year, month, day) {
+      const festivals = [];
+      const lunar = solarLunar.solar2lunar(year, month, day);
+      if (lunar === -1) return festivals;
+
+      const { lMonth, lDay } = lunar;
+
+      const fixedFestivals = {
+        '1-1': '春节',
+        '1-15': '元宵节',
+        '5-5': '端午节',
+        '7-7': '七夕节',
+        '8-15': '中秋节',
+        '9-9': '重阳节',
+        '12-8': '腊八节',
+        '12-23': '小年',
+      };
+
+      const key = `${lMonth}-${lDay}`;
+      if (fixedFestivals[key]) {
+        festivals.push(fixedFestivals[key]);
+      }
+
+      if (lMonth === 1 && lDay === 1) {
+        festivals.push('农历新年');
+      }
+
+      if (solarLunar.customFestivals) {
+        solarLunar.customFestivals.forEach((f) => {
+          if (f.month === lMonth && f.day === lDay) {
+            festivals.push(f.name);
+          }
+        });
+      }
+
+      return festivals;
+    },
+
+    /**
+     * 添加自定义农历节日
+     * @param {string} name - 节日名称
+     * @param {number} month - 农历月
+     * @param {number} day - 农历日
+     */
+    addFestival(name, month, day) {
+      if (!solarLunar.customFestivals) {
+        solarLunar.customFestivals = [];
+      }
+      solarLunar.customFestivals.push({ name, month, day });
+    },
+
+    /**
+     * 清除所有自定义节日
+     */
+    clearFestivals() {
+      solarLunar.customFestivals = [];
+    },
+  };
+
+  exports.default = solarLunar;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+
+})();
+</script>
+
+<script>
+/* ===================================================================
+   念念 (NianNian) - Lunar Birthday ICS Generator
+   Complete application code
+   =================================================================== */
+
+// ---- solarlunar shorthand ----
+const sl = (window.solarlunar && window.solarlunar.default) || {};
+
+// ---- State ----
+let people = [];
+let selectedYears = 60;
+let nameCounter = 0;
+
+const STORAGE_KEY = 'niannian_people';
+
+// ---- DOM refs ----
+const $ = id => document.getElementById(id);
+const uploadZone = $('uploadZone');
+const fileInput = $('fileInput');
+const tableBody = $('tableBody');
+const emptyState = $('emptyState');
+const tableWrap = $('tableWrap');
+const downloadSampleBtn = $('downloadSampleBtn');
+const addRowBtn = $('addRowBtn');
+const clearAllBtn = $('clearAllBtn');
+const generateBtn = $('generateBtn');
+const genResult = $('genResult');
+const genMsg = $('genMsg');
+const genDetail = $('genDetail');
+const toastEl = $('toast');
+const yearSelector = $('yearSelector');
+
+// ---- Helpers ----
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function icsEscape(s) {
+  if (!s) return '';
+  return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+}
+
+function sanitizeName(s) {
+  return String(s).replace(/[^a-zA-Z0-9\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff]/g,'');
+}
+
+function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+function toast(msg, duration) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastEl._timer);
+  toastEl._timer = setTimeout(() => toastEl.classList.remove('show'), duration || 2500);
+}
+
+// ---- LocalStorage ----
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(people));
+  } catch(e) { /* ignore */ }
+}
+
+function loadState() {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    if (data) {
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        people = parsed;
+        return true;
+      }
+    }
+  } catch(e) { /* ignore */ }
+  return false;
+}
+
+// ---- Reminder triggers ----
+function generateTriggers(daysBefore, mode) {
+  const triggers = [];
+  const days = Math.max(0, parseInt(daysBefore) || 1);
+  switch (mode) {
+    case 'daily':
+      for (let i = days; i >= 0; i--) triggers.push('-P' + i + 'D');
+      break;
+    case 'everyOtherDay':
+      for (let i = days; i >= 0; i -= 2) triggers.push('-P' + i + 'D');
+      if (triggers.length === 0) triggers.push('-P1D');
+      break;
+    default: // once
+      triggers.push('-P' + days + 'D');
+  }
+  return triggers;
+}
+
+// ---- ICS Generation ----
+function generateICS() {
+  if (people.length === 0) {
+    toast('请先添加家人生日数据');
+    return null;
+  }
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const endYear = currentYear + selectedYears;
+  const today = new Date(currentYear, now.getMonth(), now.getDate());
+  const events = [];
+  let totalEvents = 0;
+
+  for (const p of people) {
+    if (!p.name || !p.lunarMonth || !p.lunarDay) continue;
+    const month = parseInt(p.lunarMonth);
+    const day = parseInt(p.lunarDay);
+    if (isNaN(month) || isNaN(day)) continue;
+
+    for (let y = currentYear; y < endYear; y++) {
+      const solar = sl.lunar2solar ? sl.lunar2solar(y, month, day) : null;
+      if (!solar || solar === -1) continue;
+
+      const {cYear, cMonth, cDay} = solar;
+      // Skip past events in first year
+      if (y === currentYear && new Date(cYear, cMonth - 1, cDay) < today) continue;
+
+      const dateStr = cYear + pad2(cMonth) + pad2(cDay);
+      const nextDay = new Date(cYear, cMonth - 1, cDay + 1);
+      const nextDateStr = nextDay.getFullYear() + pad2(nextDay.getMonth() + 1) + pad2(nextDay.getDate());
+      const uid = 'lunar-' + sanitizeName(p.name) + '-' + y + '@niannian';
+      const summary = p.name + '生日';
+      const desc = p.note || '';
+
+      const triggers = generateTriggers(p.daysBefore, p.mode);
+      let valarmBlock = '';
+      for (const t of triggers) {
+        valarmBlock += '\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:' + icsEscape(p.name) + '生日提醒\r\nTRIGGER:' + t + '\r\nEND:VALARM';
+      }
+
+      events.push(
+        'BEGIN:VEVENT\r\n' +
+        'UID:' + uid + '\r\n' +
+        'DTSTART;VALUE=DATE:' + dateStr + '\r\n' +
+        'DTEND;VALUE=DATE:' + nextDateStr + '\r\n' +
+        'SUMMARY:' + icsEscape(summary) + '\r\n' +
+        'DESCRIPTION:' + icsEscape(desc) + '\r\n' +
+        'TRANSP:TRANSPARENT\r\n' +
+        'SEQUENCE:0' +
+        valarmBlock + '\r\n' +
+        'END:VEVENT'
+      );
+      totalEvents++;
+    }
+  }
+
+  if (totalEvents === 0) {
+    toast('没有生成任何事件，请检查数据');
+    return null;
+  }
+
+  const nowUTC = new Date();
+  const dtstamp =
+    nowUTC.getUTCFullYear() + pad2(nowUTC.getUTCMonth() + 1) + pad2(nowUTC.getUTCDate()) + 'T' +
+    pad2(nowUTC.getUTCHours()) + pad2(nowUTC.getUTCMinutes()) + pad2(nowUTC.getUTCSeconds()) + 'Z';
+
+  const header =
+    'BEGIN:VCALENDAR\r\n' +
+    'VERSION:2.0\r\n' +
+    'PRODID:-//NianNian//Generator//CN\r\n' +
+    'CALSCALE:GREGORIAN\r\n' +
+    'METHOD:PUBLISH\r\n' +
+    'X-WR-CALNAME:念念·农历生日\r\n' +
+    'X-WR-TIMEZONE:Asia/Shanghai\r\n';
+
+  return { ics: header + events.join('\r\n') + '\r\nEND:VCALENDAR\r\n', count: totalEvents, personCount: people.length };
+}
+
+// ---- Download ----
+function download(ics, ext) {
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'niannian-birthdays' + (ext || '') + '.ics';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
+// ---- Render Table ----
+function renderTable() {
+  if (people.length === 0) {
+    emptyState.classList.remove('hidden');
+    tableWrap.classList.add('hidden');
+    return;
+  }
+  emptyState.classList.add('hidden');
+  tableWrap.classList.remove('hidden');
+
+  let html = '';
+  for (let i = 0; i < people.length; i++) {
+    const p = people[i];
+    html += '<tr>' +
+      '<td><input type="text" value="' + escHtml(p.name || '') + '" data-idx="' + i + '" data-field="name" class="cell-edit" placeholder="姓名"></td>' +
+      '<td><input type="number" min="1" max="12" value="' + (p.lunarMonth || '') + '" data-idx="' + i + '" data-field="lunarMonth" class="cell-edit" placeholder="月"></td>' +
+      '<td><input type="number" min="1" max="30" value="' + (p.lunarDay || '') + '" data-idx="' + i + '" data-field="lunarDay" class="cell-edit" placeholder="日"></td>' +
+      '<td><input type="text" value="' + escHtml(p.note || '') + '" data-idx="' + i + '" data-field="note" class="cell-edit" placeholder="可选"></td>' +
+      '<td><input type="number" min="0" max="30" value="' + (p.daysBefore || 1) + '" data-idx="' + i + '" data-field="daysBefore" class="cell-edit" placeholder="天"></td>' +
+      '<td><select data-idx="' + i + '" data-field="mode" class="cell-edit">' +
+        '<option value="once"' + (p.mode === 'once' ? ' selected' : '') + '>一次</option>' +
+        '<option value="daily"' + (p.mode === 'daily' ? ' selected' : '') + '>每天</option>' +
+        '<option value="everyOtherDay"' + (p.mode === 'everyOtherDay' ? ' selected' : '') + '>隔天</option>' +
+      '</select></td>' +
+      '<td><button class="btn-del" data-idx="' + i + '" title="删除">✕</button></td>' +
+      '</tr>';
+  }
+  tableBody.innerHTML = html;
+  updateCount();
+  saveState();
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function updateCount() {
+  // Update any count badge if present
+}
+
+// ---- Table Event Handlers ----
+tableBody.addEventListener('input', function(e) {
+  const target = e.target;
+  if (!target.classList.contains('cell-edit')) return;
+  const idx = parseInt(target.dataset.idx);
+  const field = target.dataset.field;
+  if (isNaN(idx) || idx < 0 || idx >= people.length) return;
+
+  let val = target.value;
+  if (field === 'lunarMonth') { val = Math.max(1, Math.min(12, parseInt(val) || '')); }
+  if (field === 'lunarDay') { val = Math.max(1, Math.min(30, parseInt(val) || '')); }
+  if (field === 'daysBefore') { val = Math.max(0, Math.min(30, parseInt(val) || 0)); }
+
+  people[idx][field] = val;
+  saveState();
+});
+
+tableBody.addEventListener('change', function(e) {
+  const target = e.target;
+  if (!target.classList.contains('cell-edit')) return;
+  const idx = parseInt(target.dataset.idx);
+  const field = target.dataset.field;
+  if (isNaN(idx) || idx < 0 || idx >= people.length) return;
+  people[idx][field] = target.value;
+  saveState();
+});
+
+tableBody.addEventListener('click', function(e) {
+  if (!e.target.classList.contains('btn-del')) return;
+  const idx = parseInt(e.target.dataset.idx);
+  if (isNaN(idx)) return;
+  people.splice(idx, 1);
+  renderTable();
+});
+
+// ---- CSV Parse ----
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length < 2) { toast('CSV 文件内容为空'); return; }
+
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+  const nameIdx = headers.indexOf('name');
+  const monthIdx = headers.indexOf('lunarmonth');
+  const dayIdx = headers.indexOf('lunarday');
+  const noteIdx = headers.indexOf('note');
+  const daysIdx = headers.indexOf('daysbefore');
+  const modeIdx = headers.indexOf('mode');
+
+  if (nameIdx === -1 || monthIdx === -1 || dayIdx === -1) {
+    toast('CSV 格式错误：缺少 name, lunarMonth, lunarDay 列');
+    return;
+  }
+
+  // Build set of existing names for dedup
+  const existingNames = new Set(people.map(p => p.name.trim()));
+
+  let added = 0;
+  let skipped = 0;
+  for (let i = 1; i < lines.length; i++) {
+    const cols = lines[i].split(',').map(c => c.trim());
+    const name = cols[nameIdx];
+    const month = parseInt(cols[monthIdx]);
+    const day = parseInt(cols[dayIdx]);
+    if (!name || isNaN(month) || isNaN(day)) continue;
+
+    // Dedup by name
+    if (existingNames.has(name.trim())) {
+      skipped++;
+      continue;
+    }
+
+    people.push({
+      id: genId(),
+      name: name,
+      lunarMonth: month,
+      lunarDay: day,
+      note: noteIdx >= 0 ? cols[noteIdx] || '' : '',
+      daysBefore: daysIdx >= 0 ? parseInt(cols[daysIdx]) || 1 : 1,
+      mode: modeIdx >= 0 ? (cols[modeIdx] || 'once') : 'once'
+    });
+    existingNames.add(name.trim());
+    added++;
+  }
+
+  if (added > 0) {
+    renderTable();
+    const msg = '成功导入 ' + added + ' 位家人' + (skipped > 0 ? '，已跳过 ' + skipped + ' 个重复姓名' : '');
+    toast(msg);
+  } else if (skipped > 0) {
+    toast('CSV 中所有姓名都已存在，无需重复导入');
+  } else {
+    toast('没有找到有效数据');
+  }
+}
+
+// ---- Upload Zone Events ----
+uploadZone.addEventListener('click', function() {
+  fileInput.click();
+});
+
+uploadZone.addEventListener('dragover', function(e) {
+  e.preventDefault();
+  this.classList.add('dragover');
+});
+
+uploadZone.addEventListener('dragleave', function() {
+  this.classList.remove('dragover');
+});
+
+uploadZone.addEventListener('drop', function(e) {
+  e.preventDefault();
+  this.classList.remove('dragover');
+  const files = e.dataTransfer.files;
+  if (files.length > 0) handleFile(files[0]);
+});
+
+fileInput.addEventListener('change', function() {
+  if (this.files.length > 0) handleFile(this.files[0]);
+  this.value = '';
+});
+
+function handleFile(file) {
+  if (!file.name.toLowerCase().endsWith('.csv')) {
+    toast('请上传 .csv 格式文件');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) { parseCSV(e.target.result); };
+  reader.readAsText(file, 'UTF-8');
+}
+
+// ---- Download Sample CSV ----
+downloadSampleBtn.addEventListener('click', function() {
+  const sample = 'name,lunarMonth,lunarDay,note,daysBefore,mode\r\n' +
+    '妈妈,8,15,农历八月十五,3,once\r\n' +
+    '爸爸,5,5,农历五月初五,7,daily\r\n' +
+    '奶奶,12,23,农历腊月廿三,7,daily\r\n' +
+    '孩子,3,10,农历三月初十,1,once\r\n';
+  const blob = new Blob(['\ufeff' + sample], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'niannian-sample.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+});
+
+// ---- Add Row ----
+addRowBtn.addEventListener('click', function() {
+  nameCounter++;
+  people.push({
+    id: genId(),
+    name: '',
+    lunarMonth: '',
+    lunarDay: '',
+    note: '',
+    daysBefore: 3,
+    mode: 'once'
+  });
+  renderTable();
+  // Scroll to the last row
+  const lastInput = tableBody.querySelector('tr:last-child input');
+  if (lastInput) setTimeout(() => lastInput.focus(), 50);
+});
+
+// ---- Clear All ----
+clearAllBtn.addEventListener('click', function() {
+  if (people.length === 0) return;
+  if (!confirm('确定要清空所有生日数据吗？')) return;
+  people = [];
+  renderTable();
+  toast('已清空');
+});
+
+// ---- Year Selector ----
+yearSelector.addEventListener('click', function(e) {
+  const btn = e.target.closest('.year-btn');
+  if (!btn) return;
+  yearSelector.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedYears = parseInt(btn.dataset.years) || 60;
+});
+
+// ---- Generate ----
+generateBtn.addEventListener('click', function() {
+  try {
+    genResult.classList.add('hidden');
+
+    syncFromTable();
+
+    // Basic validation
+    if (people.length === 0) {
+      toast('⚠️ 请先添加家人生日数据');
+      return;
+    }
+
+    // Check solarlunar
+    if (typeof sl.lunar2solar !== 'function') {
+      toast('⚠️ 农历转换库加载失败，请重新打开页面');
+      console.error('solarlunar not available:', window.solarlunar);
+      return;
+    }
+
+    const result = generateICS();
+    if (!result) {
+      // generateICS already called toast()
+      return;
+    }
+
+    download(result.ics);
+    genResult.classList.remove('hidden');
+    genMsg.textContent = '🎉 已生成 ' + result.personCount + ' 位家人共 ' + result.count + ' 个事件';
+    genDetail.textContent = '覆盖 ' + selectedYears + ' 年 · 文件已自动下载';
+    toast('下载成功！请导入日历');
+  } catch (e) {
+    console.error('NianNian error:', e);
+    alert('出错了：' + e.message + '\n\n请打开浏览器开发者工具(F12)查看详细错误，或联系开发者。');
+  }
+});
+
+function syncFromTable() {
+  const rows = tableBody.querySelectorAll('tr');
+  rows.forEach((row, idx) => {
+    if (idx >= people.length) return;
+    const inputs = row.querySelectorAll('.cell-edit');
+    inputs.forEach(inp => {
+      const field = inp.dataset.field;
+      let val = inp.value;
+      if (field === 'lunarMonth') val = parseInt(val) || '';
+      if (field === 'lunarDay') val = parseInt(val) || '';
+      if (field === 'daysBefore') val = parseInt(val) || 1;
+      people[idx][field] = val;
+    });
+  });
+  saveState();
+}
+
+// ---- Init ----
+function init() {
+  const hasData = loadState();
+  if (hasData && Array.isArray(people)) {
+    // Ensure all entries have required fields
+    people = people.map(p => ({
+      ...p,
+      name: p.name || '',
+      lunarMonth: p.lunarMonth || '',
+      lunarDay: p.lunarDay || '',
+      note: p.note || '',
+      daysBefore: p.daysBefore !== undefined ? p.daysBefore : 3,
+      mode: p.mode || 'once'
+    }));
+    renderTable();
+  } else {
+    people = [];
+    renderTable();
+  }
+
+  // PWA: Register service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function() {});
+  }
+}
+
+// ---- Diagnose solarlunar at startup ----
+console.log('🀄 念念 NianNian starting...');
+console.log('solarlunar available:', typeof sl.lunar2solar === 'function');
+if (typeof sl.lunar2solar !== 'function') {
+  console.warn('solarlunar state:', window.solarlunar);
+}
+
+// ---- Start ----
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+
+<script>
+/* Service Worker - registered via sw.js */
+if ('serviceWorker' in navigator) {
+  // We register a service worker at the root scope
+  // The sw.js file is a small separate file for caching
+}
+</script>
+
+</body>
+</html>
