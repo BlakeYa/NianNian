@@ -2237,12 +2237,16 @@ function getLunarDateDisplay(p) {
   var month = parseInt(p.lunarMonth);
   var day = parseInt(p.lunarDay);
   if (isNaN(month) || isNaN(day)) return '';
+  var prefix = p.calendar === 'solar' ? '\u9633\u5386' : '\u519c\u5386';
+  if (p.calendar === 'solar') {
+    return prefix + month + '\u6708' + day + '\u65e5';
+  }
   try {
     if (sl.toChinaMonth && sl.toChinaDay) {
-      return '\u519c\u5386' + sl.toChinaMonth(month) + sl.toChinaDay(day);
+      return prefix + sl.toChinaMonth(month) + sl.toChinaDay(day);
     }
   } catch(e) { /* ignore */ }
-  return '\u519c\u5386' + month + '\u6708' + day + '\u65e5';
+  return prefix + month + '\u6708' + day + '\u65e5';
 }
 
 function getReminderText(p) {
@@ -2319,7 +2323,6 @@ function renderMobileUI() {
         '<div class="reminder">' + escHtml(reminderText) + '</div>' +
       '</div>' +
       '<div class="actions">' +
-        '<button class="btn-card-action" data-action="edit" data-person-id="' + escHtml(p.id) + '">\u270e</button>' +
         '<button class="btn-card-action danger" data-action="delete" data-person-id="' + escHtml(p.id) + '">\u2715</button>' +
       '</div>' +
     '</div>';
@@ -2401,9 +2404,13 @@ function closeBottomSheet() {
 }
 
 function saveBottomSheet() {
-  var name = document.getElementById('bsName').value.trim();
-  var month = parseInt(document.getElementById('bsMonth').value);
-  var day = parseInt(document.getElementById('bsDay').value);
+  var nameEl = document.getElementById('bsName');
+  var monthEl = document.getElementById('bsMonth');
+  var dayEl = document.getElementById('bsDay');
+  if (!nameEl || !monthEl || !dayEl) { toast('表单加载异常，请重试'); return; }
+  var name = nameEl.value.trim();
+  var month = parseInt(monthEl.value);
+  var day = parseInt(dayEl.value);
   var note = document.getElementById('bsNote').value.trim();
   var daysBefore = intVal(document.getElementById('bsDaysBefore').value, 0);
   var mode = document.getElementById('bsMode').value;
