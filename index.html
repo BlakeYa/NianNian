@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="念念">
-<meta name="description" content="念念(NianNian) - 把家人的农历生日装进你的日历，每年准时提醒。纯客户端工具，隐私安全。">
+<meta name="description" content="念念(NianNian) - 把家人的生日装进你的日历，每年准时提醒。纯客户端工具，隐私安全。">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
@@ -256,6 +256,34 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 .mobile-field .days-row input{width:80px;flex:none}
 .mobile-field .days-row span{color:#888;font-size:.85rem}
 
+/* ===== Section Label ===== */
+.section-label{font-size:.78rem;font-weight:600;color:#8E8E93;text-transform:uppercase;letter-spacing:.5px;margin:18px 0 10px}
+
+/* ===== Segmented Control ===== */
+.segmented-control{display:flex;background:#f2f2f5;border-radius:10px;padding:3px;gap:2px}
+.seg-item{flex:1;padding:10px;border:none;border-radius:8px;background:transparent;font-size:.9rem;font-weight:500;color:#666;cursor:pointer;transition:all .15s;font-family:inherit;min-height:44px}
+.seg-item.active{background:#fff;color:#1B2838;box-shadow:0 1px 3px rgba(0,0,0,.08);font-weight:600}
+.seg-item:active{transform:scale(.97)}
+
+/* ===== Chip Group ===== */
+.chip-group{display:flex;gap:6px}
+.chip-item{padding:10px 16px;border:1.5px solid #eee;border-radius:999px;background:#fff;font-size:.85rem;font-weight:500;color:#666;cursor:pointer;transition:all .15s;font-family:inherit;min-height:44px;flex:1}
+.chip-item:hover{border-color:#ddd;background:#fafafa}
+.chip-item.active{border-color:#1B2838;background:#1B2838;color:#fff}
+.chip-item:active{transform:scale(.96)}
+
+/* ===== Collapsible Note ===== */
+.collapsible-note{margin-top:-4px;margin-bottom:8px;font-size:.88rem}
+.collapsible-note summary{color:#8E8E93;cursor:pointer;padding:8px 0;font-size:.85rem;outline:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.collapsible-note summary::-webkit-details-marker{display:none}
+.collapsible-note[open] summary{color:#666;margin-bottom:8px}
+.collapsible-note textarea{width:100%;padding:10px 12px;border:1.5px solid #eee;border-radius:10px;font-size:.9rem;font-family:inherit;resize:none;min-height:44px;transition:border-color .15s}
+.collapsible-note textarea:focus{border-color:#C4944A;outline:none}
+
+/* ===== Bottom Delete Link ===== */
+.bottom-delete-link{display:block;text-align:center;padding:12px 0 4px;color:#C0424A;font-size:.82rem;cursor:pointer;background:none;border:none;width:100%;font-family:inherit;opacity:.65;transition:opacity .15s;-webkit-tap-highlight-color:transparent}
+.bottom-delete-link:hover{opacity:1}
+
 /* ===== Mobile Bottom Bar ===== */
 .mobile-bottom-bar{
   position:sticky;bottom:0;z-index:100;margin-top:8px;
@@ -279,10 +307,10 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 
 <!-- ======== Header ======== -->
 <header class="header">
-  <div class="logo">🏮 念念</div>
+  <div class="logo">🌙 念念</div>
   <div class="logo-sub">NianNian</div>
   <button id="langToggle" class="lang-pill" data-i18n="lang_btn">EN</button>
-  <div class="tagline" data-i18n="tagline">把家人的农历生日装进你的日历</div>
+  <div class="tagline" data-i18n="tagline">把家人的生日装进你的日历</div>
   <div class="privacy-badge" data-i18n="privacy_badge">🔒 纯客户端 · 数据不上传</div>
 </header>
 
@@ -389,17 +417,22 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
     <div class="bottom-sheet-handle"></div>
     <div class="bottom-sheet-header" id="bottomSheetTitle" data-i18n="mobile_add_title">添加家人</div>
     <div class="bottom-sheet-body">
+
+      <div class="section-label" data-i18n="mobile_section_basic">基本信息</div>
+
       <div class="mobile-field">
         <label data-i18n="mobile_label_name">姓名</label>
         <input type="text" id="bsName" maxlength="20" placeholder="姓名">
       </div>
+
       <div class="mobile-field">
         <label data-i18n="mobile_label_calendar">类型</label>
-        <select id="bsCalendar" onchange="updateCalendarLabels()">
-          <option value="lunar" data-i18n="calendar_lunar">农历</option>
-          <option value="solar" data-i18n="calendar_solar">阳历</option>
-        </select>
+        <div class="segmented-control" id="bsCalendar">
+          <button class="seg-item active" data-value="lunar">农历</button>
+          <button class="seg-item" data-value="solar">阳历</button>
+        </div>
       </div>
+
       <div class="mobile-field" style="display:flex;gap:12px">
         <div style="flex:1">
           <label id="bsLabelMonth">月份</label>
@@ -410,10 +443,9 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
           <input type="number" id="bsDay" min="1" max="30" placeholder="15" inputmode="numeric">
         </div>
       </div>
-      <div class="mobile-field">
-        <label data-i18n="mobile_label_note">备注</label>
-        <input type="text" id="bsNote" placeholder="可选">
-      </div>
+
+      <div class="section-label" data-i18n="mobile_section_remind">提醒设置</div>
+
       <div class="mobile-field">
         <label data-i18n="mobile_label_remind">提前提醒</label>
         <div class="days-row">
@@ -421,14 +453,16 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
           <span data-i18n="mobile_days_suffix">天</span>
         </div>
       </div>
+
       <div class="mobile-field">
         <label data-i18n="mobile_label_mode">提醒方式</label>
-        <select id="bsMode">
-          <option value="once" data-i18n="opt_once">一次</option>
-          <option value="daily" data-i18n="opt_daily">每天</option>
-          <option value="everyOtherDay" data-i18n="opt_everyOther">隔天</option>
-        </select>
+        <div class="chip-group" id="bsMode">
+          <button class="chip-item active" data-value="once">一次</button>
+          <button class="chip-item" data-value="daily">每天</button>
+          <button class="chip-item" data-value="everyOtherDay">隔天</button>
+        </div>
       </div>
+
       <div class="mobile-field">
         <label data-i18n="mobile_label_group">分组</label>
         <select id="bsGroup">
@@ -437,14 +471,18 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
           <option value="colleague" data-i18n="grp_colleague">同事</option>
         </select>
       </div>
+
+      <details class="collapsible-note" id="bsNoteWrap">
+        <summary data-i18n="mobile_note_toggle">＋ 添加备注</summary>
+        <textarea id="bsNote" rows="2" placeholder="可选"></textarea>
+      </details>
+
     </div>
     <div class="bottom-sheet-footer">
       <button class="btn btn-secondary" id="bsCancel" data-i18n="btn_cancel">取消</button>
       <button class="btn btn-primary" id="bsSave" data-i18n="btn_save">保存</button>
     </div>
-    <div id="bsDeleteWrap" class="bottom-sheet-delete hidden">
-      <button class="btn btn-outline" id="bsDelete" style="color:#C0424A;border-color:rgba(192,66,74,.3)" data-i18n="mobile_delete_person">删除此人</button>
-    </div>
+    <button id="bsDeleteWrap" class="bottom-delete-link hidden" data-i18n="mobile_delete_person">删除此人</button>
   </div>
 </div>
 
@@ -561,7 +599,7 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 
 <!-- ======== Footer ======== -->
 <footer class="footer">
-  <span data-i18n="footer_text">🏮 念念 (NianNian) · MIT 开源 ·</span>
+  <span data-i18n="footer_text">🌙 念念 (NianNian) · MIT 开源 ·</span>
   <a href="https://github.com/BlakeYa/niannian" target="_blank">GitHub</a>
 </footer>
 
@@ -1425,7 +1463,7 @@ let currentLang = localStorage.getItem('niannian_lang') || 'zh';
 const i18n = {
   zh: {
     lang_btn: 'EN',
-    tagline: '把家人的农历生日装进你的日历',
+    tagline: '把家人的生日装进你的日历',
     privacy_badge: '🔒 纯客户端 · 数据不上传',
     step1_title: ' 添加家人生日',
     upload_text: '上传 CSV 文件，或拖拽到此处',
@@ -1491,7 +1529,7 @@ const i18n = {
     faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
     faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
     info_toggle: '📖 使用帮助 & 🔒 隐私',
-    footer_text: '🏮 念念 (NianNian) · MIT 开源 ·',
+    footer_text: '🌙 念念 (NianNian) · MIT 开源 ·',
     privacy_check_1: '数据永不离开你的设备',
     privacy_check_2: '无服务器、无数据库、无 API',
     privacy_check_3: '农历库内联，不请求任何 CDN',
@@ -1511,6 +1549,9 @@ const i18n = {
       mobile_empty: '还没有添加家人，点击上方按钮开始',
       mobile_confirm_delete: '确定要删除 {name} 吗？',
       mobile_label_name: '姓名',
+    mobile_section_basic: '基本信息',
+    mobile_section_remind: '提醒设置',
+    mobile_note_toggle: '＋ 添加备注',
 mobile_label_lunar_month: '月份',
     mobile_label_lunar_day: '日期',
     mobile_label_solar_month: '月份',
@@ -1531,7 +1572,7 @@ mobile_label_lunar_month: '月份',
   },
   en: {
     lang_btn: '中',
-    tagline: 'Lunar birthdays in your calendar',
+    tagline: 'Family birthdays in your calendar',
     privacy_badge: '🔒 100% Client-side & Private',
     step1_title: ' Add Family Birthdays',
     upload_text: 'Upload a CSV file, or drag & drop here',
@@ -1592,7 +1633,7 @@ mobile_label_lunar_month: '月份',
     faq_android: '📱 Android support?',
     faq_android_p: '.ics is a standard format. On Android, use Google Calendar or ICSx⁵ to import.',
     info_toggle: '📖 Help & 🔒 Privacy',
-    footer_text: '🏮 NianNian · MIT License ·',
+    footer_text: '🌙 NianNian · MIT License ·',
     privacy_check_1: 'Your data never leaves your device',
     privacy_check_2: 'No server, no database, no API',
     privacy_check_3: 'No CDN requests, everything inlined',
@@ -1612,6 +1653,9 @@ mobile_label_lunar_month: '月份',
       mobile_empty: 'No family members yet. Tap the button above to add.',
       mobile_confirm_delete: 'Delete {name}?',
       mobile_label_name: 'Name',
+    mobile_section_basic: 'Basic Info',
+    mobile_section_remind: 'Reminder',
+    mobile_note_toggle: '+ Add Note',
 mobile_label_lunar_month: 'Month',
     mobile_label_lunar_day: 'Day',
     mobile_label_solar_month: 'Month',
@@ -2335,12 +2379,21 @@ function renderMobileUI() {
 // ---- Bottom Sheet ----
 var editingPersonId = null;
 
+function setSegActive(containerId, value) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var items = container.querySelectorAll('[data-value]');
+  for (var si = 0; si < items.length; si++) {
+    items[si].classList.toggle('active', items[si].dataset.value === value);
+  }
+}
+
 function openBottomSheet(personId) {
   editingPersonId = personId || null;
   var overlay = document.getElementById('bottomSheetOverlay');
   var sheet = document.getElementById('bottomSheet');
   var title = document.getElementById('bottomSheetTitle');
-  var deleteWrap = document.getElementById('bsDeleteWrap');
+  var deleteBtn = document.getElementById('bsDeleteWrap');
 
   if (personId) {
     var p = null;
@@ -2353,24 +2406,24 @@ function openBottomSheet(personId) {
     document.getElementById('bsDay').value = p.lunarDay || '';
     document.getElementById('bsNote').value = p.note || '';
     document.getElementById('bsDaysBefore').value = p.daysBefore != null ? p.daysBefore : 3;
-    document.getElementById('bsMode').value = p.mode || 'once';
+    setSegActive('bsMode', p.mode || 'once');
     document.getElementById('bsGroup').value = p.group || 'family';
-    document.getElementById('bsCalendar').value = p.calendar || 'lunar';
+    setSegActive('bsCalendar', p.calendar || 'lunar');
     updateCalendarLabels();
     title.textContent = __('mobile_edit_title');
-    if (deleteWrap) deleteWrap.classList.remove('hidden');
+    if (deleteBtn) deleteBtn.classList.remove('hidden');
   } else {
     document.getElementById('bsName').value = '';
     document.getElementById('bsMonth').value = '';
     document.getElementById('bsDay').value = '';
     document.getElementById('bsNote').value = '';
     document.getElementById('bsDaysBefore').value = 3;
-    document.getElementById('bsMode').value = 'once';
+    setSegActive('bsMode', 'once');
     document.getElementById('bsGroup').value = 'family';
-    document.getElementById('bsCalendar').value = 'lunar';
+    setSegActive('bsCalendar', 'lunar');
     updateCalendarLabels();
     title.textContent = __('mobile_add_title');
-    if (deleteWrap) deleteWrap.classList.add('hidden');
+    if (deleteBtn) deleteBtn.classList.add('hidden');
   }
 
   overlay.classList.add('open');
@@ -2381,11 +2434,11 @@ function openBottomSheet(personId) {
 
 
 function updateCalendarLabels() {
-  var cal = document.getElementById('bsCalendar');
+  var calEl = document.querySelector('#bsCalendar .seg-item.active');
   var monthLabel = document.getElementById('bsLabelMonth');
   var dayLabel = document.getElementById('bsLabelDay');
-  if (!cal || !monthLabel || !dayLabel) return;
-  if (cal.value === 'solar') {
+  if (!calEl || !monthLabel || !dayLabel) return;
+  if (calEl.dataset.value === 'solar') {
     monthLabel.textContent = __('mobile_label_solar_month') || 'Month';
     dayLabel.textContent = __('mobile_label_solar_day') || 'Day';
   } else {
@@ -2413,9 +2466,11 @@ function saveBottomSheet() {
   var day = parseInt(dayEl.value);
   var note = document.getElementById('bsNote').value.trim();
   var daysBefore = intVal(document.getElementById('bsDaysBefore').value, 0);
-  var mode = document.getElementById('bsMode').value;
+  var modeEl = document.querySelector('#bsMode .chip-item.active');
+  var mode = modeEl ? modeEl.dataset.value : 'once';
   var group = document.getElementById('bsGroup').value;
-  var calendar = document.getElementById('bsCalendar').value;
+  var calEl = document.querySelector('#bsCalendar .seg-item.active');
+  var calendar = calEl ? calEl.dataset.value : 'lunar';
 
   if (!name) {
     toast('请输入姓名');
@@ -2545,8 +2600,23 @@ document.addEventListener('DOMContentLoaded', function() {
   var bsSave = document.getElementById('bsSave');
   if (bsSave) bsSave.addEventListener('click', saveBottomSheet);
 
-  var bsDelete = document.getElementById('bsDelete');
+  var bsDelete = document.getElementById('bsDeleteWrap');
   if (bsDelete) bsDelete.addEventListener('click', deleteCurrentPerson);
+
+  // Segmented control / chip button clicks
+  document.addEventListener('click', function(e) {
+    var segItem = e.target.closest('.seg-item');
+    if (segItem && segItem.closest('#bsCalendar')) {
+      segItem.closest('#bsCalendar').querySelectorAll('.seg-item').forEach(function(b) { b.classList.remove('active'); });
+      segItem.classList.add('active');
+      updateCalendarLabels();
+    }
+    var chipItem = e.target.closest('.chip-item');
+    if (chipItem && chipItem.closest('#bsMode')) {
+      chipItem.closest('#bsMode').querySelectorAll('.chip-item').forEach(function(b) { b.classList.remove('active'); });
+      chipItem.classList.add('active');
+    }
+  });
 
   var bsOverlay = document.getElementById('bottomSheetOverlay');
   if (bsOverlay) {
