@@ -166,7 +166,7 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
   .col-note,.col-mode{display:none}
   .year-btn{flex:1 1 calc(50% - 4px)}
   table{min-width:320px}
-  .container{padding:10px}
+  .container{padding:16px}
   .lang-pill{top:clamp(12px,3vw,16px)}
   .card{padding:16px}
 }
@@ -181,18 +181,18 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 /* ===== Person Card (Mobile) ===== */
 .person-card{
   background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;
-  box-shadow:0 2px 12px rgba(0,0,0,.05),0 1px 3px rgba(0,0,0,.04);
-  border:1px solid rgba(0,0,0,.04);cursor:pointer;transition:all .12s;
+  box-shadow:0 2px 8px rgba(27,40,56,.06),0 1px 2px rgba(27,40,56,.04);
+  border:1px solid rgba(196,148,74,.07);cursor:pointer;transition:all .12s;
   display:flex;align-items:center;gap:14px;
   -webkit-tap-highlight-color:transparent;user-select:none
 }
 .person-card:active{transform:scale(.98)}
 .person-card .avatar{
   width:48px;height:48px;border-radius:50%;
-  background:linear-gradient(135deg,#1B2838,#3A4A5C);
+  background:linear-gradient(135deg,#1B2838 0%,#4A3A2C 100%);
   display:flex;align-items:center;justify-content:center;
   color:#fff;font-size:1.3rem;font-weight:600;
-  flex-shrink:0;box-shadow:0 2px 8px rgba(27,40,56,.2)
+  flex-shrink:0;box-shadow:0 0 0 2px rgba(196,148,74,.15),0 2px 6px rgba(27,40,56,.15)
 }
 .person-card .info{flex:1;min-width:0}
 .person-card .info .name{font-size:1rem;font-weight:600;color:#1B2838;margin-bottom:2px}
@@ -227,9 +227,10 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
   -webkit-overflow-scrolling:touch
 }
 .bottom-sheet.open{transform:translateY(0)}
-.bottom-sheet-handle{width:36px;height:4px;border-radius:2px;background:#ddd;margin:10px auto}
+.bottom-sheet-handle{width:36px;height:4px;border-radius:2px;background:rgba(196,148,74,.25);margin:10px auto}
 .bottom-sheet-header{
-  font-size:1.1rem;font-weight:600;color:#1B2838;text-align:center;padding:4px 0 16px
+  font-size:1.1rem;font-weight:600;color:#1B2838;text-align:center;padding:4px 0 16px;
+  border-bottom:1px solid rgba(196,148,74,.1);margin-bottom:8px
 }
 .bottom-sheet-body{padding-bottom:12px}
 .bottom-sheet-footer{
@@ -262,14 +263,15 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 /* ===== Segmented Control ===== */
 .segmented-control{display:flex;background:#f2f2f5;border-radius:10px;padding:3px;gap:2px}
 .seg-item{flex:1;padding:10px;border:none;border-radius:8px;background:transparent;font-size:.9rem;font-weight:500;color:#666;cursor:pointer;transition:all .15s;font-family:inherit;min-height:44px}
-.seg-item.active{background:#fff;color:#1B2838;box-shadow:0 1px 3px rgba(0,0,0,.08);font-weight:600}
+.seg-item.active{background:#fff;color:#1B2838;box-shadow:0 1px 3px rgba(0,0,0,.08);font-weight:600;position:relative}
+.seg-item.active::after{content:"";position:absolute;bottom:2px;left:20%;right:20%;height:2px;background:#C4944A;border-radius:1px}
 .seg-item:active{transform:scale(.97)}
 
 /* ===== Chip Group ===== */
 .chip-group{display:flex;gap:6px}
 .chip-item{padding:10px 16px;border:1.5px solid #eee;border-radius:999px;background:#fff;font-size:.85rem;font-weight:500;color:#666;cursor:pointer;transition:all .15s;font-family:inherit;min-height:44px;flex:1}
 .chip-item:hover{border-color:#ddd;background:#fafafa}
-.chip-item.active{border-color:#1B2838;background:#1B2838;color:#fff}
+.chip-item.active{border-color:#C4944A;background:#1B2838;color:#fff;box-shadow:0 2px 6px rgba(27,40,56,.15)}
 .chip-item:active{transform:scale(.96)}
 
 /* ===== Collapsible Note ===== */
