@@ -202,8 +202,8 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 .card-del:hover{color:#C0424A;background:#FFF0F0}
 
 /* ===== Mobile Add Button ===== */
-.mobile-add-btn{margin-bottom:16px;padding:clamp(14px,3vw,16px);font-size:1.05rem;gap:8px;border-radius:12px}
-@media(max-width:767px){.mobile-add-btn{display:none}}
+.mobile-add-btn{display:inline-flex;margin-bottom:16px;padding:10px 20px;font-size:.95rem;gap:6px;border-radius:999px}
+
 
 /* ===== Mobile Empty State ===== */
 .mobile-empty{text-align:center;padding:40px 20px;color:#ccc;font-size:.9rem}
@@ -283,10 +283,6 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 .bottom-delete-link:hover{opacity:1}
 
 
-/* ===== FAB ===== */
-.fab{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom,0px));right:20px;width:56px;height:56px;border-radius:50%;background:#1B2838;color:#fff;border:none;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 16px rgba(27,40,56,.25);transition:all .15s;z-index:101;display:flex;align-items:center;justify-content:center;padding:0}
-.fab:active{transform:scale(.92);box-shadow:0 2px 8px rgba(27,40,56,.2)}
-@media(min-width:768px){.fab{display:none}}
 /* ===== Mobile Bottom Bar ===== */
 .mobile-bottom-bar{
   position:sticky;bottom:0;z-index:100;margin-top:8px;
@@ -316,7 +312,6 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 </header>
 
 
-<button id="fabAdd" class="fab">＋</button>
 <!-- ======== Step 1: Data ======== -->
 <section class="card desktop-only">
   <div class="card-title"><span class="step-num">1</span><span data-i18n="step1_title"> 添加家人生日</span></div>
@@ -2596,9 +2591,6 @@ function deleteCurrentPerson() {
 // ---- Mobile Event Handlers ----
 document.addEventListener('DOMContentLoaded', function() {
   
-  // FAB add button
-  var fabAdd = document.getElementById('fabAdd');
-  if (fabAdd) fabAdd.addEventListener('click', function() { openBottomSheet(null); });
   // Mobile add button
   var addBtn = document.getElementById('mobileAddBtn');
   if (addBtn) {
