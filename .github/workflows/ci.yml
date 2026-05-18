@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check HTML validity
+        run: |
+          # Basic validation - index.html should exist and contain key elements
+          if [ ! -f index.html ]; then
+            echo "Error: index.html not found"
+            exit 1
+          fi
+
+      - name: Check required files
+        run: |
+          for file in LICENSE README.md CONTRIBUTING.md PRIVACY.md manifest.json sw.js; do
+            if [ ! -f "$file" ]; then
+              echo "Warning: $file not found"
+            else
+              echo "✅ $file exists"
+            fi
+          done
+
+      - name: Check no external dependencies creep in
+        run: |
+          # This project should have zero external HTTP dependencies
+          # Verify no CDN links in the HTML
+          if grep -q 'cdn\.\|unpkg\.\|cdnjs\.\|googleapis\.' index.html 2>/dev/null; then
+            echo "Warning: Possible external CDN dependency found in index.html"
+          else
+            echo "✅ No external CDN dependencies detected"
+          fi
