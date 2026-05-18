@@ -113,7 +113,7 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 /* ===== Import Guide ===== */
 .guide-grid{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:480px){.guide-grid{grid-template-columns:1fr 1fr}}
-@media(min-width:768px){.guide-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(min-width:1024px){.guide-grid{grid-template-columns:1fr 1fr 1fr 1fr}}
 .guide-card{
   padding:16px;background:#fafafa;border-radius:10px;font-size:clamp(0.82rem,2.5vw,0.88rem)
 }
@@ -526,12 +526,28 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
         <div class="guide-card">
           <div class="device-icon">📱</div>
           <h4 data-i18n="guide_ios" style="font-size:0.88rem">iPhone / iPad</h4>
+          <div style="background:rgba(196,148,74,.08);border-radius:4px;padding:6px 8px;margin-bottom:8px;font-size:.78rem">
+            <span data-i18n="guide_ios_safari">💡 请用 <strong>Safari</strong> 浏览器打开本网页下载 ICS，下载后直接提示「导入日历」。Chrome 只会下载文件，不会自动提示。</span>
+          </div>
           <ol>
-            <li data-i18n="guide_ios_1">将 <code>.ics</code> 文件发到微信或邮件</li>
-            <li data-i18n="guide_ios_2">点击文件 → 选择「用日历打开」</li>
-            <li data-i18n="guide_ios_3"><strong>选择「新建日历」</strong>命名为「念念·农历生日」</li>
+            <li data-i18n="guide_ios_1">用 Safari 下载 <code>.ics</code> 文件</li>
+            <li data-i18n="guide_ios_2">点击「导入日历」→ 选择「新建日历」</li>
+            <li data-i18n="guide_ios_3"><strong>命名为「念念·农历生日」</strong></li>
             <li data-i18n="guide_ios_4">点击「完成」→ iCloud 自动同步</li>
           </ol>
+        </div>
+        <div class="guide-card">
+          <div class="device-icon">🤖</div>
+          <h4 data-i18n="guide_android" style="font-size:0.88rem">Android</h4>
+          <ol>
+            <li data-i18n="guide_android_1">下载 <code>.ics</code> 文件到手机</li>
+            <li data-i18n="guide_android_2">打开文件管理器，找到下载的 <code>.ics</code> 文件</li>
+            <li data-i18n="guide_android_3">点击文件 → 选择「日历」或「Google 日历」打开</li>
+            <li data-i18n="guide_android_4">自动导入，生日事件即刻出现在日历中</li>
+          </ol>
+          <div style="margin-top:6px;font-size:0.78rem;color:#888">
+            <span data-i18n="guide_android_alt">💡 如点击无效，可安装 ICSx⁵ 或使用 Google 日历网页版导入</span>
+          </div>
         </div>
         <div class="guide-card">
           <div class="device-icon">🔄</div>
@@ -574,7 +590,13 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
         <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
           <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_android">📱 支持 Android 吗？</summary>
           <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_android_p">
-            .ics 是标准格式，Android 上可用 Google 日历或 ICSx⁵ 导入。
+            支持。下载 .ics 后打开文件管理器点击文件，选择「日历」打开即可自动导入。如果点击无效，可安装 ICSx⁵（Play 商店免费）或打开 Google 日历网页版（calendar.google.com）→ 设置 → 导入与导出 → 导入。
+          </div>
+        </details>
+        <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
+          <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_ios_safari">🍎 用 Chrome 下载没有「导入日历」提示？</summary>
+          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_ios_safari_p">
+            是的，只有 Safari 会触发系统直接导入日历。如果用了 Chrome，下载后打开「文件」App → 找到下载的 .ics 文件 → 点击 → 选择「用日历打开」即可。
           </div>
         </details>
         <details style="padding:8px 10px;background:#fafafa;border-radius:6px">
@@ -1520,10 +1542,17 @@ const i18n = {
     guide_mac_2: '日历 App 自动打开',
     guide_mac_3: '选择「新建日历」命名为「念念·农历生日」',
     guide_mac_4: '点击「好」完成导入',
-    guide_ios_1: '将 .ics 文件发到微信或邮件',
-    guide_ios_2: '点击文件 → 选择「用日历打开」',
-    guide_ios_3: '选择「新建日历」命名为「念念·农历生日」',
+    guide_ios_safari: '💡 请用 <strong>Safari</strong> 浏览器打开本网页下载 ICS，下载后直接提示「导入日历」。Chrome 只会下载文件，不会自动提示。',
+    guide_ios_1: '用 Safari 下载 <code>.ics</code> 文件',
+    guide_ios_2: '点击「导入日历」→ 选择「新建日历」',
+    guide_ios_3: '<strong>命名为「念念·农历生日」</strong>',
     guide_ios_4: '点击「完成」→ iCloud 自动同步',
+    guide_android: 'Android',
+    guide_android_1: '下载 <code>.ics</code> 文件到手机',
+    guide_android_2: '打开文件管理器，找到下载的 <code>.ics</code> 文件',
+    guide_android_3: '点击文件 → 选择「日历」或「Google 日历」打开',
+    guide_android_4: '自动导入，生日事件即刻出现在日历中',
+    guide_android_alt: '💡 如点击无效，可安装 ICSx⁵ 或使用 Google 日历网页版导入',
     guide_upd_1: '在网页修改后重新生成并下载 ICS',
     guide_upd_2: '日历 App 左侧栏右键删除旧的「念念·农历生日」日历',
     guide_upd_3: '双击新 ICS 重新导入到同名日历',
@@ -1537,7 +1566,9 @@ const i18n = {
     faq_privacy: '🔒 我的数据会上传到服务器吗？',
     faq_privacy_p: '绝对不会。念念是纯客户端工具：',
     faq_android: '📱 支持 Android 手机吗？',
-    faq_android_p: '.ics 是标准格式，Android 上可用 Google 日历或 ICSx⁵ 导入。',
+    faq_android_p: '支持。下载 .ics 后打开文件管理器点击文件，选择「日历」打开即可自动导入。如果点击无效，可安装 ICSx⁵（Play 商店免费）或打开 Google 日历网页版（calendar.google.com）→ 设置 → 导入与导出 → 导入。',
+    faq_ios_safari: '🍎 用 Chrome 下载 ICS 没有「导入日历」提示？',
+    faq_ios_safari_p: '是的，只有 <strong>Safari</strong> 浏览器会触发系统直接导入日历。如果用了 Chrome，下载后打开文件 App → 找到下载的 .ics 文件 → 点击 → 选择「用日历打开」即可导入。',
     faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
     faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
     info_toggle: '📖 使用帮助 & 🔒 隐私',
@@ -1629,10 +1660,17 @@ mobile_label_lunar_month: '月份',
     guide_mac_2: 'Calendar.app opens automatically',
     guide_mac_3: 'Create a new calendar named "NianNian Birthdays"',
     guide_mac_4: 'Click OK to import',
-    guide_ios_1: 'Send .ics file via WeChat or email',
-    guide_ios_2: 'Tap the file → "Open with Calendar"',
-    guide_ios_3: 'Choose "New Calendar" named "NianNian Birthdays"',
+    guide_ios_safari: '💡 Use <strong>Safari</strong> to visit this page and download ICS — it prompts to import directly. Chrome only downloads the file without the import prompt.',
+    guide_ios_1: 'Download the <code>.ics</code> file using Safari',
+    guide_ios_2: 'Tap "Import Calendar" → "New Calendar"',
+    guide_ios_3: '<strong>Name it "NianNian Birthdays"</strong>',
     guide_ios_4: 'Tap "Done" → iCloud syncs automatically',
+    guide_android: 'Android',
+    guide_android_1: 'Download the <code>.ics</code> file',
+    guide_android_2: 'Open your file manager and locate the <code>.ics</code> file',
+    guide_android_3: 'Tap the file → select "Calendar" or "Google Calendar"',
+    guide_android_4: 'Imports automatically — events appear in your calendar',
+    guide_android_alt: '💡 If tapping doesn\'t work, install ICSx⁵ or use Google Calendar web to import',
     guide_upd_1: 'Modify the list on the web page → regenerate ICS',
     guide_upd_2: 'In Calendar, right-click delete the old "NianNian Birthdays" calendar',
     guide_upd_3: 'Double-click the new ICS to re-import',
@@ -1645,7 +1683,9 @@ mobile_label_lunar_month: '月份',
     faq_privacy: '🔒 Does my data get uploaded?',
     faq_privacy_p: 'Absolutely not. NianNian is a client-only tool:',
     faq_android: '📱 Android support?',
-    faq_android_p: '.ics is a standard format. On Android, use Google Calendar or ICSx⁵ to import.',
+    faq_android_p: 'Yes. Download the .ics file, open it from your file manager, and select "Calendar" to import. If that doesn\'t work, install ICSx⁵ (free on Play Store) or use Google Calendar web (calendar.google.com) → Settings → Import & Export → Import.',
+    faq_ios_safari: '🍎 No "Import to Calendar" prompt on Chrome?',
+    faq_ios_safari_p: 'Correct — only <strong>Safari</strong> triggers the direct import prompt. If you used Chrome, open the "Files" app → find the downloaded .ics → tap it → choose "Open with Calendar" to import.',
     info_toggle: '📖 Help & 🔒 Privacy',
     footer_text: '🌙 NianNian · MIT License ·',
     privacy_check_1: 'Your data never leaves your device',
