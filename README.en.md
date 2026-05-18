@@ -158,6 +158,12 @@ niannian/
 
 [MIT](LICENSE). Free to use, modify, and distribute.
 
+### Third-party Dependencies
+
+| Library | Purpose | License |
+|---|---|---|
+| [solarlunar](https://github.com/yize/solarlunar) (yize) | Lunar/Solar calendar conversion | [ISC](https://opensource.org/licenses/ISC) |
+
 ---
 
 ## 🌟 Contributing

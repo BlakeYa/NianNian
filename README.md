@@ -225,6 +225,12 @@ niannian/
 
 本项目基于 [MIT License](./LICENSE) 开源。你可以自由地使用、修改、分发，以及将其集成到你的项目中。
 
+### 第三方依赖
+
+| 库 | 用途 | 许可证 |
+|---|---|---|
+| [solarlunar](https://github.com/yize/solarlunar) (yize) | 农历公历转换 | [ISC](https://opensource.org/licenses/ISC) |
+
 ---
 
 ## 🌟 贡献

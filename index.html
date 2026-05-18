@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; form-action 'none'; base-uri 'self'">
 <meta name="theme-color" content="#1B2838">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,6 +13,7 @@
 <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231B2838'/%3E%3Ccircle cx='50' cy='50' r='32' fill='white' opacity='0.95'/%3E%3Ccircle cx='62' cy='46' r='28' fill='%231B2838'/%3E%3Ccircle cx='30' cy='38' r='3' fill='white' opacity='0.8'/%3E%3Ccircle cx='68' cy='30' r='2' fill='white' opacity='0.7'/%3E%3Ccircle cx='38' cy='68' r='2.5' fill='white' opacity='0.7'/%3E%3C/svg%3E">
+<!-- Icons are original work (c) 2026 BlakeYa, licensed under MIT -->
 <title>念念 · 农历生日助手</title>
 
 <style>
@@ -641,8 +643,27 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 <div class="toast" id="toast"></div>
 
 <!-- ======== Inline solarlunar ======== -->
+<!--
+  solarlunar v3.1.0 - inlined for privacy (no CDN, no network request)
+  Source: https://github.com/yize/solarlunar
+  License: ISC (https://opensource.org/licenses/ISC)
+
+  ISC License
+  Copyright (c) 2015, yize
+
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-->
 <script>
-/* solarlunar v3.1.0 - inlined for privacy - https://github.com/yize/solarlunar */
 (function() {
   var exports = window.solarlunar = {};
  'use strict';
@@ -1839,7 +1860,7 @@ function pad2(n) { return String(n).padStart(2, '0'); }
 
 function icsEscape(s) {
   if (!s) return '';
-  return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+  return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
 }
 
 function sanitizeName(s) {
@@ -2321,7 +2342,7 @@ function handleGenerate() {
     toast( __('toast_downloaded'));
   } catch (e) {
     console.error('NianNian error:', e);
-    alert('出错了：' + e.message + '\n\n请打开浏览器开发者工具(F12)查看详细错误，或联系开发者。');
+    alert('出错了，请稍后重试。\n\n详细错误已输出到浏览器开发者工具控制台(F12)。');
   }
 }
 
