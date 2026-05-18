@@ -41,7 +41,6 @@ a:hover{text-decoration:underline}
 .lang-pill{position:absolute;top:clamp(20px,4vw,28px);right:0;display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:32px;padding:0 14px;background:rgba(27,40,56,.08);color:#1B2838;border:1px solid rgba(27,40,56,.15);border-radius:999px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.5px;user-select:none;font-family:inherit}
 .lang-pill:hover{background:rgba(27,40,56,.15);border-color:rgba(27,40,56,.3)}
 .lang-pill:active{transform:scale(.95)}
-.privacy-dot{font-size:clamp(.75rem,2.5vw,.8rem);opacity:.5;margin-left:4px;cursor:help;vertical-align:super}
 
 /* ===== Section Card ===== */
 .card{background:#fff;border-radius:12px;padding:clamp(18px,3.5vw,24px);margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.05),0 1px 3px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);transition:box-shadow .2s}
@@ -311,7 +310,7 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 
 <!-- ======== Header ======== -->
 <header class="header">
-  <div class="logo">🌙 念念<span class="privacy-dot" data-i18n="privacy_short" title="纯客户端 · 数据不上传">🔒</span></div>
+  <div class="logo">🌙 NianNian</div>
   <button id="langToggle" class="lang-pill" data-i18n="lang_btn">EN</button>
   <div class="tagline" data-i18n="tagline">把家人的生日装进日历</div>
 </header>
@@ -603,7 +602,7 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 
 <!-- ======== Footer ======== -->
 <footer class="footer">
-  <span data-i18n="footer_text">🌙 念念 (NianNian) · MIT 开源 ·</span>
+  <span data-i18n="footer_text">🌙 NianNian · MIT 开源 ·</span>
   <a href="https://github.com/BlakeYa/niannian" target="_blank">GitHub</a>
 </footer>
 
@@ -1469,7 +1468,6 @@ const i18n = {
     lang_btn: 'EN',
     tagline: '把家人的生日装进日历',
     privacy_badge: '🔒 纯客户端 · 数据不上传',
-    privacy_short: '🔒',
     step1_title: ' 添加家人生日',
     upload_text: '上传 CSV 文件，或拖拽到此处',
     upload_hint: '支持 .csv 格式，也可在下方表格直接填写',
@@ -1534,7 +1532,7 @@ const i18n = {
     faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
     faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
     info_toggle: '📖 使用帮助 & 🔒 隐私',
-    footer_text: '🌙 念念 (NianNian) · MIT 开源 ·',
+    footer_text: '🌙 NianNian · MIT 开源 ·',
     privacy_check_1: '数据永不离开你的设备',
     privacy_check_2: '无服务器、无数据库、无 API',
     privacy_check_3: '农历库内联，不请求任何 CDN',
@@ -1579,7 +1577,6 @@ mobile_label_lunar_month: '月份',
     lang_btn: '中',
     tagline: 'Family birthdays, always remembered',
     privacy_badge: '🔒 100% Client-side & Private',
-    privacy_short: '🔒',
     step1_title: ' Add Family Birthdays',
     upload_text: 'Upload a CSV file, or drag & drop here',
     upload_hint: 'Supports .csv format, or edit in the table below',
