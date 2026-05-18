@@ -2601,7 +2601,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var cardsContainer = document.getElementById('mobilePersonCards');
   if (cardsContainer) {
     cardsContainer.addEventListener('click', function(e) {
-      var actionBtn = e.target.closest('.btn-card-action');
+      var actionBtn = e.target.closest('.card-del');
       if (actionBtn) {
         var personId = actionBtn.dataset.personId;
         var action = actionBtn.dataset.action;
