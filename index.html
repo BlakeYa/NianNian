@@ -2145,9 +2145,7 @@ function handleFile(file) {
 downloadSampleBtn.addEventListener('click', function() {
   const sample = 'name,lunarMonth,lunarDay,note,daysBefore,mode\r\n' +
     '妈妈,8,15,农历八月十五,3,once\r\n' +
-    '爸爸,5,5,农历五月初五,7,daily\r\n' +
-    '奶奶,12,23,农历腊月廿三,7,daily\r\n' +
-    '孩子,3,10,农历三月初十,1,once\r\n';
+    '爸爸,5,5,农历五月初五,7,daily\r\n';
   const blob = new Blob(['\ufeff' + sample], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2713,8 +2711,6 @@ function init() {
     people = [
       { id: genId(), name: '妈妈', lunarMonth: 8, lunarDay: 15, note: '农历八月十五', daysBefore: 3, mode: 'once', group: 'family', calendar: 'lunar' },
       { id: genId(), name: '爸爸', lunarMonth: 5, lunarDay: 5, note: '农历五月初五', daysBefore: 7, mode: 'daily', group: 'family', calendar: 'lunar' },
-      { id: genId(), name: '奶奶', lunarMonth: 12, lunarDay: 23, note: '农历腊月廿三', daysBefore: 7, mode: 'daily', group: 'family', calendar: 'lunar' },
-      { id: genId(), name: '自己', lunarMonth: 6, lunarDay: 15, note: '公历六月十五', daysBefore: 3, mode: 'once', group: 'family', calendar: 'solar' },
     ];
     renderTable();
     saveState();
