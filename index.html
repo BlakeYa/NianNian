@@ -346,13 +346,14 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
     <table>
       <thead>
         <tr>
-          <th style="width:22%" data-i18n="th_name">姓名</th>
-          <th style="width:12%" data-i18n="th_month">农历月</th>
-          <th style="width:12%" data-i18n="th_day">农历日</th>
-          <th style="width:18%" class="col-note" data-i18n="th_note">备注</th>
-          <th style="width:14%" data-i18n="th_days">提前(天)</th>
-          <th style="width:16%" class="col-mode" data-i18n="th_mode">提醒方式</th>
-          <th style="width:8%" data-i18n="th_group">分组</th>
+          <th style="width:16%" data-i18n="th_name">姓名</th>
+          <th style="width:10%" data-i18n="th_group">分组</th>
+          <th style="width:10%" data-i18n="th_calendar">类型</th>
+          <th style="width:10%" data-i18n="th_month">月</th>
+          <th style="width:10%" data-i18n="th_day">日</th>
+          <th style="width:14%" class="col-note" data-i18n="th_note">备注</th>
+          <th style="width:10%" data-i18n="th_days">提前(天)</th>
+          <th style="width:14%" class="col-mode" data-i18n="th_mode">提醒方式</th>
     <th style="width:6%"></th>
         </tr>
       </thead>
@@ -1480,11 +1481,10 @@ const i18n = {
     btn_sample: '📄 下载样例 CSV',
     btn_add: '＋ 添加一行',
     btn_clear: '🗑️ 清空',
-    th_name: '姓名', th_month: '农历月', th_day: '农历日', th_note: '备注', th_days: '提前(天)', th_mode: '提醒方式',
+    th_name: '姓名', th_group: '分组', th_calendar: '类型', th_month: '月', th_day: '日', th_month_lunar: '农历月', th_day_lunar: '农历日', th_month_solar: '阳历月', th_day_solar: '阳历日', th_note: '备注', th_days: '提前(天)', th_mode: '提醒方式',
     grp_family: '家人',
     grp_friend: '朋友',
     grp_colleague: '同事',
-    th_group: '分组',
     view_auto: '🖥️ 自适应',
     view_desktop: '💻 桌面视图',
     view_mobile: '📱 手机视图',
@@ -1575,7 +1575,6 @@ mobile_label_lunar_month: '月份',
     mobile_label_calendar: '类型',
     calendar_lunar: '农历',
     calendar_solar: '阳历',
-    th_calendar: '历法',
       mobile_days_suffix: '天',
       mobile_badge_format: '({count} 位家人 · {years} 年)',
       mobile_reminder_format: '提前{days}天',
@@ -1592,7 +1591,7 @@ mobile_label_lunar_month: '月份',
     btn_sample: '📄 Download Sample CSV',
     btn_add: '＋ Add Row',
     btn_clear: '🗑️ Clear All',
-    th_name: 'Name', th_month: 'Month', th_day: 'Day', th_note: 'Note', th_days: 'Days', th_mode: 'Mode',
+    th_name: 'Name', th_group: 'Group', th_calendar: 'Type', th_month: 'Month', th_day: 'Day', th_month_lunar: 'Lunar Month', th_day_lunar: 'Lunar Day', th_month_solar: 'Solar Month', th_day_solar: 'Solar Day', th_note: 'Note', th_days: 'Days', th_mode: 'Mode',
     grp_family: 'Family',
     grp_friend: 'Friend',
     grp_colleague: 'Colleague',
@@ -1680,9 +1679,8 @@ mobile_label_lunar_month: 'Month',
       mobile_label_mode: 'Reminder Mode',
       mobile_label_group: 'Group',
     mobile_label_calendar: 'Type',
-    calendar_lunar: '农历',
-    calendar_solar: '阳历',
-    th_calendar: 'Cal',
+    calendar_lunar: 'Lunar',
+    calendar_solar: 'Solar',
       mobile_days_suffix: 'day(s)',
       mobile_badge_format: '({count} people · {years} yrs)',
       mobile_reminder_format: '{days} day(s) before',
@@ -1982,25 +1980,28 @@ function renderTable() {
   let html = '';
   for (let i = 0; i < people.length; i++) {
     const p = people[i];
+    var cal = p.calendar || 'lunar';
+    var monthLabel = cal === 'solar' ? __('calendar_solar') + __('ph_month') : __('calendar_lunar') + __('ph_month');
+    var dayLabel = cal === 'solar' ? __('calendar_solar') + __('ph_day') : __('calendar_lunar') + __('ph_day');
     html += '<tr>' +
       '<td><input type="text" value="' + escHtml(p.name || '') + '" data-idx="' + i + '" data-field="name" class="cell-edit" placeholder="姓名" data-i18n-placeholder="ph_name"></td>' +
-      '<td><input type="number" min="1" max="12" value="' + (p.lunarMonth || '') + '" data-idx="' + i + '" data-field="lunarMonth" class="cell-edit" placeholder="月" data-i18n-placeholder="ph_month"></td>' +
-      '<td><input type="number" min="1" max="30" value="' + (p.lunarDay || '') + '" data-idx="' + i + '" data-field="lunarDay" class="cell-edit" placeholder="日" data-i18n-placeholder="ph_day"></td>' +
+      '<td><select data-idx="' + i + '" data-field="group" class="cell-edit">' +
+        '<option value="family"' + (p.group === 'family' ? ' selected' : '') + '>' + __('grp_family') + '</option>' +
+        '<option value="friend"' + (p.group === 'friend' ? ' selected' : '') + '>' + __('grp_friend') + '</option>' +
+        '<option value="colleague"' + (p.group === 'colleague' ? ' selected' : '') + '>' + __('grp_colleague') + '</option>' +
+      '</select></td>' +
+      '<td><select data-idx="' + i + '" data-field="calendar" class="cell-edit cell-calendar">' +
+        '<option value="lunar"' + (p.calendar === 'lunar' ? ' selected' : '') + '>' + __('calendar_lunar') + '</option>' +
+        '<option value="solar"' + (p.calendar === 'solar' ? ' selected' : '') + '>' + __('calendar_solar') + '</option>' +
+      '</select></td>' +
+      '<td><input type="number" min="1" max="12" value="' + (p.lunarMonth || '') + '" data-idx="' + i + '" data-field="lunarMonth" class="cell-edit" placeholder="' + monthLabel + '"></td>' +
+      '<td><input type="number" min="1" max="30" value="' + (p.lunarDay || '') + '" data-idx="' + i + '" data-field="lunarDay" class="cell-edit" placeholder="' + dayLabel + '"></td>' +
       '<td class="col-note"><input type="text" value="' + escHtml(p.note || '') + '" data-idx="' + i + '" data-field="note" class="cell-edit" placeholder="可选" data-i18n-placeholder="ph_note"></td>' +
       '<td><input type="number" min="0" max="30" value="' + (p.daysBefore ?? 1) + '" data-idx="' + i + '" data-field="daysBefore" class="cell-edit" placeholder="天"></td>' +
       '<td class="col-mode"><select data-idx="' + i + '" data-field="mode" class="cell-edit">' +
         '<option value="once"' + (p.mode === 'once' ? ' selected' : '') + '>' + __('opt_once') + '</option>' +
         '<option value="daily"' + (p.mode === 'daily' ? ' selected' : '') + '>' + __('opt_daily') + '</option>' +
         '<option value="everyOtherDay"' + (p.mode === 'everyOtherDay' ? ' selected' : '') + '>' + __('opt_everyOther') + '</option>' +
-      '</select></td>' +
-      '<td><select data-idx="' + i + '" data-field="calendar" class="cell-edit">' +
-        '<option value="lunar"' + (p.calendar === 'lunar' ? ' selected' : '') + '>' + __('calendar_lunar') + '</option>' +
-        '<option value="solar"' + (p.calendar === 'solar' ? ' selected' : '') + '>' + __('calendar_solar') + '</option>' +
-      '</select></td>' +
-      '<td><select data-idx="' + i + '" data-field="group" class="cell-edit">' +
-        '<option value="family"' + (p.group === 'family' ? ' selected' : '') + '>' + __('grp_family') + '</option>' +
-        '<option value="friend"' + (p.group === 'friend' ? ' selected' : '') + '>' + __('grp_friend') + '</option>' +
-        '<option value="colleague"' + (p.group === 'colleague' ? ' selected' : '') + '>' + __('grp_colleague') + '</option>' +
       '</select></td>' +
       '<td><button class="btn-del" data-idx="' + i + '" title="删除">✕</button></td>' +
       '</tr>';
@@ -2034,6 +2035,21 @@ tableBody.addEventListener('input', function(e) {
 
   people[idx][field] = val;
   saveState();
+});
+
+// Update month/day placeholders when calendar type changes
+tableBody.addEventListener('change', function(e) {
+  var sel = e.target;
+  if (!sel.classList.contains('cell-calendar')) return;
+  var row = sel.closest('tr');
+  if (!row) return;
+  var cells = row.querySelectorAll('.cell-edit');
+  var monthLabel = sel.value === 'solar' ? __('calendar_solar') + __('ph_month') : __('calendar_lunar') + __('ph_month');
+  var dayLabel = sel.value === 'solar' ? __('calendar_solar') + __('ph_day') : __('calendar_lunar') + __('ph_day');
+  cells.forEach(function(inp) {
+    if (inp.dataset.field === 'lunarMonth') inp.placeholder = monthLabel;
+    if (inp.dataset.field === 'lunarDay') inp.placeholder = dayLabel;
+  });
 });
 
 tableBody.addEventListener('change', function(e) {
@@ -2776,8 +2792,8 @@ function init() {
   } else {
     // Pre-fill sample data for first-time users
     people = [
-      { id: genId(), name: '妈妈', lunarMonth: 8, lunarDay: 15, note: '农历八月十五', daysBefore: 3, mode: 'once', group: 'family', calendar: 'lunar' },
-      { id: genId(), name: '爸爸', lunarMonth: 5, lunarDay: 5, note: '农历五月初五', daysBefore: 7, mode: 'daily', group: 'family', calendar: 'lunar' },
+      { id: genId(), name: '妈妈', lunarMonth: 8, lunarDay: 15, note: '', daysBefore: 3, mode: 'once', group: 'family', calendar: 'lunar' },
+      { id: genId(), name: '爸爸', lunarMonth: 5, lunarDay: 5, note: '', daysBefore: 7, mode: 'daily', group: 'family', calendar: 'lunar' },
     ];
     renderTable();
     saveState();
