@@ -1743,8 +1743,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // ---- State ----
 let people = [];
 let selectedYears = 60;
-let nameCounter = 0;
-
 const STORAGE_KEY = 'niannian_people';
 
 // ---- DOM refs ----
@@ -2167,7 +2165,6 @@ downloadSampleBtn.addEventListener('click', function() {
 
 // ---- Add Row ----
 addRowBtn.addEventListener('click', function() {
-  nameCounter++;
   people.push({
     id: genId(),
     name: '',
@@ -2380,6 +2377,24 @@ function renderMobileUI() {
 
 // ---- Bottom Sheet ----
 var editingPersonId = null;
+// Cache DOM elements for performance
+var bsNameEl, bsMonthEl, bsDayEl, bsNoteEl, bsDaysEl, bsGroupEl, bsModeGroup, bsCalGroup, bsOverlay, bsSheet, bsTitle, bsDelBtn, bsMonthLabel, bsDayLabel;
+function cacheBottomSheet() {
+  bsNameEl = document.getElementById('bsName');
+  bsMonthEl = document.getElementById('bsMonth');
+  bsDayEl = document.getElementById('bsDay');
+  bsNoteEl = document.getElementById('bsNote');
+  bsDaysEl = document.getElementById('bsDaysBefore');
+  bsGroupEl = document.getElementById('bsGroup');
+  bsModeGroup = bsModeGroup;
+  bsCalGroup = bsCalGroup;
+  bsOverlay = bsOverlay;
+  bsSheet = document.getElementById('bottomSheet');
+  bsTitle = document.getElementById('bottomSheetTitle');
+  bsDelBtn = document.getElementById('bsDeleteWrap');
+  bsMonthLabel = bsMonthLabel;
+  bsDayLabel = bsDayLabel;
+}
 
 function setSegActive(containerId, value) {
   var container = document.getElementById(containerId);
@@ -2392,10 +2407,7 @@ function setSegActive(containerId, value) {
 
 function openBottomSheet(personId) {
   editingPersonId = personId || null;
-  var overlay = document.getElementById('bottomSheetOverlay');
-  var sheet = document.getElementById('bottomSheet');
-  var title = document.getElementById('bottomSheetTitle');
-  var deleteBtn = document.getElementById('bsDeleteWrap');
+  cacheBottomSheet();
 
   if (personId) {
     var p = null;
@@ -2403,42 +2415,42 @@ function openBottomSheet(personId) {
       if (people[i].id === personId) { p = people[i]; break; }
     }
     if (!p) return;
-    document.getElementById('bsName').value = p.name || '';
-    document.getElementById('bsMonth').value = p.lunarMonth || '';
-    document.getElementById('bsDay').value = p.lunarDay || '';
-    document.getElementById('bsNote').value = p.note || '';
-    document.getElementById('bsDaysBefore').value = p.daysBefore != null ? p.daysBefore : 3;
+    bsNameEl.value = p.name || '';
+    bsMonthEl.value = p.lunarMonth || '';
+    bsDayEl.value = p.lunarDay || '';
+    bsNoteEl.value = p.note || '';
+    bsDaysEl.value = p.daysBefore != null ? p.daysBefore : 3;
     setSegActive('bsMode', p.mode || 'once');
-    document.getElementById('bsGroup').value = p.group || 'family';
+    bsGroupEl.value = p.group || 'family';
     setSegActive('bsCalendar', p.calendar || 'lunar');
     updateCalendarLabels();
-    title.textContent = __('mobile_edit_title');
-    if (deleteBtn) deleteBtn.classList.remove('hidden');
+    bsTitle.textContent = __('mobile_edit_title');
+    if (bsDelBtn) bsDelBtn.classList.remove('hidden');
   } else {
-    document.getElementById('bsName').value = '';
-    document.getElementById('bsMonth').value = '';
-    document.getElementById('bsDay').value = '';
-    document.getElementById('bsNote').value = '';
-    document.getElementById('bsDaysBefore').value = 3;
+    bsNameEl.value = '';
+    bsMonthEl.value = '';
+    bsDayEl.value = '';
+    bsNoteEl.value = '';
+    bsDaysEl.value = 3;
     setSegActive('bsMode', 'once');
-    document.getElementById('bsGroup').value = 'family';
+    bsGroupEl.value = 'family';
     setSegActive('bsCalendar', 'lunar');
     updateCalendarLabels();
-    title.textContent = __('mobile_add_title');
-    if (deleteBtn) deleteBtn.classList.add('hidden');
+    bsTitle.textContent = __('mobile_add_title');
+    if (bsDelBtn) bsDelBtn.classList.add('hidden');
   }
 
-  overlay.classList.add('open');
-  sheet.classList.add('open');
+  bsOverlay.classList.add('open');
+  bsSheet.classList.add('open');
   document.body.style.overflow = 'hidden';
-  setTimeout(function() { document.getElementById('bsName').focus(); }, 350);
+  setTimeout(function() { bsNameEl.focus(); }, 350);
 }
 
 
 function updateCalendarLabels() {
   var calEl = document.querySelector('#bsCalendar .seg-item.active');
-  var monthLabel = document.getElementById('bsLabelMonth');
-  var dayLabel = document.getElementById('bsLabelDay');
+  var monthLabel = bsMonthLabel;
+  var dayLabel = bsDayLabel;
   if (!calEl || !monthLabel || !dayLabel) return;
   if (calEl.dataset.value === 'solar') {
     monthLabel.textContent = __('mobile_label_solar_month') || 'Month';
@@ -2450,10 +2462,9 @@ function updateCalendarLabels() {
 }
 
 function closeBottomSheet() {
-  var overlay = document.getElementById('bottomSheetOverlay');
-  var sheet = document.getElementById('bottomSheet');
-  overlay.classList.remove('open');
-  sheet.classList.remove('open');
+  cacheBottomSheet();
+  bsOverlay.classList.remove('open');
+  bsSheet.classList.remove('open');
   document.body.style.overflow = '';
   editingPersonId = null;
 }
@@ -2463,20 +2474,20 @@ function saveBottomSheet() {
   var monthEl = document.getElementById('bsMonth');
   var dayEl = document.getElementById('bsDay');
   if (!nameEl || !monthEl || !dayEl) { toast('表单加载异常，请重试'); return; }
-  var name = nameEl.value.trim();
-  var month = parseInt(monthEl.value);
-  var day = parseInt(dayEl.value);
-  var note = document.getElementById('bsNote').value.trim();
-  var daysBefore = intVal(document.getElementById('bsDaysBefore').value, 0);
+  var name = bsNameEl.value.trim();
+  var month = parseInt(bsMonthEl.value);
+  var day = parseInt(bsDayEl.value);
+  var note = bsNoteEl.value.trim();
+  var daysBefore = intVal(bsDaysEl.value, 0);
   var modeEl = document.querySelector('#bsMode .chip-item.active');
   var mode = modeEl ? modeEl.dataset.value : 'once';
-  var group = document.getElementById('bsGroup').value;
+  var group = bsGroupEl.value;
   var calEl = document.querySelector('#bsCalendar .seg-item.active');
   var calendar = calEl ? calEl.dataset.value : 'lunar';
 
   if (!name) {
     toast('请输入姓名');
-    document.getElementById('bsName').focus();
+    bsNameEl.focus();
     return;
   }
   if (isNaN(month) || month < 1 || month > 12) {
@@ -2620,7 +2631,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  var bsOverlay = document.getElementById('bottomSheetOverlay');
+  var bsOverlay = bsOverlay;
   if (bsOverlay) {
     bsOverlay.addEventListener('click', function(e) {
       if (e.target === bsOverlay) closeBottomSheet();

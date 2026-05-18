@@ -7,7 +7,7 @@
 [![GitHub Pages](https://img.shields.io/badge/demo-GitHub%20Pages-orange)](https://blakeya.github.io/niannian)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20client--side-2ea44f)](PRIVACY.md)
 
-农历生日助手 —— 把家人的农历生日装进你的日历，每年准时提醒。
+农历生日助手 —— 把家人的生日装进你的日历，每年准时提醒。
 
 ---
 

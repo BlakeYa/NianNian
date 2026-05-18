@@ -7,7 +7,7 @@
 [![GitHub Pages](https://img.shields.io/badge/demo-GitHub%20Pages-orange)](https://blakeya.github.io/niannian)
 [![Privacy](https://img.shields.io/badge/privacy-100%25%20client--side-2ea44f)](PRIVACY.md)
 
-A Lunar Birthday Calendar helper — put your family's lunar birthdays into your calendar, with automatic reminders every year.
+A Lunar Birthday Calendar helper — put your family's birthdays into your calendar, with automatic reminders every year.
 
 ---
 
