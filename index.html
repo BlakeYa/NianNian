@@ -175,6 +175,11 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
   .desktop-only{display:none!important}
   .mobile-only{display:block!important}
 }
+/* Forced view overrides */
+.force-mobile .desktop-only{display:none!important}
+.force-mobile .mobile-only{display:block!important}
+.force-desktop .desktop-only{display:block!important}
+.force-desktop .mobile-only{display:none!important}
 
 /* ===== Person Card (Mobile) ===== */
 .person-card{
@@ -295,6 +300,11 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
   background:rgba(255,255,255,.2);border-radius:999px;font-size:.78rem;font-weight:400
 }
 
+/* ===== View Toggle ===== */
+.view-toggle-btn{cursor:pointer;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;font-size:.72rem;padding:4px 10px;margin-left:6px;transition:all .15s;white-space:nowrap}
+.view-toggle-btn:hover{background:rgba(255,255,255,.25)}
+.view-toggle-btn.forced{background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.4)}
+
 /* ===== Mobile Year Section ===== */
 .mobile-year-section{margin-top:8px;margin-bottom:4px}
 .mobile-year-label{font-size:.82rem;color:#888;margin-bottom:8px;text-align:center}
@@ -308,6 +318,7 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 <header class="header">
   <div class="logo">🌙 NianNian</div>
   <button id="langToggle" class="lang-pill" data-i18n="lang_btn">EN</button>
+  <button id="viewToggle" class="view-toggle-btn" data-i18n="view_auto" title="切换视图">🖥️</button>
   <div class="tagline" data-i18n="tagline">把家人的生日装进日历</div>
 </header>
 
@@ -1474,6 +1485,9 @@ const i18n = {
     grp_friend: '朋友',
     grp_colleague: '同事',
     th_group: '分组',
+    view_auto: '🖥️ 自适应',
+    view_desktop: '💻 桌面视图',
+    view_mobile: '📱 手机视图',
     empty_text: '还没有添加生日数据\n上传 CSV 或点击「添加一行」开始',
     step2_title: ' 设置', step2_hint: '生成未来多少年的日历：',
     step3_title: ' 生成并下载', btn_generate: '🎯 生成 ICS 并下载',
@@ -1583,6 +1597,9 @@ mobile_label_lunar_month: '月份',
     grp_friend: 'Friend',
     grp_colleague: 'Colleague',
     th_group: 'Group',
+    view_auto: '🖥️ Auto',
+    view_desktop: '💻 Desktop',
+    view_mobile: '📱 Mobile',
     empty_text: 'No birthdays yet\nUpload CSV or click "Add Row" to start',
     step2_title: ' Settings', step2_hint: 'Generate how many years:',
     step3_title: ' Generate & Download', btn_generate: '🎯 Generate ICS & Download',
@@ -1694,6 +1711,8 @@ function setLang(lang) {
   // Update lang toggle button
   const toggle = document.getElementById('langToggle');
   if (toggle) toggle.textContent = i18n[lang].lang_btn;
+  // Update view toggle button
+  if (typeof updateViewToggleBtn === 'function') updateViewToggleBtn();
   // Re-render current view to update translated text
   if (currentView === 'mobile') {
     renderMobileUI();
@@ -1720,6 +1739,7 @@ document.addEventListener('DOMContentLoaded', function() {
     langToggle.addEventListener('click', function() {
       const newLang = currentLang === 'zh' ? 'en' : 'zh';
       setLang(newLang);
+      updateViewToggleBtn();
       // Re-render mobile UI if in mobile view
       if (typeof currentView !== 'undefined' && currentView === 'mobile') {
         renderMobileUI();
@@ -1727,8 +1747,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Auto-open info section on desktop
-  if (window.innerWidth >= 768) {
+  // View toggle
+  const viewToggle = document.getElementById('viewToggle');
+  if (viewToggle) {
+    viewToggle.addEventListener('click', function() {
+      if (!forcedView) {
+        // first click: force the opposite of current auto-detected view
+        var opposite = window.innerWidth < 768 ? 'desktop' : 'mobile';
+        applyForceView(opposite);
+      } else if (forcedView === 'desktop') {
+        applyForceView('mobile');
+      } else {
+        // back to auto
+        applyForceView(null);
+      }
+    });
+    updateViewToggleBtn();
+  }
+
+  // Auto-open info section on desktop (only if not forced to mobile)
+  if (!forcedView && window.innerWidth >= 768) {
     const info = document.getElementById('infoSection');
     if (info) info.open = true;
   }
@@ -2252,12 +2290,32 @@ function syncFromTable() {
 
 // ---- View Controller ----
 let currentView = 'desktop';
+let forcedView = null;
 let resizeTimerVC = null;
 
-function switchView() {
-  const newView = window.innerWidth < 768 ? 'mobile' : 'desktop';
-  if (newView === currentView) return;
+function loadForcedView() {
+  try { var v = localStorage.getItem('niannian_view'); return (v === 'desktop' || v === 'mobile') ? v : null; } catch(e) { return null; }
+}
+
+function applyForceView(v) {
+  forcedView = v;
+  document.body.classList.remove('force-mobile', 'force-desktop');
+  if (v) document.body.classList.add('force-' + v);
+  try { if (v) localStorage.setItem('niannian_view', v); else localStorage.removeItem('niannian_view'); } catch(e) {}
+  updateViewToggleBtn();
+  switchView(true);
+}
+
+function switchView(force) {
+  var newView;
+  if (forcedView) {
+    newView = forcedView;
+  } else {
+    newView = window.innerWidth < 768 ? 'mobile' : 'desktop';
+  }
+  if (!force && newView === currentView) return;
   currentView = newView;
+
   if (currentView === 'mobile') {
     renderMobileUI();
   } else {
@@ -2267,6 +2325,15 @@ function switchView() {
   document.querySelectorAll('.year-btn').forEach(function(b) {
     b.classList.toggle('active', parseInt(b.dataset.years) === selectedYears);
   });
+}
+
+// ---- View Toggle Button ----
+function updateViewToggleBtn() {
+  var btn = document.getElementById('viewToggle');
+  if (!btn) return;
+  var key = forcedView ? (forcedView === 'desktop' ? 'view_desktop' : 'view_mobile') : 'view_auto';
+  btn.textContent = __(key);
+  btn.classList.toggle('forced', !!forcedView);
 }
 
 // ---- Mobile Render Helpers ----
@@ -2720,6 +2787,12 @@ function init() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(function() {});
   }
+
+  // Load forced view from localStorage
+  forcedView = loadForcedView();
+  document.body.classList.remove('force-mobile', 'force-desktop');
+  if (forcedView) document.body.classList.add('force-' + forcedView);
+  updateViewToggleBtn();
 
   // Initialize view controller
   switchView();
