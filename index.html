@@ -40,9 +40,13 @@ a:hover{text-decoration:underline}
 .header{position:relative;text-align:center;padding:clamp(24px,6vw,40px) 0 clamp(16px,4vw,24px)}
 .header .logo{font-size:clamp(1.5rem,7vw,2rem);font-weight:700;color:#1B2838;letter-spacing:2px;line-height:1.2}
 .header .tagline{font-size:clamp(0.8rem,3vw,0.88rem);color:#8E8E93;margin-top:6px;max-width:260px;margin-left:auto;margin-right:auto;line-height:1.4}
-.lang-pill{position:absolute;top:clamp(20px,4vw,28px);right:0;display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:32px;padding:0 14px;background:rgba(27,40,56,.08);color:#1B2838;border:1px solid rgba(27,40,56,.15);border-radius:999px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.5px;user-select:none;font-family:inherit}
-.lang-pill:hover{background:rgba(27,40,56,.15);border-color:rgba(27,40,56,.3)}
-.lang-pill:active{transform:scale(.95)}
+.header-actions{position:absolute;top:clamp(20px,4vw,28px);right:0;display:flex;align-items:center;gap:6px}
+.header-actions button{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 12px;background:rgba(27,40,56,.06);color:#5a5a5a;border:1px solid rgba(27,40,56,.1);border-radius:999px;font-size:.75rem;font-weight:500;cursor:pointer;transition:all .2s;user-select:none;font-family:inherit;white-space:nowrap}
+.header-actions button:hover{background:rgba(27,40,56,.12);color:#1B2838;border-color:rgba(27,40,56,.2)}
+.header-actions button:active{transform:scale(.95)}
+.header-actions .lang-btn{min-width:44px;font-weight:600;letter-spacing:.5px}
+.header-actions .view-btn{gap:3px}
+
 
 /* ===== Section Card ===== */
 .card{background:#fff;border-radius:12px;padding:clamp(18px,3.5vw,24px);margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.05),0 1px 3px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);transition:box-shadow .2s}
@@ -177,7 +181,7 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
   .year-btn{flex:1 1 calc(50% - 4px)}
   table{min-width:320px}
   .container{padding:16px}
-  .lang-pill{top:clamp(12px,3vw,16px)}
+  .header-actions{top:clamp(12px,3vw,16px)}
   .card{padding:16px}
 }
 
@@ -313,9 +317,7 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 }
 
 /* ===== View Toggle ===== */
-.view-toggle-btn{cursor:pointer;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;font-size:.72rem;padding:4px 10px;margin-left:6px;transition:all .15s;white-space:nowrap}
-.view-toggle-btn:hover{background:rgba(255,255,255,.25)}
-.view-toggle-btn.forced{background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.4)}
+.header-actions .view-btn.forced{background:rgba(27,40,56,.12);color:#1B2838;border-color:rgba(196,148,74,.4)}
 
 /* ===== Mobile Year Section ===== */
 .mobile-year-section{margin-top:8px;margin-bottom:4px}
@@ -329,8 +331,10 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 <!-- ======== Header ======== -->
 <header class="header">
   <div class="logo">🌙 NianNian</div>
-  <button id="langToggle" class="lang-pill" data-i18n="lang_btn">EN</button>
-  <button id="viewToggle" class="view-toggle-btn" data-i18n="view_auto" title="切换视图">🖥️</button>
+  <div class="header-actions">
+    <button id="viewToggle" class="view-btn" data-i18n="view_auto" title="切换视图">🖥️ 自适应</button>
+    <button id="langToggle" class="lang-btn" data-i18n="lang_btn">EN</button>
+  </div>
   <div class="tagline" data-i18n="tagline">把家人的生日装进日历</div>
 </header>
 
