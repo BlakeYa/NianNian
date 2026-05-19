@@ -138,21 +138,6 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 .privacy-box ul li{padding:3px 0;padding-left:20px;position:relative}
 .privacy-box ul li::before{content:"\2713";position:absolute;left:0;color:#4CAF50;font-weight:700}
 
-/* ===== Reward Section ===== */
-.reward-card{background:#fff;border-radius:12px;padding:clamp(16px,3vw,20px);margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);text-align:center}
-.reward-card .message{font-size:clamp(.82rem,2.8vw,.88rem);color:#6B6B70;line-height:1.5;margin-bottom:10px}
-.reward-card .message em{font-style:normal;color:#C4944A}
-.reward-card .qr-wrap{position:relative;display:inline-block;cursor:pointer;border-radius:10px;overflow:hidden}
-.reward-card .qr-wrap img{width:140px;height:140px;display:block;border-radius:10px;border:1px solid #f0ebe4;transition:transform .2s}
-.reward-card .qr-wrap:active img{transform:scale(.97)}
-.reward-card .qr-hint{font-size:clamp(.68rem,2.4vw,.74rem);color:#bbb;margin-top:8px;line-height:1.4}
-.reward-card .qr-hint strong{color:#999;font-weight:500}
-.reward-card .reward-steps{display:none;margin-top:10px;padding:10px 12px;background:#FAF8F6;border-radius:8px;font-size:clamp(.72rem,2.5vw,.78rem);color:#777;text-align:left;line-height:1.6}
-.reward-card .reward-steps.show{display:block}
-.reward-card .reward-steps .step{display:flex;align-items:center;gap:8px;padding:3px 0}
-.reward-card .reward-steps .num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C4944A;color:#fff;font-size:.7rem;font-weight:600;flex-shrink:0}
-.reward-card .reward-footer{margin-top:10px;padding-top:10px;border-top:1px solid #f0ebe4;font-size:clamp(.7rem,2.4vw,.76rem);color:#ccc}
-
 /* ===== Footer ===== */
 .footer{text-align:center;padding:24px 0 40px;font-size:clamp(0.75rem,2.5vw,0.8rem);color:#777}
 
@@ -518,20 +503,24 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 </div>
 
 <!-- ======== Reward ======== -->
-<div class="reward-card" id="rewardCard">
-  <div class="message" data-i18n="reward_msg">如果念念帮你记住了<em>家人的生日</em></div>
-  <div class="qr-wrap" id="rewardQrToggle">
-    <img src="assets/wechat-reward.jpg" alt="微信赞赏码" loading="lazy">
+<details class="card info-details" id="rewardDetails">
+  <summary class="card-title info-summary" style="cursor:pointer">
+    <span style="font-size:0.9rem" data-i18n="reward_toggle">☕ 支持开发</span>
+    <span class="info-arrow" style="font-size:0.8rem;color:#aaa"> ▼</span>
+  </summary>
+  <div style="margin-top:12px;text-align:center">
+    <div style="font-size:clamp(.82rem,2.8vw,.88rem);color:#6B6B70;line-height:1.6;margin-bottom:14px" data-i18n="reward_msg">如果念念帮到了你，欢迎请作者喝杯咖啡</div>
+    <div class="reward-qr-wrap" style="display:inline-block;cursor:pointer" title="长按保存">
+      <img src="assets/wechat-reward.jpg" alt="微信赞赏码" loading="lazy" style="width:140px;height:140px;border-radius:10px;border:1px solid #f0ebe4;display:block">
+    </div>
+    <div class="reward-steps" style="margin-top:14px;padding:10px 14px;background:#FAF8F6;border-radius:8px;font-size:clamp(.72rem,2.5vw,.78rem);color:#777;text-align:left;line-height:1.7">
+      <div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C4944A;color:#fff;font-size:.7rem;font-weight:600;flex-shrink:0">1</span><span data-i18n="reward_step1">长按上方二维码保存到相册</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C4944A;color:#fff;font-size:.7rem;font-weight:600;flex-shrink:0">2</span><span data-i18n="reward_step2">打开微信 → 扫一扫 → 右上角 ⋮</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C4944A;color:#fff;font-size:.7rem;font-weight:600;flex-shrink:0">3</span><span data-i18n="reward_step3">选择「从相册选取二维码」</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#C4944A;color:#fff;font-size:.7rem;font-weight:600;flex-shrink:0">❤️</span><span data-i18n="reward_step4">金额随缘 · 感谢每一份心意</span></div>
+    </div>
   </div>
-  <div class="qr-hint" data-i18n="reward_hint">点击二维码展开操作步骤</div>
-  <div class="reward-steps" id="rewardSteps">
-    <div class="step"><span class="num">1</span><span data-i18n="reward_step1">长按上方二维码保存到相册</span></div>
-    <div class="step"><span class="num">2</span><span data-i18n="reward_step2">打开微信 → 扫一扫 → 右上角 ⋮</span></div>
-    <div class="step"><span class="num">3</span><span data-i18n="reward_step3">选择「从相册选取二维码」</span></div>
-    <div class="step"><span class="num">❤️</span><span data-i18n="reward_step4">金额随缘 · 感谢每一份心意</span></div>
-  </div>
-  <div class="reward-footer" data-i18n="reward_footer">☕ 免费工具 · 随缘支持</div>
-</div>
+</details>
 
 <details id="infoSection" class="card info-details">
   <summary class="card-title info-summary" style="cursor:pointer">
@@ -1628,13 +1617,12 @@ const i18n = {
     faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
     faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
     info_toggle: '📖 使用帮助 & 🔒 隐私',
-    reward_msg: '如果念念帮你记住了<em>家人的生日</em>',
-    reward_hint: '点击二维码展开操作步骤',
+    reward_toggle: '☕ 支持开发',
+    reward_msg: '如果念念帮到了你，欢迎请作者喝杯咖啡',
     reward_step1: '长按上方二维码保存到相册',
     reward_step2: '打开微信 → 扫一扫 → 右上角 ⋮',
     reward_step3: '选择「从相册选取二维码」',
     reward_step4: '金额随缘 · 感谢每一份心意',
-    reward_footer: '☕ 免费工具 · 随缘支持',
     footer_text: '🌙 NianNian · MIT 开源 ·',
     privacy_check_1: '数据永不离开你的设备',
     privacy_check_2: '无服务器、无数据库、无 API',
@@ -1750,13 +1738,12 @@ mobile_label_lunar_month: '月份',
     faq_ios_safari: '🍎 No "Import to Calendar" prompt on Chrome?',
     faq_ios_safari_p: 'Correct — only <strong>Safari</strong> triggers the direct import prompt. If you used Chrome, open the "Files" app → find the downloaded .ics → tap it → choose "Open with Calendar" to import.',
     info_toggle: '📖 Help & 🔒 Privacy',
-    reward_msg: 'If NianNian helps you remember<em> family birthdays</em>',
-    reward_hint: 'Tap QR code for instructions',
-    reward_step1: 'Long press the QR code to save to album',
-    reward_step2: 'Open WeChat → Scan → tap ⋮ in top-right',
+    reward_toggle: '☕ Support',
+    reward_msg: 'If NianNian helped you, consider buying the author a coffee',
+    reward_step1: 'Long press QR code to save to album',
+    reward_step2: 'Open WeChat → Scan → tap ⋮ top-right',
     reward_step3: 'Choose "Select from Album"',
     reward_step4: 'Any amount · Thank you for your support',
-    reward_footer: '☕ Free tool · Support if you like',
     footer_text: '🌙 NianNian · MIT License ·',
     privacy_check_1: 'Your data never leaves your device',
     privacy_check_2: 'No server, no database, no API',
@@ -1806,7 +1793,7 @@ function setLang(lang) {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     if (i18n[lang] && i18n[lang][key] !== undefined) {
-      if (key === 'reward_msg' || key === 'guide_ios_safari' || key === 'faq_ios_safari_p') {
+      if (key === 'guide_ios_safari' || key === 'faq_ios_safari_p') {
         el.innerHTML = i18n[lang][key];
       } else {
         el.textContent = i18n[lang][key];
@@ -1877,14 +1864,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateViewToggleBtn();
   }
 
-  // Reward: click QR to show/hide steps
-  const rewardQr = document.getElementById('rewardQrToggle');
-  if (rewardQr) {
-    rewardQr.addEventListener('click', function() {
-      const steps = document.getElementById('rewardSteps');
-      if (steps) steps.classList.toggle('show');
-    });
-  }
 
   // Auto-open info section on desktop (only if not forced to mobile)
   if (!forcedView && window.innerWidth >= 768) {
