@@ -34,3 +34,4 @@ dist/
 build/
 *.tgz
 .playwright-mcp/
+.playwright-mcp/
