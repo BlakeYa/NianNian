@@ -154,6 +154,17 @@ niannian/
 
 ---
 
+## ☕ Buy Me a Coffee
+
+If this tool helps you, feel free to scan the QR code to buy me a coffee ☕  
+No pressure, totally voluntary. Thanks for every kindness ❤️
+
+<p align="center">
+  <img src="assets/wechat-reward.jpg" width="200" alt="WeChat Reward Code">
+</p>
+
+---
+
 ## ⚖️ License
 
 [MIT](LICENSE). Free to use, modify, and distribute.

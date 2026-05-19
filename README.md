@@ -221,6 +221,17 @@ niannian/
 
 ---
 
+## ☕ 请喝杯咖啡
+
+如果这个工具帮到了你，欢迎扫下面的码请我喝杯咖啡 ☕  
+不强求，纯属自愿，感谢每一份心意 ❤️
+
+<p align="center">
+  <img src="assets/wechat-reward.jpg" width="200" alt="微信赞赏码">
+</p>
+
+---
+
 ## ⚖️ 开源协议
 
 本项目基于 [MIT License](./LICENSE) 开源。你可以自由地使用、修改、分发，以及将其集成到你的项目中。
