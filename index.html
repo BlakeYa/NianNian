@@ -135,14 +135,14 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 .privacy-box ul li::before{content:"\2713";position:absolute;left:0;color:#4CAF50;font-weight:700}
 
 /* ===== Reward Section ===== */
-.reward-section{margin-bottom:12px}
-.reward-inner{background:#fff;border-radius:12px;padding:18px;box-shadow:0 1px 6px rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.04);text-align:center}
-.reward-toggle{background:none;border:none;color:#8E8E93;font-size:clamp(0.8rem,2.8vw,0.85rem);cursor:pointer;padding:4px 12px;font-family:inherit;transition:color .15s;line-height:1.5}
-.reward-toggle:hover{color:#C4944A}
-.reward-qr{margin-top:12px;display:none}
-.reward-qr.show{display:block}
-.reward-qr img{width:140px;height:140px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08);border:1px solid #f0ebe4;margin:0 auto;display:block}
-.reward-qr .label{font-size:clamp(0.72rem,2.5vw,0.78rem);color:#bbb;margin-top:6px;letter-spacing:.3px}
+.reward-section{display:flex;justify-content:center;margin:16px 0 10px}
+.reward-trigger{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid #eee;border-radius:999px;padding:7px 18px;cursor:pointer;font-family:inherit;font-size:clamp(0.76rem,2.6vw,0.82rem);color:#aaa;transition:all .2s;line-height:1.4}
+.reward-trigger:hover{border-color:#ddd;color:#C4944A;background:rgba(196,148,74,.03)}
+.reward-trigger .coffee{font-size:1em}
+.reward-dropdown{margin-top:10px;display:none;text-align:center}
+.reward-dropdown.show{display:block}
+.reward-dropdown img{width:132px;height:132px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid #f0ebe4;margin:0 auto;display:block}
+.reward-dropdown .hint{font-size:clamp(0.7rem,2.4vw,0.76rem);color:#ccc;margin-top:6px}
 
 /* ===== Footer ===== */
 .footer{text-align:center;padding:24px 0 40px;font-size:clamp(0.75rem,2.5vw,0.8rem);color:#aaa}
@@ -510,12 +510,13 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 
 <!-- ======== Reward ======== -->
 <div class="reward-section">
-  <div class="reward-inner">
-    <button class="reward-toggle" id="rewardToggle" data-i18n="reward_toggle">☕ 如果念念帮你记住了家人的生日</button>
-    <div class="reward-qr" id="rewardQr">
-      <img src="assets/wechat-reward.jpg" alt="微信赞赏码" loading="lazy">
-      <div class="label" data-i18n="reward_label">微信扫一扫 · 金额随缘</div>
-    </div>
+  <button class="reward-trigger" id="rewardToggle">
+    <span class="coffee">☕</span>
+    <span data-i18n="reward_toggle">如果念念帮到了你</span>
+  </button>
+  <div class="reward-dropdown" id="rewardQr">
+    <img src="assets/wechat-reward.jpg" alt="微信赞赏码" loading="lazy">
+    <div class="hint" data-i18n="reward_label">微信扫一扫 · 金额随缘</div>
   </div>
 </div>
 
@@ -1614,8 +1615,8 @@ const i18n = {
     faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
     faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
     info_toggle: '📖 使用帮助 & 🔒 隐私',
-    reward_toggle: '☕ 如果念念帮你记住了家人的生日',
-    reward_label: '微信扫一扫 · 金额随缘 ❤️',
+    reward_toggle: '如果念念帮到了你',
+    reward_label: '微信扫一扫 · 金额随缘',
     footer_text: '🌙 NianNian · MIT 开源 ·',
     privacy_check_1: '数据永不离开你的设备',
     privacy_check_2: '无服务器、无数据库、无 API',
@@ -1731,8 +1732,8 @@ mobile_label_lunar_month: '月份',
     faq_ios_safari: '🍎 No "Import to Calendar" prompt on Chrome?',
     faq_ios_safari_p: 'Correct — only <strong>Safari</strong> triggers the direct import prompt. If you used Chrome, open the "Files" app → find the downloaded .ics → tap it → choose "Open with Calendar" to import.',
     info_toggle: '📖 Help & 🔒 Privacy',
-    reward_toggle: '☕ If NianNian helps you remember birthdays',
-    reward_label: 'Scan with WeChat · Any amount ❤️',
+    reward_toggle: 'If NianNian helps you',
+    reward_label: 'Scan with WeChat · Any amount',
     footer_text: '🌙 NianNian · MIT License ·',
     privacy_check_1: 'Your data never leaves your device',
     privacy_check_2: 'No server, no database, no API',
