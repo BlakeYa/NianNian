@@ -134,6 +134,15 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 .privacy-box ul li{padding:3px 0;padding-left:20px;position:relative}
 .privacy-box ul li::before{content:"\2713";position:absolute;left:0;color:#4CAF50;font-weight:700}
 
+/* ===== Reward Section ===== */
+.reward-section{text-align:center;padding:16px 0 8px}
+.reward-toggle{background:none;border:none;color:#888;font-size:clamp(0.75rem,2.5vw,0.8rem);cursor:pointer;padding:8px;font-family:inherit;transition:color .15s}
+.reward-toggle:hover{color:#C4944A}
+.reward-qr{margin-top:10px;display:none}
+.reward-qr.show{display:block}
+.reward-qr img{width:160px;height:160px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08);border:1px solid #eee}
+.reward-qr .label{font-size:clamp(0.72rem,2.5vw,0.78rem);color:#aaa;margin-top:6px}
+
 /* ===== Footer ===== */
 .footer{text-align:center;padding:24px 0 40px;font-size:clamp(0.75rem,2.5vw,0.8rem);color:#aaa}
 
@@ -630,6 +639,15 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 
   </div>
 </details>
+
+<!-- ======== Reward ======== -->
+<div class="reward-section">
+  <button class="reward-toggle" id="rewardToggle" data-i18n="reward_toggle">☕ 请我喝杯咖啡</button>
+  <div class="reward-qr" id="rewardQr">
+    <img src="assets/wechat-reward.jpg" alt="微信赞赏码" loading="lazy">
+    <div class="label" data-i18n="reward_label">微信扫一扫 · 金额随意</div>
+  </div>
+</div>
 
 <!-- ======== Footer ======== -->
 <footer class="footer">
@@ -1593,6 +1611,8 @@ const i18n = {
     faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
     faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
     info_toggle: '📖 使用帮助 & 🔒 隐私',
+    reward_toggle: '☕ 请我喝杯咖啡',
+    reward_label: '微信扫一扫 · 金额随意',
     footer_text: '🌙 NianNian · MIT 开源 ·',
     privacy_check_1: '数据永不离开你的设备',
     privacy_check_2: '无服务器、无数据库、无 API',
@@ -1708,6 +1728,8 @@ mobile_label_lunar_month: '月份',
     faq_ios_safari: '🍎 No "Import to Calendar" prompt on Chrome?',
     faq_ios_safari_p: 'Correct — only <strong>Safari</strong> triggers the direct import prompt. If you used Chrome, open the "Files" app → find the downloaded .ics → tap it → choose "Open with Calendar" to import.',
     info_toggle: '📖 Help & 🔒 Privacy',
+    reward_toggle: '☕ Buy Me a Coffee',
+    reward_label: 'Scan with WeChat · Any amount',
     footer_text: '🌙 NianNian · MIT License ·',
     privacy_check_1: 'Your data never leaves your device',
     privacy_check_2: 'No server, no database, no API',
@@ -1822,6 +1844,15 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     updateViewToggleBtn();
+  }
+
+  // Reward toggle
+  const rewardToggle = document.getElementById('rewardToggle');
+  if (rewardToggle) {
+    rewardToggle.addEventListener('click', function() {
+      const qr = document.getElementById('rewardQr');
+      if (qr) qr.classList.toggle('show');
+    });
   }
 
   // Auto-open info section on desktop (only if not forced to mobile)
