@@ -2108,40 +2108,34 @@ function getShareUrl() {
 }
 
 function showWeChatGuide() {
-  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  var shareUrl = getShareUrl();
+  var u = getShareUrl();
   var overlay = document.createElement('div');
   overlay.id = 'wechatGuide';
-  overlay.style.cssText =
-    'position:fixed;top:0;left:0;width:100%;height:100%;' +
-    'background:rgba(0,0,0,.65);z-index:9999;' +
-    'display:flex;align-items:center;justify-content:center;' +
-    'padding:24px;animation:fadeIn .25s ease';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.65);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .25s ease';
   overlay.innerHTML =
-    '<div style="background:#fff;border-radius:16px;max-width:360px;width:100%;padding:28px 24px 20px;box-shadow:0 8px 40px rgba(0,0,0,.15);text-align:center">' +
-    '<div style="font-size:38px;margin-bottom:6px;line-height:1">📅</div>' +
-    '<h3 style="margin:0 0 2px;font-size:1.05rem;font-weight:700;color:#1B2838">复制链接到 Safari 打开</h3>' +
-    '<p style="margin:0 0 18px;font-size:.82rem;color:#888;line-height:1.5">微信浏览器不支持导入日历。<br>复制下方链接用 Safari 打开，数据自动恢复</p>' +
-    '<button onclick="' +
-      'var u=getShareUrl();' +
-      'var done=function(){' +
-        'var btn=document.querySelector(\'.share-btn\');' +
-        'if(!btn)return;' +
-        'btn.textContent=\'✅ 已复制！请在浏览器中打开\';' +
-        'btn.style.background=\'#4CAF50\';' +
-        'setTimeout(function(){var g=document.getElementById(\'wechatGuide\');if(g)g.remove()},1500);' +
+    '<div style="background:#fff;border-radius:16px;max-width:340px;width:100%;padding:28px 20px 20px;box-shadow:0 8px 40px rgba(0,0,0,.15);text-align:center">' +
+    '<div style="font-size:36px;margin-bottom:4px;line-height:1">📅</div>' +
+    '<p style="margin:0 0 20px;font-size:.85rem;color:#888;line-height:1.5">微信内下载的 ICS 文件<br>需要用日历 App 手动打开才能导入</p>' +
+    '<div style="display:flex;flex-direction:column;gap:10px">' +
+    '<button class="share-btn" style="display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:14px 0;border-radius:12px;border:none;background:#1B2838;color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s" onclick="' +
+      'var btn=this;var url=getShareUrl();' +
+      'var doCopy=function(){' +
+        'try{navigator.clipboard.writeText(url)}catch(e){' +
+          'var inp=document.createElement(\'input\');inp.value=url;document.body.appendChild(inp);inp.select();document.execCommand(\'copy\');document.body.removeChild(inp)' +
+        '}' +
       '};' +
-      'if(navigator.clipboard){navigator.clipboard.writeText(u).then(done).catch(done)}else{' +
-        'try{var i=document.createElement(\'input\');i.value=u;document.body.appendChild(i);i.select();document.execCommand(\'copy\');document.body.removeChild(i)}catch(e){}' +
-        'done();' +
+      'if(navigator.share){' +
+        'navigator.share({url:url}).catch(function(){});' +
+        'document.getElementById(\'wechatGuide\').remove()' +
+      '}else{' +
+        'doCopy();' +
+        'btn.textContent=\'✅ 已复制，去 Safari 粘贴打开\';' +
+        'btn.style.background=\'#4CAF50\';' +
+        'btn.onclick=function(){document.getElementById(\'wechatGuide\').remove()};' +
       '}"' +
-    ' style="display:block;width:100%;padding:14px 0;border-radius:12px;border:none;background:#1B2838;color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:8px;transition:all .2s" class="share-btn">📋 复制链接，去浏览器打开</button>' +
-    '<p style="font-size:.75rem;color:#aaa;margin:0 0 14px;line-height:1.4">' +
-    (isIOS
-      ? '复制后打开 Safari → 粘贴到地址栏 → 数据自动恢复 → 点击下载'
-      : '复制后打开浏览器 → 粘贴到地址栏 → 数据自动恢复 → 点击下载') +
-    '</p>' +
-    '<button onclick="this.closest(\'#wechatGuide\').remove()" style="padding:8px 0;width:100%;border-radius:10px;border:1.5px solid #eee;background:#fff;color:#666;font-size:.85rem;font-weight:500;cursor:pointer;font-family:inherit">直接下载（部分手机可能不支持）</button>' +
+    '>🚀 在浏览器中打开</button>' +
+    '<button style="padding:12px 0;border-radius:10px;border:1.5px solid #eee;background:#fff;color:#666;font-size:.85rem;font-weight:500;cursor:pointer;font-family:inherit" onclick="this.closest(\'#wechatGuide\').remove()">下载 ICS 文件，去日历 App 手动打开</button>' +
+    '</div>' +
     '</div>';
   document.body.appendChild(overlay);
 }
