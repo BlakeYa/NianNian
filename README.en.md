@@ -62,7 +62,7 @@ NianNian does one thing: takes your family's lunar birthday list and **generates
 ⑤ iCloud syncs to all your devices
 ```
 
-From then on, every lunar birthday appears automatically in your calendar with the reminder schedule you set.
+From then on, every lunar birthday and its countdown events appear automatically in your calendar — no notification setup needed.
 
 ---
 
@@ -76,7 +76,7 @@ From then on, every lunar birthday appears automatically in your calendar with t
 | **Inline Editing** | Add/edit/delete rows directly in the browser table |
 | **ICS Generation** | One-click standard `.ics` file (compatible with Apple/Google/Outlook) |
 | **60+ Years** | Pre-computes all lunar→Gregorian dates for 10/30/60/100 years |
-| **Custom Reminders** | Per-person config: days before, once/daily/every-other-day |
+| **Custom Reminders** | Per-person config: days before, once/daily/every-other-day. Each reminder day generates a separate calendar event, visible on your calendar |
 | **Privacy First** | Zero-server, all computation in-browser, nothing uploaded |
 | **Offline Ready** | Download the HTML file and use it without internet |
 | **Import Guide** | Built-in instructions for Mac / iPhone / iPad |
@@ -111,7 +111,10 @@ From then on, every lunar birthday appears automatically in your calendar with t
 3. Set reminder preferences for each person
 4. Click "Generate ICS & Download"
 5. Double-click the downloaded `.ics` file → Calendar.app opens → choose "New Calendar" named "念念·Lunar Birthdays"
-6. Done! iCloud syncs to iPhone and iPad automatically
+6. Countdown events appear on your calendar automatically:
+   - N days before: `"Mom's Birthday · 3 days"` / `"Dad's Birthday · tomorrow"`
+   - On the day: `"🎂 Mom's Birthday"`
+7. Done! iCloud syncs to iPhone and iPad automatically
 
 **To update**: Modify the list on the web page → regenerate → delete old calendar → import new file. Takes 30 seconds.
 
@@ -135,11 +138,41 @@ Grandma,12,23,Lunar Dec 23,7,daily
 | `daysBefore` | | Days before to start reminding (default 1) |
 | `mode` | | Reminder mode: `once` / `daily` / `everyOtherDay` (default `once`) |
 
+**Reminder mechanism:**
+
+> ⚠️ **Important**: Apple Calendar ignores VALARM blocks from imported ICS files. Instead of relying on VALARM, NianNian generates **separate all-day events** for each reminder day — reminders appear directly on your calendar.
+
+| Mode | Effect | Example (3 days before) |
+|---|---|---|
+| `once` | Birthday only | `🎂 Mom's Birthday` |
+| `daily` | One event per day, from N days before through birthday | `Mom's Birthday · 3 days` → `· 2 days` → `· tomorrow` → `🎂 Mom's Birthday` |
+| `everyOtherDay` | One event every other day | `Mom's Birthday · 5 days` → `· 3 days` → `· tomorrow` → `🎂 Mom's Birthday` |
+
+**Calendar appearance (3 days before · daily):**
+```
+May 10  → Mom's Birthday · 3 days     ← visible on calendar
+May 11  → Mom's Birthday · 2 days     ← visible on calendar
+May 12  → Mom's Birthday · tomorrow   ← visible on calendar
+May 13  → 🎂 Mom's Birthday           ← visible on calendar
+```
+
+> 💡 **Notifications**: Each event is an all-day event. iOS will fire the default all-day event notification at the time configured in Settings > Calendar > Default Alert Times (9:00 AM by default).
+
 ---
 
 ## 🏗️ Architecture
 
 All in a single HTML file. No build step, no dependencies, no server.
+
+**Key design decisions:**
+
+| Decision | Choice | Rationale |
+|---|---|---|
+| Architecture | **Single HTML file** | Offline-ready, auditable, trivial to deploy |
+| Lunar conversion | `solarlunar` **inlined** | Zero network requests, covers 1900-2100 |
+| CSS | **Hand-written** | No Tailwind CDN dependency, privacy-focused |
+| Persistence | `localStorage` | Survives page refresh, 100% offline |
+| Reminder mechanism | **Separate calendar events** (not VALARM) | Apple Calendar ignores VALARM on import; separate all-day events are visible in the calendar and trigger iOS default notifications |
 
 ```
 niannian/
