@@ -2088,14 +2088,29 @@ function generateICS() {
   return { ics: header + events.join('\r\n') + '\r\nEND:VCALENDAR\r\n', count: totalEvents, personCount: people.length };
 }
 
-// ---- WeChat Browser Detection ----
+// ---- WeChat Browser ----
 function isWeChatBrowser() {
   return /micromessenger/i.test(navigator.userAgent);
 }
 
+function encodeShareData() {
+  try {
+    return btoa(encodeURIComponent(JSON.stringify(people)));
+  } catch(e) {
+    return '';
+  }
+}
+
+function getShareUrl() {
+  var data = encodeShareData();
+  if (!data) return window.location.href;
+  return window.location.href.split('#')[0] + '#d=' + data;
+}
+
 function showWeChatGuide() {
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const overlay = document.createElement('div');
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var shareUrl = getShareUrl();
+  var overlay = document.createElement('div');
   overlay.id = 'wechatGuide';
   overlay.style.cssText =
     'position:fixed;top:0;left:0;width:100%;height:100%;' +
@@ -2104,16 +2119,29 @@ function showWeChatGuide() {
     'padding:24px;animation:fadeIn .25s ease';
   overlay.innerHTML =
     '<div style="background:#fff;border-radius:16px;max-width:360px;width:100%;padding:28px 24px 20px;box-shadow:0 8px 40px rgba(0,0,0,.15);text-align:center">' +
-    '<div style="font-size:40px;margin-bottom:8px;line-height:1">📅</div>' +
-    '<h3 style="margin:0 0 4px;font-size:1.05rem;font-weight:700;color:#1B2838">添加到系统日历</h3>' +
-    '<p style="margin:0 0 16px;font-size:.85rem;color:#888;line-height:1.6">微信浏览器不支持直接导入日历文件。<br>' +
+    '<div style="font-size:38px;margin-bottom:6px;line-height:1">📅</div>' +
+    '<h3 style="margin:0 0 2px;font-size:1.05rem;font-weight:700;color:#1B2838">复制链接到 Safari 打开</h3>' +
+    '<p style="margin:0 0 18px;font-size:.82rem;color:#888;line-height:1.5">微信浏览器不支持导入日历。<br>复制下方链接用 Safari 打开，数据自动恢复</p>' +
+    '<button onclick="' +
+      'var u=getShareUrl();' +
+      'var done=function(){' +
+        'var btn=document.querySelector(\'.share-btn\');' +
+        'if(!btn)return;' +
+        'btn.textContent=\'✅ 已复制！请在浏览器中打开\';' +
+        'btn.style.background=\'#4CAF50\';' +
+        'setTimeout(function(){var g=document.getElementById(\'wechatGuide\');if(g)g.remove()},1500);' +
+      '};' +
+      'if(navigator.clipboard){navigator.clipboard.writeText(u).then(done).catch(done)}else{' +
+        'try{var i=document.createElement(\'input\');i.value=u;document.body.appendChild(i);i.select();document.execCommand(\'copy\');document.body.removeChild(i)}catch(e){}' +
+        'done();' +
+      '}"' +
+    ' style="display:block;width:100%;padding:14px 0;border-radius:12px;border:none;background:#1B2838;color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:8px;transition:all .2s" class="share-btn">📋 复制链接，去浏览器打开</button>' +
+    '<p style="font-size:.75rem;color:#aaa;margin:0 0 14px;line-height:1.4">' +
     (isIOS
-      ? '请点击右上角 <b style="color:#1B2838">「···」</b> → <b style="color:#1B2838">在Safari中打开</b>'
-      : '请点击右上角 <b style="color:#1B2838">「···」</b> → <b style="color:#1B2838">在浏览器中打开</b>') +
+      ? '复制后打开 Safari → 粘贴到地址栏 → 数据自动恢复 → 点击下载'
+      : '复制后打开浏览器 → 粘贴到地址栏 → 数据自动恢复 → 点击下载') +
     '</p>' +
-    '<div style="font-size:36px;margin-bottom:12px;line-height:1">↗️</div>' +
-    '<p style="font-size:.78rem;color:#aaa;margin:0 0 16px">打开后点击下载即可导入日历</p>' +
-    '<button onclick="this.closest(\'#wechatGuide\').remove()" style="padding:10px 28px;border-radius:999px;border:none;background:#1B2838;color:#fff;font-size:.88rem;font-weight:500;cursor:pointer;font-family:inherit">我知道了</button>' +
+    '<button onclick="this.closest(\'#wechatGuide\').remove()" style="padding:8px 0;width:100%;border-radius:10px;border:1.5px solid #eee;background:#fff;color:#666;font-size:.85rem;font-weight:500;cursor:pointer;font-family:inherit">直接下载（部分手机可能不支持）</button>' +
     '</div>';
   document.body.appendChild(overlay);
 }
@@ -2946,8 +2974,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ---- Init ----
 function init() {
-  const hasData = loadState();
-  if (hasData && Array.isArray(people)) {
+  // Restore data from URL hash (shared from WeChat)
+  var hashData = null;
+  try {
+    var hash = window.location.hash;
+    if (hash && hash.indexOf('#d=') === 0) {
+      var raw = decodeURIComponent(atob(hash.slice(3)));
+      hashData = JSON.parse(raw);
+      // Clear the hash so subsequent refreshes don't re-import
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  } catch(e) { /* ignore invalid hash data */ }
+
+  if (hashData && Array.isArray(hashData) && hashData.length > 0) {
+    people = hashData;
+    saveState();
+    renderTable();
+  } else {
+    const hasData = loadState();
+    if (hasData && Array.isArray(people)) {
     people = people.map(p => ({
       ...p,
       name: p.name || '',
