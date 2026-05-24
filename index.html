@@ -289,9 +289,6 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 .bottom-delete-link:hover{opacity:1}
 
 
-/* ===== Animation ===== */
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
 /* ===== Mobile Bottom Bar ===== */
 .mobile-bottom-bar{
   position:sticky;bottom:0;z-index:100;margin-top:8px;
@@ -621,12 +618,6 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
           <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_ios_safari">🍎 用 Chrome 下载没有「导入日历」提示？</summary>
           <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_ios_safari_p">
             是的，只有 Safari 会触发系统直接导入日历。如果用了 Chrome，下载后打开「文件」App → 找到下载的 .ics 文件 → 点击 → 选择「用日历打开」即可。
-          </div>
-        </details>
-        <details style="margin-bottom:8px;padding:8px 10px;background:#fafafa;border-radius:6px">
-          <summary style="cursor:pointer;font-weight:500;font-size:0.85rem" data-i18n="faq_wechat">💬 在微信里打不开/导入不了？</summary>
-          <div style="margin-top:6px;color:#555;line-height:1.6;font-size:0.82rem" data-i18n="faq_wechat_p">
-            微信浏览器不支持直接导入日历文件。生成后点击右上角「···」→ <strong>在 Safari 中打开</strong>（iPhone）或 <strong>在浏览器中打开</strong>（Android），然后在系统浏览器中重新下载，手机会自动弹出导入日历的提示。
           </div>
         </details>
         <details style="padding:8px 10px;background:#fafafa;border-radius:6px">
@@ -1618,8 +1609,6 @@ const i18n = {
     faq_android_p: '支持。下载 .ics 后打开文件管理器点击文件，选择「日历」打开即可自动导入。如果点击无效，可安装 ICSx⁵（Play 商店免费）或打开 Google 日历网页版（calendar.google.com）→ 设置 → 导入与导出 → 导入。',
     faq_ios_safari: '🍎 用 Chrome 下载 ICS 没有「导入日历」提示？',
     faq_ios_safari_p: '是的，只有 <strong>Safari</strong> 浏览器会触发系统直接导入日历。如果用了 Chrome，下载后打开文件 App → 找到下载的 .ics 文件 → 点击 → 选择「用日历打开」即可导入。',
-    faq_wechat: '💬 在微信里打不开/导入不了？',
-    faq_wechat_p: '微信浏览器不支持直接导入日历文件。生成后点击右上角「···」→ 在 Safari 中打开（iPhone）或在浏览器中打开（Android），然后在系统浏览器中重新下载，手机会自动弹出导入日历的提示。',
     faq_excel: '📄 支持 Excel (.xlsx) 格式吗？',
     faq_excel_p: '当前支持 .csv 格式，用 Excel / Numbers / WPS / Google Sheets 都可以打开编辑并另存为 CSV。手机上也推荐用 CSV，方便快捷。',
     info_toggle: '📖 使用帮助 & 🔒 隐私',
@@ -1756,8 +1745,6 @@ mobile_label_lunar_month: '月份',
     privacy_check_3: 'No CDN requests, everything inlined',
     privacy_check_4: 'Fully open source, auditable code',
 
-    faq_wechat: '💬 Can\'t download/import from WeChat?',
-    faq_wechat_p: 'WeChat\'s built-in browser doesn\'t support importing calendar files. After generating, tap the <b>「···」</b> menu → <b>Open in Safari</b> (iPhone) or <b>Open in Browser</b> (Android), then re-download in the system browser — your phone will prompt you to import the calendar.',
     faq_excel: '📄 Excel (.xlsx) support?',
     faq_excel_p: 'Currently supports .csv format. You can open it in Excel / Numbers / WPS / Google Sheets and save as CSV.',
     ph_name: 'Name', ph_month: 'Mth', ph_day: 'Day', ph_note: 'Optional', ph_days: 'Days',
@@ -2088,60 +2075,6 @@ function generateICS() {
   return { ics: header + events.join('\r\n') + '\r\nEND:VCALENDAR\r\n', count: totalEvents, personCount: people.length };
 }
 
-// ---- WeChat Browser ----
-function isWeChatBrowser() {
-  return /micromessenger/i.test(navigator.userAgent);
-}
-
-function encodeShareData() {
-  try {
-    return btoa(encodeURIComponent(JSON.stringify(people)));
-  } catch(e) {
-    return '';
-  }
-}
-
-function getShareUrl() {
-  var data = encodeShareData();
-  if (!data) return window.location.href;
-  return window.location.href.split('#')[0] + '#d=' + data;
-}
-
-function showWeChatGuide() {
-  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  var u = getShareUrl();
-  var overlay = document.createElement('div');
-  overlay.id = 'wechatGuide';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.65);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .25s ease';
-  overlay.innerHTML =
-    '<div style="background:#fff;border-radius:16px;max-width:340px;width:100%;padding:32px 24px 24px;box-shadow:0 8px 40px rgba(0,0,0,.15);text-align:center;position:relative">' +
-    '<div style="font-size:40px;margin-bottom:8px;line-height:1">📅</div>' +
-    '<h3 style="margin:0 0 4px;font-size:1rem;font-weight:700;color:#1B2838">' + (isIOS ? '请到 Safari 中操作' : '请用浏览器打开') + '</h3>' +
-    '<p style="margin:0 0 20px;font-size:.82rem;color:#888;line-height:1.5">微信内无法正常下载和导入日历文件</p>' +
-    '<button class="share-btn" style="width:100%;padding:14px 0;border-radius:12px;border:none;background:#1B2838;color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s" onclick="' +
-      'var btn=this;var url=getShareUrl();btn.disabled=true;' +
-      'if(navigator.share){' +
-        'navigator.share({title:\'念念 - 农历生日\',url:url}).catch(function(){});' +
-        'setTimeout(function(){document.getElementById(\'wechatGuide\').remove()},500);' +
-      '}else{' +
-        'try{navigator.clipboard.writeText(url)}catch(e){' +
-          'var inp=document.createElement(\'input\');inp.value=url;document.body.appendChild(inp);inp.select();document.execCommand(\'copy\');document.body.removeChild(inp)' +
-        '}' +
-        'btn.textContent=\'✅ 已复制，去 Safari 粘贴打开\';btn.style.background=\'#4CAF50\';' +
-        'setTimeout(function(){document.getElementById(\'wechatGuide\').remove()},2000);' +
-      '}"' +
-    '>' + (isIOS ? '📤 分享到其他应用' : '🚀 在浏览器中打开') + '</button>' +
-    '<div style="margin-top:16px;text-align:left;background:#f7f7f7;border-radius:10px;padding:12px 14px;font-size:.78rem;color:#666;line-height:1.7">' +
-    (isIOS
-      ? '<b>操作步骤：</b><br>① 点击上方按钮<br>② 在弹出菜单选「拷贝」<br>③ 打开 Safari 粘贴到地址栏<br>④ 数据自动恢复 → 点下载即可导入日历'
-      : '<b>操作步骤：</b><br>① 点击上方按钮<br>② 在弹出菜单选「浏览器」<br>③ 打开后数据自动恢复<br>④ 点下载 ⬇️ 文件保存到本地<br>⑤ 去文件管理器点 .ics 文件 → 用日历打开') +
-    '</div>' +
-    '</div>';
-  document.body.appendChild(overlay);
-  // Also copy URL to clipboard silently for convenience
-  try { navigator.clipboard.writeText(u); } catch(e) {}
-}
-
 // ---- Download ----
 function download(ics, ext) {
   const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
@@ -2462,18 +2395,11 @@ function handleGenerate() {
       return;
     }
 
+    download(result.ics);
     genResult.classList.remove('hidden');
     genMsg.textContent = '🎉 ' + __('gen_success') + ' ' + result.personCount + ' ' + __('gen_people') + ' ' + result.count + ' ' + __('gen_events');
     genDetail.textContent = __('gen_coverage') + ' ' + selectedYears + ' ' + __('gen_years');
-
-    if (isWeChatBrowser()) {
-      // In WeChat, show guidance overlay + still attempt download (may work on some devices)
-      download(result.ics);
-      showWeChatGuide();
-    } else {
-      download(result.ics);
-      toast( __('toast_downloaded'));
-    }
+    toast( __('toast_downloaded'));
   } catch (e) {
     console.error('NianNian error:', e);
     alert('出错了，请稍后重试。\n\n详细错误已输出到浏览器开发者工具控制台(F12)。');
@@ -2970,25 +2896,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ---- Init ----
 function init() {
-  // Restore data from URL hash (shared from WeChat)
-  var hashData = null;
-  try {
-    var hash = window.location.hash;
-    if (hash && hash.indexOf('#d=') === 0) {
-      var raw = decodeURIComponent(atob(hash.slice(3)));
-      hashData = JSON.parse(raw);
-      // Clear the hash so subsequent refreshes don't re-import
-      history.replaceState(null, '', window.location.pathname + window.location.search);
-    }
-  } catch(e) { /* ignore invalid hash data */ }
-
-  if (hashData && Array.isArray(hashData) && hashData.length > 0) {
-    people = hashData;
-    saveState();
-    renderTable();
-  } else {
-    const hasData = loadState();
-    if (hasData && Array.isArray(people)) {
+  const hasData = loadState();
+  if (hasData && Array.isArray(people)) {
     people = people.map(p => ({
       ...p,
       name: p.name || '',
@@ -3009,7 +2918,6 @@ function init() {
     ];
     renderTable();
     saveState();
-  }
   }
 
   // PWA: Register service worker
