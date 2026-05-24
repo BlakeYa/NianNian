@@ -1952,20 +1952,20 @@ function loadState() {
 
 // ---- Reminder triggers ----
 function generateTriggers(daysBefore, mode) {
-  const triggers = [];
   const days = Math.max(0, intVal(daysBefore, 1));
   switch (mode) {
-    case 'daily':
-      for (let i = days; i >= 0; i--) triggers.push('-P' + i + 'D');
-      break;
-    case 'everyOtherDay':
-      for (let i = days; i >= 0; i -= 2) triggers.push('-P' + i + 'D');
-      if (triggers.length === 0) triggers.push('-P1D');
-      break;
+    case 'daily': {
+      if (days === 0) return [{ trigger: '-P0D' }];
+      return [{ trigger: '-P' + days + 'D', repeat: days - 1, duration: 'P1D' }];
+    }
+    case 'everyOtherDay': {
+      if (days === 0) return [{ trigger: '-P0D' }];
+      if (days === 1) return [{ trigger: '-P1D' }];
+      return [{ trigger: '-P' + days + 'D', repeat: Math.floor((days - 1) / 2), duration: 'P2D' }];
+    }
     default: // once
-      triggers.push('-P' + days + 'D');
+      return [{ trigger: '-P' + days + 'D' }];
   }
-  return triggers;
 }
 
 // ---- ICS Generation ----
@@ -2010,7 +2010,11 @@ function generateICS() {
       const triggers = generateTriggers(p.daysBefore, p.mode);
       let valarmBlock = '';
       for (const t of triggers) {
-        valarmBlock += '\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:' + icsEscape(p.name) + '生日提醒\r\nTRIGGER:' + t + '\r\nEND:VALARM';
+        valarmBlock += '\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:' + icsEscape(p.name) + '生日提醒\r\nTRIGGER:' + t.trigger;
+        if (t.repeat !== undefined) {
+          valarmBlock += '\r\nREPEAT:' + t.repeat + '\r\nDURATION:' + t.duration;
+        }
+        valarmBlock += '\r\nEND:VALARM';
       }
 
       events.push(
