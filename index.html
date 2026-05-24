@@ -289,6 +289,15 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
 .bottom-delete-link:hover{opacity:1}
 
 
+/* ===== WeChat Browser Tip ===== */
+.wechat-bar{position:fixed;top:env(safe-area-inset-top,0);left:0;right:0;z-index:100;background:#FFF8F0;border-bottom:1px solid #FFE0B2;padding:7px 16px 6px;font-size:.76rem;color:#8B6914;line-height:1.4;display:none}
+.wechat-bar-inner{display:flex;align-items:flex-start;gap:7px;max-width:720px;margin:0 auto}
+.wechat-bar-icon{font-size:.85rem;line-height:1.5;flex-shrink:0}
+.wechat-bar-text strong{color:#6B4F00}
+.has-wechat-bar .container{padding-top:calc(16px + 44px)}
+@media(min-width:768px){.has-wechat-bar .container{padding-top:calc(24px + 44px)}}
+@media(max-width:479px){.wechat-bar{padding:6px 12px 5px;font-size:.72rem}.has-wechat-bar .container{padding-top:calc(16px + 40px)}}
+
 /* ===== Mobile Bottom Bar ===== */
 .mobile-bottom-bar{
   position:sticky;bottom:0;z-index:100;margin-top:8px;
@@ -323,6 +332,13 @@ td .btn-del:hover{color:#C0424A;background:#FFF0F0}
   <div class="tagline" data-i18n="tagline">日子再忙，也别忘了惦记在乎的人</div>
 </header>
 
+
+<div class="wechat-bar" id="wechatBar">
+  <div class="wechat-bar-inner">
+    <span class="wechat-bar-icon">💡</span>
+    <span class="wechat-bar-text" id="wechatBarText"></span>
+  </div>
+</div>
 
 <!-- ======== Step 1: Data ======== -->
 <section class="card desktop-only">
@@ -2930,6 +2946,20 @@ function init() {
   document.body.classList.remove('force-mobile', 'force-desktop');
   if (forcedView) document.body.classList.add('force-' + forcedView);
   updateViewToggleBtn();
+
+  // WeChat browser tip
+  if (/micromessenger/i.test(navigator.userAgent)) {
+    var bar = document.getElementById('wechatBar');
+    var txt = document.getElementById('wechatBarText');
+    if (bar && txt) {
+      var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      txt.innerHTML = isIOS
+        ? '点右上角 <strong>「···」</strong> → <strong>「在 Safari 中打开」</strong><br>下载后系统自动提示导入日历'
+        : '点右上角 <strong>「···」</strong> → <strong>「在浏览器中打开」</strong><br>下载后点击文件即可导入日历';
+      bar.style.display = 'block';
+      document.body.classList.add('has-wechat-bar');
+    }
+  }
 
   // Initialize view controller
   switchView();
