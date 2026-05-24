@@ -1950,22 +1950,36 @@ function loadState() {
   return false;
 }
 
-// ---- Reminder triggers ----
-function generateTriggers(daysBefore, mode) {
-  const days = Math.max(0, intVal(daysBefore, 1));
+// ---- Reminder dates calculation ----
+function getDaysBetween(d1, d2) {
+  return Math.round((d2.getTime() - d1.getTime()) / 86400000);
+}
+
+function generateReminderDates(birthdayDate, daysBefore, mode) {
+  const dates = [];
+  const days = Math.max(0, intVal(daysBefore, 0));
+
   switch (mode) {
-    case 'daily': {
-      if (days === 0) return [{ trigger: '-P0D' }];
-      return [{ trigger: '-P' + days + 'D', repeat: days - 1, duration: 'P1D' }];
-    }
-    case 'everyOtherDay': {
-      if (days === 0) return [{ trigger: '-P0D' }];
-      if (days === 1) return [{ trigger: '-P1D' }];
-      return [{ trigger: '-P' + days + 'D', repeat: Math.floor((days - 1) / 2), duration: 'P2D' }];
-    }
-    default: // once
-      return [{ trigger: '-P' + days + 'D' }];
+    case 'daily':
+      for (let i = days; i >= 1; i--) {
+        const d = new Date(birthdayDate);
+        d.setDate(d.getDate() - i);
+        dates.push({ date: d, label: i === 1 ? '明天' : i + '天后', isBirthday: false });
+      }
+      break;
+    case 'everyOtherDay':
+      for (let i = days; i >= 1; i -= 2) {
+        const d = new Date(birthdayDate);
+        d.setDate(d.getDate() - i);
+        dates.push({ date: d, label: i === 1 ? '明天' : i + '天后', isBirthday: false });
+      }
+      break;
+    // once: no countdown events
   }
+
+  // Birthday event last (chronological order)
+  dates.push({ date: new Date(birthdayDate), label: '', isBirthday: true });
+  return dates;
 }
 
 // ---- ICS Generation ----
@@ -2000,36 +2014,42 @@ function generateICS() {
         if (y === currentYear && new Date(cYear, cMonth - 1, cDay) < today) continue;
       }
 
-      const dateStr = cYear + pad2(cMonth) + pad2(cDay);
-      const nextDay = new Date(cYear, cMonth - 1, cDay + 1);
-      const nextDateStr = nextDay.getFullYear() + pad2(nextDay.getMonth() + 1) + pad2(nextDay.getDate());
-      const uid = 'lunar-' + sanitizeName(p.name) + '-' + y + '@niannian';
-      const summary = p.name + '生日';
+      const birthdayDate = new Date(cYear, cMonth - 1, cDay);
+      const reminderDates = generateReminderDates(birthdayDate, p.daysBefore, p.mode);
       const desc = p.note || '';
 
-      const triggers = generateTriggers(p.daysBefore, p.mode);
-      let valarmBlock = '';
-      for (const t of triggers) {
-        valarmBlock += '\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:' + icsEscape(p.name) + '生日提醒\r\nTRIGGER:' + t.trigger;
-        if (t.repeat !== undefined) {
-          valarmBlock += '\r\nREPEAT:' + t.repeat + '\r\nDURATION:' + t.duration;
-        }
-        valarmBlock += '\r\nEND:VALARM';
-      }
+      for (const rd of reminderDates) {
+        if (y === currentYear && rd.date < today) continue;
 
-      events.push(
-        'BEGIN:VEVENT\r\n' +
-        'UID:' + uid + '\r\n' +
-        'DTSTART;VALUE=DATE:' + dateStr + '\r\n' +
-        'DTEND;VALUE=DATE:' + nextDateStr + '\r\n' +
-        'SUMMARY:' + icsEscape(summary) + '\r\n' +
-        'DESCRIPTION:' + icsEscape(desc) + '\r\n' +
-        'TRANSP:TRANSPARENT\r\n' +
-        'SEQUENCE:0' +
-        valarmBlock + '\r\n' +
-        'END:VEVENT'
-      );
-      totalEvents++;
+        const yyyy = rd.date.getFullYear();
+        const mm = pad2(rd.date.getMonth() + 1);
+        const dd = pad2(rd.date.getDate());
+        const dateStr = '' + yyyy + mm + dd;
+        const nextDate = new Date(rd.date);
+        nextDate.setDate(nextDate.getDate() + 1);
+        const nextDateStr = nextDate.getFullYear() + pad2(nextDate.getMonth() + 1) + pad2(nextDate.getDate());
+
+        const uid = rd.isBirthday
+          ? 'lunar-' + sanitizeName(p.name) + '-' + y + '@niannian'
+          : 'lunar-' + sanitizeName(p.name) + '-' + y + '-' + getDaysBetween(rd.date, birthdayDate) + '@niannian';
+
+        const summary = rd.isBirthday
+          ? '🎂 ' + p.name + '生日'
+          : p.name + '生日 · ' + rd.label;
+
+        events.push(
+          'BEGIN:VEVENT\r\n' +
+          'UID:' + uid + '\r\n' +
+          'DTSTART;VALUE=DATE:' + dateStr + '\r\n' +
+          'DTEND;VALUE=DATE:' + nextDateStr + '\r\n' +
+          'SUMMARY:' + icsEscape(summary) + '\r\n' +
+          'DESCRIPTION:' + icsEscape(desc) + '\r\n' +
+          'TRANSP:TRANSPARENT\r\n' +
+          'SEQUENCE:0\r\n' +
+          'END:VEVENT'
+        );
+        totalEvents++;
+      }
     }
   }
 
