@@ -2108,36 +2108,38 @@ function getShareUrl() {
 }
 
 function showWeChatGuide() {
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   var u = getShareUrl();
   var overlay = document.createElement('div');
   overlay.id = 'wechatGuide';
   overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.65);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn .25s ease';
   overlay.innerHTML =
-    '<div style="background:#fff;border-radius:16px;max-width:340px;width:100%;padding:28px 20px 20px;box-shadow:0 8px 40px rgba(0,0,0,.15);text-align:center">' +
-    '<div style="font-size:36px;margin-bottom:4px;line-height:1">📅</div>' +
-    '<p style="margin:0 0 20px;font-size:.85rem;color:#888;line-height:1.5">微信内下载的 ICS 文件<br>需要用日历 App 手动打开才能导入</p>' +
-    '<div style="display:flex;flex-direction:column;gap:10px">' +
-    '<button class="share-btn" style="display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:14px 0;border-radius:12px;border:none;background:#1B2838;color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background .2s" onclick="' +
-      'var btn=this;var url=getShareUrl();' +
-      'var doCopy=function(){' +
+    '<div style="background:#fff;border-radius:16px;max-width:340px;width:100%;padding:32px 24px 24px;box-shadow:0 8px 40px rgba(0,0,0,.15);text-align:center;position:relative">' +
+    '<div style="font-size:40px;margin-bottom:8px;line-height:1">📅</div>' +
+    '<h3 style="margin:0 0 4px;font-size:1rem;font-weight:700;color:#1B2838">' + (isIOS ? '请到 Safari 中操作' : '请用浏览器打开') + '</h3>' +
+    '<p style="margin:0 0 20px;font-size:.82rem;color:#888;line-height:1.5">微信内无法正常下载和导入日历文件</p>' +
+    '<button class="share-btn" style="width:100%;padding:14px 0;border-radius:12px;border:none;background:#1B2838;color:#fff;font-size:.95rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s" onclick="' +
+      'var btn=this;var url=getShareUrl();btn.disabled=true;' +
+      'if(navigator.share){' +
+        'navigator.share({title:\'念念 - 农历生日\',url:url}).catch(function(){});' +
+        'setTimeout(function(){document.getElementById(\'wechatGuide\').remove()},500);' +
+      '}else{' +
         'try{navigator.clipboard.writeText(url)}catch(e){' +
           'var inp=document.createElement(\'input\');inp.value=url;document.body.appendChild(inp);inp.select();document.execCommand(\'copy\');document.body.removeChild(inp)' +
         '}' +
-      '};' +
-      'if(navigator.share){' +
-        'navigator.share({url:url}).catch(function(){});' +
-        'document.getElementById(\'wechatGuide\').remove()' +
-      '}else{' +
-        'doCopy();' +
-        'btn.textContent=\'✅ 已复制，去 Safari 粘贴打开\';' +
-        'btn.style.background=\'#4CAF50\';' +
-        'btn.onclick=function(){document.getElementById(\'wechatGuide\').remove()};' +
+        'btn.textContent=\'✅ 已复制，去 Safari 粘贴打开\';btn.style.background=\'#4CAF50\';' +
+        'setTimeout(function(){document.getElementById(\'wechatGuide\').remove()},2000);' +
       '}"' +
-    '>🚀 在浏览器中打开</button>' +
-    '<button style="padding:12px 0;border-radius:10px;border:1.5px solid #eee;background:#fff;color:#666;font-size:.85rem;font-weight:500;cursor:pointer;font-family:inherit" onclick="this.closest(\'#wechatGuide\').remove()">下载 ICS 文件，去日历 App 手动打开</button>' +
+    '>' + (isIOS ? '📤 分享到其他应用' : '🚀 在浏览器中打开') + '</button>' +
+    '<div style="margin-top:16px;text-align:left;background:#f7f7f7;border-radius:10px;padding:12px 14px;font-size:.78rem;color:#666;line-height:1.7">' +
+    (isIOS
+      ? '<b>操作步骤：</b><br>① 点击上方按钮<br>② 在弹出菜单选「拷贝」<br>③ 打开 Safari 粘贴到地址栏<br>④ 数据自动恢复 → 点下载即可导入日历'
+      : '<b>操作步骤：</b><br>① 点击上方按钮<br>② 在弹出菜单选「浏览器」<br>③ 打开后数据自动恢复<br>④ 点下载 ⬇️ 文件保存到本地<br>⑤ 去文件管理器点 .ics 文件 → 用日历打开') +
     '</div>' +
     '</div>';
   document.body.appendChild(overlay);
+  // Also copy URL to clipboard silently for convenience
+  try { navigator.clipboard.writeText(u); } catch(e) {}
 }
 
 // ---- Download ----
